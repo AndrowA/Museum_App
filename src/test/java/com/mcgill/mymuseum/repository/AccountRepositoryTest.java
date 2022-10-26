@@ -16,7 +16,7 @@ class AccountRepositoryTest {
     @Autowired
     private AccountRepository accountRepository;
 
-   // @AfterEach
+    @AfterEach
     public void clearDatabase() {
         accountRepository.deleteAll();
     }
