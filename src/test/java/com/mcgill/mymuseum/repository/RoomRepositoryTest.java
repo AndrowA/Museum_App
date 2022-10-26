@@ -1,6 +1,7 @@
 package com.mcgill.mymuseum.repository;
 
 import com.mcgill.mymuseum.model.DisplayRoom;
+import com.mcgill.mymuseum.model.StorageRoom;
 import com.mcgill.mymuseum.model.WorkDay;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -43,11 +44,17 @@ class RoomRepositoryTest {
     @Test
     public void testPersistAndLoadStorageRoom() {
         //Create Objects
+        StorageRoom storageRoom1 = new StorageRoom();
 
         //Save Object
+        storageRoom1 = roomRepository.save(storageRoom1);
+        Long id = storageRoom1.getRoomId();
 
         //Read Object
+        storageRoom1 = (StorageRoom) roomRepository.findById(id).get();
 
         //Assert that object has correct attributes
+        assertNotNull(storageRoom1);
+
     }
 }
