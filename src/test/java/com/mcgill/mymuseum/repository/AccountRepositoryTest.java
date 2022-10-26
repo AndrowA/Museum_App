@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AccountRepositoryTest {
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -19,9 +20,22 @@ class AccountRepositoryTest {
     }
 
     @Test
-    public void testPersistAndLoadAccount() {
+    public void testPersistAndLoadEmployeeAccount() {
         //Create Objects
         String username = "yassine.meliani@gmail.com";
         String password = "password";
+        Employee employee1 = new Employee(username,password,40,80,null);
+
+        //Save Object
+        employee1 = accountRepository.save(employee1);
+        Long id = employee1.getAccountId();
+
+        //Read Object
+        employee1 = (Employee) accountRepository.findById(id).get();
+
+        //Assert that object has correct attributes
+        assertNotNull(employee1);
+        assertEquals(username,employee1.getEmail());
+        assertEquals(password,employee1.getPassword());
     }
 }

@@ -38,11 +38,12 @@ public class Employee extends Account
     hourlyWage = aHourlyWage;
     overtimeHourlyWage = aOvertimeHourlyWage;
     schedule = new ArrayList<WorkDay>();
-    boolean didAddApplication = setApplication(aApplication);
+    this.application = aApplication;
+    /*boolean didAddApplication = setApplication(aApplication);
     if (!didAddApplication)
     {
       throw new RuntimeException("Unable to create employee due to application. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    }*/
   }
 
   public Employee() {
