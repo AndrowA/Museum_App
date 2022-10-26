@@ -38,4 +38,27 @@ class AccountRepositoryTest {
         assertEquals(username,employee1.getEmail());
         assertEquals(password,employee1.getPassword());
     }
+
+    @Test
+    public void testPersistAndLoadVisitorAccount() {
+        //Create Objects
+
+        //Save Object
+
+        //Read Object
+
+        //Assert that object has correct attributes
+    }
+
+    @Test
+    public void testPersistAndLoadPresidentAccount() {
+        //Create Objects
+
+        //Save Object
+
+        //Read Object
+
+        //Assert that object has correct attributes
+    }
+
 }
