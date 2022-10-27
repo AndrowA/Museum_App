@@ -6,6 +6,8 @@ Here you will find a breif description of the project, overview table with names
 ## Project reports
 Click here to view Deliverable 1 Project [wiki](../../wiki).
 
+## Project description and scope
+The project consists in designing and implmenting a Museum Software System for a customer that will allow museum visitors to buy passes and loan items online. It should also allow for managers and employees to view their schedules, approve loans (if clearance permits) and store artefacts in a database. The system should be accessible thourhg a web frontend for all users and function in a proper manner.
 
 # Team members
 | Name               | GitHub username| Team Role    |
