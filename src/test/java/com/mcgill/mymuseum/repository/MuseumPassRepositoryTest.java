@@ -23,12 +23,10 @@ class MuseumPassRepositoryTest {
     @Test
     public void testPersistAndLoadMuseumPass() {
         //Create Objects
-        int passCost = 10;
         Date passDate = new Date(2022,10, 31);
         Visitor owner = new Visitor();
         MyMuseum museum = new MyMuseum();
         MuseumPass pass = new MuseumPass(passDate,owner,museum);
-    //    pass.setPassCost(passCost);
         pass.setPassDate(passDate);
 
         //Save Object
@@ -40,7 +38,6 @@ class MuseumPassRepositoryTest {
 
         //Assert that object has correct attributes
         assertNotNull(pass);
-      //  assertEquals(passCost,pass.getPassCost());
         assertEquals(passDate,pass.getPassDate());
 
     }
