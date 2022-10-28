@@ -1,0 +1,183 @@
+class Account
+{
+  abstract;
+  email;
+  password;
+}
+
+class Visitor
+{
+  isA Account;
+}
+
+class Employee
+{
+  isA Account;
+  1 employee -- * WorkDay schedule;
+}
+
+class President
+{
+  isA Employee;
+}
+
+class WorkDay
+{
+  startTime;
+  endTime;
+  Date day;
+}
+
+class MuseumPass
+{
+  passDate;
+  * passes -- 1 Visitor owner;
+}
+
+class Loan
+{
+  Date startDate;
+  Date endDate;
+  enum LoanStatus {Requested, InReview, Approved, Rejected}
+  LoanStatus loanStatus;
+  0..3 loans -- 1 Visitor loanee;
+}
+
+class Artifact
+{
+  name;
+  description;
+  url;
+  1 artifact -- 0..1 Loan loan;
+  * artifacts -- 1 Room room;
+}
+
+class Room
+{
+  name;
+abstract;
+}
+
+class Storageroom
+{
+  isA Room;
+}
+
+class DisplayRoom
+{
+   isA Room;
+   int roomCapacity;
+}
+
+class MyMuseum
+{
+  pricePerPass;
+  address;
+  1 <@>- 1 President;
+  1 <@>- * Artifact;
+  1 <@>- * Loan;
+  1 <@>- * MuseumPass;
+  1 <@>- * Visitor;
+  1 <@>- * WorkDay workdays;
+  1 <@>- 1 Storageroom;
+  1 <@>- * DisplayRoom;
+  1 <@>- * Employee;
+  1 museum <@>- * WorkDay openingHours;
+}
+
+
+
+namespace -;
+
+
+class Account
+{
+  position 670 46 138.766 91.3594;
+}
+
+class Visitor
+{
+  position 524 203 109 41.3594;
+}
+
+class Employee
+{
+  position 741 205 109 41.3594;
+  position.association Employee__WorkDay 143,15 0,53;
+  position.association EmployeeAccount:employee__WorkDay 26,0 0,10;
+  position.association EmployeeAccount:employee__WorkDay:schedule 142,0 0,45;
+  position.association Employee__MyMuseum 0,32 138,0;
+  position.association Employee:employee__WorkDay:schedule 110,6 0,10;
+}
+
+class President
+{
+  position 847 478 109 41.3594;
+}
+
+class WorkDay
+{
+  position 1030 302 139.5 92.3594;
+}
+
+class MuseumPass
+{
+  position 209 54 137.25 58.3594;
+  position.association MuseumPass__Visitor 138,31 0,17;
+  position.association MuseumPass:passes__Visitor 138,19 0,34;
+  position.association MuseumPass:passes__VisitorAccount:owner 138,58 7,0;
+  position.association MuseumPass:passes__Visitor:owner 130,48 22,0;
+}
+
+class Loan
+{
+  position 97 192 129.203 75.3594;
+  position.association Loan__Visitor 182,51 0,20;
+  position.association Loan:loans__Visitor 182,15 0,10;
+  position.association Loan:loans__VisitorAccount:loanee 182,15 0,29;
+  position.association Loan:loans__Visitor:loanee 174,15 0,10;
+}
+
+class Artifact
+{
+  position 34 468 148.797 92.3594;
+  position.association Artifact__Loan 40,0 64,91;
+  position.association Artifact:artifact__Loan:loan 87,0 27,92;
+  position.association Artifact__Room 150,13 0,33;
+  position.association Artifact:a__Room:room 149,34 0,10;
+  position.association Artifact:artifacts__Room:room 142,73 0,10;
+}
+
+class Room
+{
+  position 493 531 109 57.3594;
+}
+
+class Storageroom
+{
+  position 361 685 109 41;
+}
+
+class DisplayRoom
+{
+  position 696 668 144.609 58.3594;
+    position.association DisplayRoom__MyMuseum 118,0 135,77;
+  position.association DisplayRoom__MyMuseum 120,0 155,89;
+}
+
+class MyMuseum
+{
+  position 448 338 159.062 75.3594;
+  position.association MyMuseum__President 139,75 0,10;
+  position.association Loan__MyMuseum 0,10 181,52;
+  position.association Artifact__MyMuseum 0,45 149,8;
+  position.association MuseumPass__MyMuseum 24,0 41,58;
+  position.association MyMuseum__Visitor 99,0 50,29;
+  position.association MyMuseum__WorkDay 169,16 40,92;
+  position.association MyMuseum__Storageroom 14,86 33,0;
+  position.association DisplayRoom__MyMuseum 86,75 96,0;
+  position.association Employee__MyMuseum 147,0 7,41;
+  position.association MyMuseum__WorkDay 169,0 0,80;
+  position.association MyMuseum__WorkDay:workdays 159,10 0,44;
+  position.association MyMuseum:museum__WorkDay:openingHours 159,49 0,78;
+}
