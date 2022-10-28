@@ -5,8 +5,8 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import javax.persistence.*;
 import java.sql.Date;
 
-// line 2 "model.ump"
-// line 95 "model.ump"
+// line 40 "model.ump"
+// line 135 "model.ump"
 @Entity
 public class Loan
 {
@@ -14,9 +14,6 @@ public class Loan
   @GeneratedValue
   private Long loanId;
 
-  public Loan() {
-
-  }
 
   public void setLoanId(Long loanId) {
     this.loanId = loanId;
@@ -53,7 +50,7 @@ public class Loan
   // CONSTRUCTOR
   //------------------------
 
-  public Loan(Date aStartDate, Date aEndDate, LoanStatus aLoanStatus, Visitor aLoanee, MyMuseum aMyMuseum, Artifact aArtifact)
+  public Loan(Date aStartDate, Date aEndDate, LoanStatus aLoanStatus, Visitor aLoanee, Artifact aArtifact, MyMuseum aMyMuseum)
   {
     startDate = aStartDate;
     endDate = aEndDate;
@@ -63,16 +60,20 @@ public class Loan
     {
       throw new RuntimeException("Unable to create loan due to loanee. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
-    if (!didAddMyMuseum)
-    {
-      throw new RuntimeException("Unable to create loan due to myMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
     boolean didAddArtifact = setArtifact(aArtifact);
     if (!didAddArtifact)
     {
       throw new RuntimeException("Unable to create loan due to artifact. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
+    if (!didAddMyMuseum)
+    {
+      throw new RuntimeException("Unable to create loan due to myMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+  }
+
+  public Loan() {
+
   }
 
   //------------------------
@@ -123,14 +124,14 @@ public class Loan
     return loanee;
   }
   /* Code from template association_GetOne */
-  public MyMuseum getMyMuseum()
-  {
-    return myMuseum;
-  }
-  /* Code from template association_GetOne */
   public Artifact getArtifact()
   {
     return artifact;
+  }
+  /* Code from template association_GetOne */
+  public MyMuseum getMyMuseum()
+  {
+    return myMuseum;
   }
   /* Code from template association_SetOneToAtMostN */
   public boolean setLoanee(Visitor aLoanee)
@@ -143,7 +144,7 @@ public class Loan
     }
 
     //loanee already at maximum (3)
-    if (aLoanee.numberOfLoan() >= Visitor.maximumNumberOfLoan())
+    if (aLoanee.numberOfLoans() >= Visitor.maximumNumberOfLoans())
     {
       return wasSet;
     }
@@ -160,25 +161,6 @@ public class Loan
       }
     }
     loanee.addLoan(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setMyMuseum(MyMuseum aMyMuseum)
-  {
-    boolean wasSet = false;
-    if (aMyMuseum == null)
-    {
-      return wasSet;
-    }
-
-    MyMuseum existingMyMuseum = myMuseum;
-    myMuseum = aMyMuseum;
-    if (existingMyMuseum != null && !existingMyMuseum.equals(aMyMuseum))
-    {
-      existingMyMuseum.removeLoan(this);
-    }
-    myMuseum.addLoan(this);
     wasSet = true;
     return wasSet;
   }
@@ -210,6 +192,25 @@ public class Loan
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setMyMuseum(MyMuseum aMyMuseum)
+  {
+    boolean wasSet = false;
+    if (aMyMuseum == null)
+    {
+      return wasSet;
+    }
+
+    MyMuseum existingMyMuseum = myMuseum;
+    myMuseum = aMyMuseum;
+    if (existingMyMuseum != null && !existingMyMuseum.equals(aMyMuseum))
+    {
+      existingMyMuseum.removeLoan(this);
+    }
+    myMuseum.addLoan(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -219,17 +220,17 @@ public class Loan
     {
       placeholderLoanee.removeLoan(this);
     }
-    MyMuseum placeholderMyMuseum = myMuseum;
-    this.myMuseum = null;
-    if(placeholderMyMuseum != null)
-    {
-      placeholderMyMuseum.removeLoan(this);
-    }
     Artifact existingArtifact = artifact;
     artifact = null;
     if (existingArtifact != null)
     {
       existingArtifact.setLoan(null);
+    }
+    MyMuseum placeholderMyMuseum = myMuseum;
+    this.myMuseum = null;
+    if(placeholderMyMuseum != null)
+    {
+      placeholderMyMuseum.removeLoan(this);
     }
   }
 
@@ -241,7 +242,7 @@ public class Loan
             "  " + "endDate" + "=" + (getEndDate() != null ? !getEndDate().equals(this)  ? getEndDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "loanStatus" + "=" + (getLoanStatus() != null ? !getLoanStatus().equals(this)  ? getLoanStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "loanee = "+(getLoanee()!=null?Integer.toHexString(System.identityHashCode(getLoanee())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "artifact = "+(getArtifact()!=null?Integer.toHexString(System.identityHashCode(getArtifact())):"null");
+            "  " + "artifact = "+(getArtifact()!=null?Integer.toHexString(System.identityHashCode(getArtifact())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null");
   }
 }

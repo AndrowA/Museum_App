@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.*;
 
-// line 55 "model.ump"
-// line 151 "model.ump"
+// line 58 "model.ump"
+// line 154 "model.ump"
 @Entity
 public abstract class Room
 {
@@ -17,6 +17,9 @@ public abstract class Room
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //Room Attributes
+  private String name;
 
   //Room Associations
   @OneToMany(mappedBy = "room")
@@ -29,14 +32,32 @@ public abstract class Room
   // CONSTRUCTOR
   //------------------------
 
+  public Room(String aName)
+  {
+    name = aName;
+    artifacts = new ArrayList<Artifact>();
+  }
+
   public Room()
   {
     artifacts = new ArrayList<Artifact>();
   }
-
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setName(String aName)
+  {
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
   /* Code from template association_GetMany */
   public Artifact getArtifact(int index)
   {
@@ -72,20 +93,21 @@ public abstract class Room
   {
     return 0;
   }
-  /* Code from template association_AddManyToOptionalOne */
+  /* Code from template association_AddManyToOne */
+  public Artifact addArtifact(String aName, String aDescription, String aUrl, MyMuseum aMyMuseum)
+  {
+    return new Artifact(aName, aDescription, aUrl, this, aMyMuseum);
+  }
+
   public boolean addArtifact(Artifact aArtifact)
   {
     boolean wasAdded = false;
     if (artifacts.contains(aArtifact)) { return false; }
     Room existingRoom = aArtifact.getRoom();
-    if (existingRoom == null)
+    boolean isNewRoom = existingRoom != null && !this.equals(existingRoom);
+    if (isNewRoom)
     {
       aArtifact.setRoom(this);
-    }
-    else if (!this.equals(existingRoom))
-    {
-      existingRoom.removeArtifact(aArtifact);
-      addArtifact(aArtifact);
     }
     else
     {
@@ -98,10 +120,10 @@ public abstract class Room
   public boolean removeArtifact(Artifact aArtifact)
   {
     boolean wasRemoved = false;
-    if (artifacts.contains(aArtifact))
+    //Unable to remove aArtifact, as it must always have a room
+    if (!this.equals(aArtifact.getRoom()))
     {
       artifacts.remove(aArtifact);
-      aArtifact.setRoom(null);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -141,10 +163,18 @@ public abstract class Room
 
   public void delete()
   {
-    while( !artifacts.isEmpty() )
+    for(int i=artifacts.size(); i > 0; i--)
     {
-      artifacts.get(0).setRoom(null);
+      Artifact aArtifact = artifacts.get(i - 1);
+      aArtifact.delete();
     }
+  }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "name" + ":" + getName()+ "]";
   }
 
   public void setRoomId(Long roomId) {

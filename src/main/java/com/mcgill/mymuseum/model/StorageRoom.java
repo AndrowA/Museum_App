@@ -5,11 +5,9 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-import java.util.*;
 
-// line 66 "model.ump"
-// line 164 "model.ump"
+// line 64 "model.ump"
+// line 159 "model.ump"
 @Entity
 public class StorageRoom extends Room
 {
@@ -26,26 +24,25 @@ public class StorageRoom extends Room
   // CONSTRUCTOR
   //------------------------
 
-  public StorageRoom(MyMuseum aMyMuseum)
+  public StorageRoom(String aName, MyMuseum aMyMuseum)
   {
-    super();
-    if (aMyMuseum == null || aMyMuseum.getStorageRooms() != null)
+    super(aName);
+    if (aMyMuseum == null || aMyMuseum.getStorageRoom() != null)
     {
       throw new RuntimeException("Unable to create StorageRoom due to aMyMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     myMuseum = aMyMuseum;
   }
 
-  public StorageRoom(String aOpeningHoursForMyMuseum, President aPresidentForMyMuseum)
+  public StorageRoom(String aName, String aPricePerPassForMyMuseum, String aAddressForMyMuseum, President aPresidentForMyMuseum)
   {
-    super();
-    myMuseum = new MyMuseum(aOpeningHoursForMyMuseum, aPresidentForMyMuseum, this);
+    super(aName);
+    myMuseum = new MyMuseum(aPricePerPassForMyMuseum, aAddressForMyMuseum, aPresidentForMyMuseum, this);
   }
 
   public StorageRoom() {
 
   }
-
   //------------------------
   // INTERFACE
   //------------------------

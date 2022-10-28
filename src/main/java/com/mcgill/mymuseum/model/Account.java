@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-// line 26 "model.ump"
-// line 114 "model.ump"
+// line 2 "model.ump"
+// line 96 "model.ump"
 @Entity
 public abstract class Account
 {
@@ -22,7 +22,6 @@ public abstract class Account
   private Long accountId;
   private String email;
   private String password;
-
 
   //------------------------
   // CONSTRUCTOR
@@ -78,7 +77,6 @@ public abstract class Account
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "]";
   }
-
   public void setAccountId(Long accountId) {
     this.accountId = accountId;
   }

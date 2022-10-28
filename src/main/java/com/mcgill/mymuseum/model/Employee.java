@@ -2,12 +2,15 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.*;
-import java.util.*;
-import java.sql.Date;
 
-// line 33 "model.ump"
-// line 119 "model.ump"
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.*;
+
+// line 14 "model.ump"
+// line 106 "model.ump"
 @Entity
 public class Employee extends Account
 {
@@ -17,42 +20,39 @@ public class Employee extends Account
   //------------------------
 
   //Employee Attributes
-  private int hourlyWage;
-  private int overtimeHourlyWage;
+  private double hourlyWage;
+  private double overTimeHourlyWage;
 
   //Employee Associations
   @OneToMany(mappedBy = "employee")
   private List<WorkDay> schedule;
   @ManyToOne(cascade = CascadeType.PERSIST)
-  private MyMuseum application;
+  private MyMuseum myMuseum;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Employee(String aEmail, String aPassword, int aHourlyWage, int aOvertimeHourlyWage, MyMuseum aApplication)
+  public Employee(String aEmail, String aPassword, double aHourlyWage, double aOverTimeHourlyWage, MyMuseum aMyMuseum)
   {
     super(aEmail, aPassword);
     hourlyWage = aHourlyWage;
-    overtimeHourlyWage = aOvertimeHourlyWage;
+    overTimeHourlyWage = aOverTimeHourlyWage;
     schedule = new ArrayList<WorkDay>();
-    this.application = aApplication;
-    /*boolean didAddApplication = setApplication(aApplication);
-    if (!didAddApplication)
+    boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
+    if (!didAddMyMuseum)
     {
-      throw new RuntimeException("Unable to create employee due to application. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }*/
+      throw new RuntimeException("Unable to create employee due to myMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
-
   public Employee() {
 
   }
-
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setHourlyWage(int aHourlyWage)
+  public boolean setHourlyWage(double aHourlyWage)
   {
     boolean wasSet = false;
     hourlyWage = aHourlyWage;
@@ -60,22 +60,22 @@ public class Employee extends Account
     return wasSet;
   }
 
-  public boolean setOvertimeHourlyWage(int aOvertimeHourlyWage)
+  public boolean setOverTimeHourlyWage(double aOverTimeHourlyWage)
   {
     boolean wasSet = false;
-    overtimeHourlyWage = aOvertimeHourlyWage;
+    overTimeHourlyWage = aOverTimeHourlyWage;
     wasSet = true;
     return wasSet;
   }
 
-  public int getHourlyWage()
+  public double getHourlyWage()
   {
     return hourlyWage;
   }
 
-  public int getOvertimeHourlyWage()
+  public double getOverTimeHourlyWage()
   {
-    return overtimeHourlyWage;
+    return overTimeHourlyWage;
   }
   /* Code from template association_GetMany */
   public WorkDay getSchedule(int index)
@@ -108,30 +108,29 @@ public class Employee extends Account
     return index;
   }
   /* Code from template association_GetOne */
-  public MyMuseum getApplication()
+  public MyMuseum getMyMuseum()
   {
-    return application;
+    return myMuseum;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfSchedule()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public WorkDay addSchedule(String aStartTime, String aEndTime, Date aDay, MyMuseum aMyMuseum)
-  {
-    return new WorkDay(aStartTime, aEndTime, aDay, this, aMyMuseum);
-  }
-
+  /* Code from template association_AddManyToOptionalOne */
   public boolean addSchedule(WorkDay aSchedule)
   {
     boolean wasAdded = false;
     if (schedule.contains(aSchedule)) { return false; }
     Employee existingEmployee = aSchedule.getEmployee();
-    boolean isNewEmployee = existingEmployee != null && !this.equals(existingEmployee);
-    if (isNewEmployee)
+    if (existingEmployee == null)
     {
       aSchedule.setEmployee(this);
+    }
+    else if (!this.equals(existingEmployee))
+    {
+      existingEmployee.removeSchedule(aSchedule);
+      addSchedule(aSchedule);
     }
     else
     {
@@ -144,17 +143,17 @@ public class Employee extends Account
   public boolean removeSchedule(WorkDay aSchedule)
   {
     boolean wasRemoved = false;
-    //Unable to remove aSchedule, as it must always have a employee
-    if (!this.equals(aSchedule.getEmployee()))
+    if (schedule.contains(aSchedule))
     {
       schedule.remove(aSchedule);
+      aSchedule.setEmployee(null);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addScheduleAt(WorkDay aSchedule, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addSchedule(aSchedule))
     {
@@ -177,45 +176,44 @@ public class Employee extends Account
       schedule.remove(aSchedule);
       schedule.add(index, aSchedule);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addScheduleAt(aSchedule, index);
     }
     return wasAdded;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setApplication(MyMuseum aApplication)
+  public boolean setMyMuseum(MyMuseum aMyMuseum)
   {
     boolean wasSet = false;
-    if (aApplication == null)
+    if (aMyMuseum == null)
     {
       return wasSet;
     }
 
-    MyMuseum existingApplication = application;
-    application = aApplication;
-    if (existingApplication != null && !existingApplication.equals(aApplication))
+    MyMuseum existingMyMuseum = myMuseum;
+    myMuseum = aMyMuseum;
+    if (existingMyMuseum != null && !existingMyMuseum.equals(aMyMuseum))
     {
-      existingApplication.removeEmployee(this);
+      existingMyMuseum.removeEmployee(this);
     }
-    application.addEmployee(this);
+    myMuseum.addEmployee(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    for(int i=schedule.size(); i > 0; i--)
+    while( !schedule.isEmpty() )
     {
-      WorkDay aSchedule = schedule.get(i - 1);
-      aSchedule.delete();
+      schedule.get(0).setEmployee(null);
     }
-    MyMuseum placeholderApplication = application;
-    this.application = null;
-    if(placeholderApplication != null)
+    MyMuseum placeholderMyMuseum = myMuseum;
+    this.myMuseum = null;
+    if(placeholderMyMuseum != null)
     {
-      placeholderApplication.removeEmployee(this);
+      placeholderMyMuseum.removeEmployee(this);
     }
     super.delete();
   }
@@ -225,7 +223,10 @@ public class Employee extends Account
   {
     return super.toString() + "["+
             "hourlyWage" + ":" + getHourlyWage()+ "," +
-            "overtimeHourlyWage" + ":" + getOvertimeHourlyWage()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "application = "+(getApplication()!=null?Integer.toHexString(System.identityHashCode(getApplication())):"null");
+            "overTimeHourlyWage" + ":" + getOverTimeHourlyWage()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null");
   }
 }
+
+
+

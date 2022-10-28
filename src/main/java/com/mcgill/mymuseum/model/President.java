@@ -2,11 +2,12 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-// line 77 "model.ump"
-// line 174 "model.ump"
+// line 22 "model.ump"
+// line 116 "model.ump"
 @Entity
 public class President extends Employee
 {
@@ -23,9 +24,9 @@ public class President extends Employee
   // CONSTRUCTOR
   //------------------------
 
-  public President(String aEmail, String aPassword, int aHourlyWage, int aOvertimeHourlyWage, MyMuseum aApplication, MyMuseum aMyMuseum)
+  public President(String aEmail, String aPassword, double aHourlyWage, double aOverTimeHourlyWage, MyMuseum aMyMuseum)
   {
-    super(aEmail, aPassword, aHourlyWage, aOvertimeHourlyWage, aApplication);
+    super(aEmail, aPassword, aHourlyWage, aOverTimeHourlyWage, aMyMuseum);
     if (aMyMuseum == null || aMyMuseum.getPresident() != null)
     {
       throw new RuntimeException("Unable to create President due to aMyMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
@@ -33,10 +34,10 @@ public class President extends Employee
     myMuseum = aMyMuseum;
   }
 
-  public President(String aEmail, String aPassword, int aHourlyWage, int aOvertimeHourlyWage, MyMuseum aApplication, String aOpeningHoursForMyMuseum, StorageRoom aStorageRoomsForMyMuseum)
+  public President(String aEmail, String aPassword, double aHourlyWage, double aOverTimeHourlyWage, MyMuseum aMyMuseum, String aPricePerPassForMyMuseum, String aAddressForMyMuseum, StorageRoom aStorageRoomForMyMuseum)
   {
-    super(aEmail, aPassword, aHourlyWage, aOvertimeHourlyWage, aApplication);
-    myMuseum = new MyMuseum(aOpeningHoursForMyMuseum, this, aStorageRoomsForMyMuseum);
+    super(aEmail, aPassword, aHourlyWage, aOverTimeHourlyWage, aMyMuseum);
+    myMuseum = new MyMuseum(aPricePerPassForMyMuseum, aAddressForMyMuseum, this, aStorageRoomForMyMuseum);
   }
 
   public President() {
@@ -64,3 +65,6 @@ public class President extends Employee
   }
 
 }
+
+
+

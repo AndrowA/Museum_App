@@ -1,6 +1,7 @@
 package com.mcgill.mymuseum.repository;
 
 import com.mcgill.mymuseum.model.Employee;
+import com.mcgill.mymuseum.model.MyMuseum;
 import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.model.Visitor;
 import org.junit.jupiter.api.AfterEach;
@@ -26,7 +27,8 @@ class AccountRepositoryTest {
         //Create Objects
         String username = "yassine.meliani@gmail.com";
         String password = "password";
-        Employee employee1 = new Employee(username,password,40,80,null);
+        MyMuseum myMuseum = new MyMuseum();
+        Employee employee1 = new Employee(username,password,40,80,myMuseum);
 
         //Save Object
         employee1 = accountRepository.save(employee1);
@@ -70,7 +72,7 @@ class AccountRepositoryTest {
         president.setEmail(username);
         president.setPassword(password);
         president.setHourlyWage(100);
-        president.setOvertimeHourlyWage(140);
+        president.setOverTimeHourlyWage(140);
         //Save Object
         president = accountRepository.save(president);
         Long id = president.getAccountId();

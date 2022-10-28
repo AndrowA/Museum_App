@@ -1,7 +1,6 @@
 package com.mcgill.mymuseum.repository;
 
-import com.mcgill.mymuseum.model.Employee;
-import com.mcgill.mymuseum.model.MuseumPass;
+import com.mcgill.mymuseum.model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,10 @@ class MuseumPassRepositoryTest {
         //Create Objects
         int passCost = 10;
         Date passDate = new Date(2022,10, 31);
-        MuseumPass pass = new MuseumPass();
-        pass.setPassCost(passCost);
+        Visitor owner = new Visitor();
+        MyMuseum museum = new MyMuseum();
+        MuseumPass pass = new MuseumPass(passDate,owner,museum);
+    //    pass.setPassCost(passCost);
         pass.setPassDate(passDate);
 
         //Save Object
@@ -39,7 +40,7 @@ class MuseumPassRepositoryTest {
 
         //Assert that object has correct attributes
         assertNotNull(pass);
-        assertEquals(passCost,pass.getPassCost());
+      //  assertEquals(passCost,pass.getPassCost());
         assertEquals(passDate,pass.getPassDate());
 
     }

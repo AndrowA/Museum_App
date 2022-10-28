@@ -5,8 +5,8 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import javax.persistence.*;
 import java.sql.Date;
 
-// line 13 "model.ump"
-// line 102 "model.ump"
+// line 34 "model.ump"
+// line 126 "model.ump"
 @Entity
 public class MuseumPass
 {
@@ -16,7 +16,6 @@ public class MuseumPass
   //------------------------
 
   //MuseumPass Attributes
-  private int passCost;
   private Date passDate;
 
   //MuseumPass Associations
@@ -27,14 +26,12 @@ public class MuseumPass
   @Id
   @GeneratedValue
   private Long passId;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public MuseumPass(int aPassCost, Date aPassDate, Visitor aOwner, MyMuseum aMyMuseum)
+  public MuseumPass(Date aPassDate, Visitor aOwner, MyMuseum aMyMuseum)
   {
-    passCost = aPassCost;
     passDate = aPassDate;
     boolean didAddOwner = setOwner(aOwner);
     if (!didAddOwner)
@@ -47,7 +44,6 @@ public class MuseumPass
       throw new RuntimeException("Unable to create museumPass due to myMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
   public MuseumPass() {
 
   }
@@ -56,25 +52,12 @@ public class MuseumPass
   // INTERFACE
   //------------------------
 
-  public boolean setPassCost(int aPassCost)
-  {
-    boolean wasSet = false;
-    passCost = aPassCost;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setPassDate(Date aPassDate)
   {
     boolean wasSet = false;
     passDate = aPassDate;
     wasSet = true;
     return wasSet;
-  }
-
-  public int getPassCost()
-  {
-    return passCost;
   }
 
   public Date getPassDate()
@@ -149,12 +132,12 @@ public class MuseumPass
 
   public String toString()
   {
-    return super.toString() + "["+
-            "passCost" + ":" + getPassCost()+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "passDate" + "=" + (getPassDate() != null ? !getPassDate().equals(this)  ? getPassDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "owner = "+(getOwner()!=null?Integer.toHexString(System.identityHashCode(getOwner())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null");
   }
+
 
   public void setPassId(Long passId) {
     this.passId = passId;
@@ -163,4 +146,8 @@ public class MuseumPass
   public Long getPassId() {
     return passId;
   }
-}
+
+  }
+
+
+

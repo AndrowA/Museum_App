@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.*;
 import java.sql.Date;
 
-// line 41 "model.ump"
-// line 127 "model.ump"
+// line 75 "model.ump"
+// line 171 "model.ump"
 @Entity
 public class MyMuseum
 {
@@ -17,14 +17,15 @@ public class MyMuseum
   //------------------------
 
   //MyMuseum Attributes
-  private String openingHours;
+  private String pricePerPass;
+  private String address;
 
   //MyMuseum Associations
   @OneToOne(mappedBy = "myMuseum")
   private President president;
+  @OneToMany(mappedBy = "museum")
+  private List<WorkDay> openingHours;
   @OneToMany(mappedBy = "myMuseum")
-  private List<WorkDay> schedule;
-  @OneToMany(mappedBy = "application")
   private List<Employee> employees;
   @OneToMany(mappedBy = "myMuseum")
   private List<Visitor> visitors;
@@ -35,72 +36,97 @@ public class MyMuseum
   @OneToMany(mappedBy = "myMuseum")
   private List<MuseumPass> museumPasses;
   @OneToOne(mappedBy = "myMuseum")
-  private StorageRoom storageRooms;
+  private StorageRoom storageRoom;
+  @OneToMany(mappedBy = "myMuseum")
+  private List<WorkDay> workdays;
   @OneToMany(mappedBy = "myMuseum")
   private List<DisplayRoom> displayRooms;
   @Id
   @GeneratedValue
   private Long museumId;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public MyMuseum(String aOpeningHours, President aPresident, StorageRoom aStorageRooms)
+  public MyMuseum(String aPricePerPass, String aAddress, President aPresident, StorageRoom aStorageRoom)
   {
-    openingHours = aOpeningHours;
+    pricePerPass = aPricePerPass;
+    address = aAddress;
     if (aPresident == null || aPresident.getMyMuseum() != null)
     {
       throw new RuntimeException("Unable to create MyMuseum due to aPresident. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     president = aPresident;
-    schedule = new ArrayList<WorkDay>();
-    employees = new ArrayList<Employee>();
-    visitors = new ArrayList<Visitor>();
-    loans = new ArrayList<Loan>();
     artifacts = new ArrayList<Artifact>();
+    loans = new ArrayList<Loan>();
     museumPasses = new ArrayList<MuseumPass>();
-    if (aStorageRooms == null || aStorageRooms.getMyMuseum() != null)
+    visitors = new ArrayList<Visitor>();
+    workdays = new ArrayList<WorkDay>();
+    if (aStorageRoom == null || aStorageRoom.getMyMuseum() != null)
     {
-      throw new RuntimeException("Unable to create MyMuseum due to aStorageRooms. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create MyMuseum due to aStorageRoom. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    storageRooms = aStorageRooms;
+    storageRoom = aStorageRoom;
     displayRooms = new ArrayList<DisplayRoom>();
+    employees = new ArrayList<Employee>();
+    openingHours = new ArrayList<WorkDay>();
   }
 
-  public MyMuseum(String aOpeningHours, String aEmailForPresident, String aPasswordForPresident, int aHourlyWageForPresident, int aOvertimeHourlyWageForPresident, MyMuseum aApplicationForPresident)
+  public MyMuseum(String aPricePerPass, String aAddress, String aEmailForPresident, String aPasswordForPresident, double aHourlyWageForPresident, double aOverTimeHourlyWageForPresident, String aNameForStorageRoom)
   {
-    openingHours = aOpeningHours;
-    president = new President(aEmailForPresident, aPasswordForPresident, aHourlyWageForPresident, aOvertimeHourlyWageForPresident, aApplicationForPresident, this);
-    schedule = new ArrayList<WorkDay>();
-    employees = new ArrayList<Employee>();
-    visitors = new ArrayList<Visitor>();
-    loans = new ArrayList<Loan>();
+    pricePerPass = aPricePerPass;
+    address = aAddress;
+    president = new President(aEmailForPresident, aPasswordForPresident, aHourlyWageForPresident, aOverTimeHourlyWageForPresident, this);
     artifacts = new ArrayList<Artifact>();
+    loans = new ArrayList<Loan>();
     museumPasses = new ArrayList<MuseumPass>();
-    storageRooms = new StorageRoom(this);
+    visitors = new ArrayList<Visitor>();
+    workdays = new ArrayList<WorkDay>();
+    storageRoom = new StorageRoom(aNameForStorageRoom, this);
     displayRooms = new ArrayList<DisplayRoom>();
+    employees = new ArrayList<Employee>();
+    openingHours = new ArrayList<WorkDay>();
   }
 
   public MyMuseum() {
-
+    artifacts = new ArrayList<Artifact>();
+    loans = new ArrayList<Loan>();
+    museumPasses = new ArrayList<MuseumPass>();
+    visitors = new ArrayList<Visitor>();
+    workdays = new ArrayList<WorkDay>();
+    displayRooms = new ArrayList<DisplayRoom>();
+    employees = new ArrayList<Employee>();
+    openingHours = new ArrayList<WorkDay>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setOpeningHours(String aOpeningHours)
+  public boolean setPricePerPass(String aPricePerPass)
   {
     boolean wasSet = false;
-    openingHours = aOpeningHours;
+    pricePerPass = aPricePerPass;
     wasSet = true;
     return wasSet;
   }
 
-  public String getOpeningHours()
+  public boolean setAddress(String aAddress)
   {
-    return openingHours;
+    boolean wasSet = false;
+    address = aAddress;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getPricePerPass()
+  {
+    return pricePerPass;
+  }
+
+  public String getAddress()
+  {
+    return address;
   }
   /* Code from template association_GetOne */
   public President getPresident()
@@ -108,93 +134,33 @@ public class MyMuseum
     return president;
   }
   /* Code from template association_GetMany */
-  public WorkDay getSchedule(int index)
+  public Artifact getArtifact(int index)
   {
-    WorkDay aSchedule = schedule.get(index);
-    return aSchedule;
+    Artifact aArtifact = artifacts.get(index);
+    return aArtifact;
   }
 
-  public List<WorkDay> getSchedule()
+  public List<Artifact> getArtifacts()
   {
-    List<WorkDay> newSchedule = Collections.unmodifiableList(schedule);
-    return newSchedule;
+    List<Artifact> newArtifacts = Collections.unmodifiableList(artifacts);
+    return newArtifacts;
   }
 
-  public int numberOfSchedule()
+  public int numberOfArtifacts()
   {
-    int number = schedule.size();
+    int number = artifacts.size();
     return number;
   }
 
-  public boolean hasSchedule()
+  public boolean hasArtifacts()
   {
-    boolean has = schedule.size() > 0;
+    boolean has = artifacts.size() > 0;
     return has;
   }
 
-  public int indexOfSchedule(WorkDay aSchedule)
+  public int indexOfArtifact(Artifact aArtifact)
   {
-    int index = schedule.indexOf(aSchedule);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public Employee getEmployee(int index)
-  {
-    Employee aEmployee = employees.get(index);
-    return aEmployee;
-  }
-
-  public List<Employee> getEmployees()
-  {
-    List<Employee> newEmployees = Collections.unmodifiableList(employees);
-    return newEmployees;
-  }
-
-  public int numberOfEmployees()
-  {
-    int number = employees.size();
-    return number;
-  }
-
-  public boolean hasEmployees()
-  {
-    boolean has = employees.size() > 0;
-    return has;
-  }
-
-  public int indexOfEmployee(Employee aEmployee)
-  {
-    int index = employees.indexOf(aEmployee);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public Visitor getVisitor(int index)
-  {
-    Visitor aVisitor = visitors.get(index);
-    return aVisitor;
-  }
-
-  public List<Visitor> getVisitors()
-  {
-    List<Visitor> newVisitors = Collections.unmodifiableList(visitors);
-    return newVisitors;
-  }
-
-  public int numberOfVisitors()
-  {
-    int number = visitors.size();
-    return number;
-  }
-
-  public boolean hasVisitors()
-  {
-    boolean has = visitors.size() > 0;
-    return has;
-  }
-
-  public int indexOfVisitor(Visitor aVisitor)
-  {
-    int index = visitors.indexOf(aVisitor);
+    int index = artifacts.indexOf(aArtifact);
     return index;
   }
   /* Code from template association_GetMany */
@@ -228,36 +194,6 @@ public class MyMuseum
     return index;
   }
   /* Code from template association_GetMany */
-  public Artifact getArtifact(int index)
-  {
-    Artifact aArtifact = artifacts.get(index);
-    return aArtifact;
-  }
-
-  public List<Artifact> getArtifacts()
-  {
-    List<Artifact> newArtifacts = Collections.unmodifiableList(artifacts);
-    return newArtifacts;
-  }
-
-  public int numberOfArtifacts()
-  {
-    int number = artifacts.size();
-    return number;
-  }
-
-  public boolean hasArtifacts()
-  {
-    boolean has = artifacts.size() > 0;
-    return has;
-  }
-
-  public int indexOfArtifact(Artifact aArtifact)
-  {
-    int index = artifacts.indexOf(aArtifact);
-    return index;
-  }
-  /* Code from template association_GetMany */
   public MuseumPass getMuseumPass(int index)
   {
     MuseumPass aMuseumPass = museumPasses.get(index);
@@ -287,10 +223,70 @@ public class MyMuseum
     int index = museumPasses.indexOf(aMuseumPass);
     return index;
   }
-  /* Code from template association_GetOne */
-  public StorageRoom getStorageRooms()
+  /* Code from template association_GetMany */
+  public Visitor getVisitor(int index)
   {
-    return storageRooms;
+    Visitor aVisitor = visitors.get(index);
+    return aVisitor;
+  }
+
+  public List<Visitor> getVisitors()
+  {
+    List<Visitor> newVisitors = Collections.unmodifiableList(visitors);
+    return newVisitors;
+  }
+
+  public int numberOfVisitors()
+  {
+    int number = visitors.size();
+    return number;
+  }
+
+  public boolean hasVisitors()
+  {
+    boolean has = visitors.size() > 0;
+    return has;
+  }
+
+  public int indexOfVisitor(Visitor aVisitor)
+  {
+    int index = visitors.indexOf(aVisitor);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public WorkDay getWorkday(int index)
+  {
+    WorkDay aWorkday = workdays.get(index);
+    return aWorkday;
+  }
+
+  public List<WorkDay> getWorkdays()
+  {
+    List<WorkDay> newWorkdays = Collections.unmodifiableList(workdays);
+    return newWorkdays;
+  }
+
+  public int numberOfWorkdays()
+  {
+    int number = workdays.size();
+    return number;
+  }
+
+  public boolean hasWorkdays()
+  {
+    boolean has = workdays.size() > 0;
+    return has;
+  }
+
+  public int indexOfWorkday(WorkDay aWorkday)
+  {
+    int index = workdays.indexOf(aWorkday);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public StorageRoom getStorageRoom()
+  {
+    return storageRoom;
   }
   /* Code from template association_GetMany */
   public DisplayRoom getDisplayRoom(int index)
@@ -322,293 +318,65 @@ public class MyMuseum
     int index = displayRooms.indexOf(aDisplayRoom);
     return index;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfSchedule()
+  /* Code from template association_GetMany */
+  public Employee getEmployee(int index)
   {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public WorkDay addSchedule(String aStartTime, String aEndTime, Date aDay, Employee aEmployee)
-  {
-    return new WorkDay(aStartTime, aEndTime, aDay, aEmployee, this);
+    Employee aEmployee = employees.get(index);
+    return aEmployee;
   }
 
-  public boolean addSchedule(WorkDay aSchedule)
+  public List<Employee> getEmployees()
   {
-    boolean wasAdded = false;
-    if (schedule.contains(aSchedule)) { return false; }
-    MyMuseum existingMyMuseum = aSchedule.getMyMuseum();
-    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
-    if (isNewMyMuseum)
-    {
-      aSchedule.setMyMuseum(this);
-    }
-    else
-    {
-      schedule.add(aSchedule);
-    }
-    wasAdded = true;
-    return wasAdded;
+    List<Employee> newEmployees = Collections.unmodifiableList(employees);
+    return newEmployees;
   }
 
-  public boolean removeSchedule(WorkDay aSchedule)
+  public int numberOfEmployees()
   {
-    boolean wasRemoved = false;
-    //Unable to remove aSchedule, as it must always have a myMuseum
-    if (!this.equals(aSchedule.getMyMuseum()))
-    {
-      schedule.remove(aSchedule);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addScheduleAt(WorkDay aSchedule, int index)
-  {  
-    boolean wasAdded = false;
-    if(addSchedule(aSchedule))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSchedule()) { index = numberOfSchedule() - 1; }
-      schedule.remove(aSchedule);
-      schedule.add(index, aSchedule);
-      wasAdded = true;
-    }
-    return wasAdded;
+    int number = employees.size();
+    return number;
   }
 
-  public boolean addOrMoveScheduleAt(WorkDay aSchedule, int index)
+  public boolean hasEmployees()
   {
-    boolean wasAdded = false;
-    if(schedule.contains(aSchedule))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSchedule()) { index = numberOfSchedule() - 1; }
-      schedule.remove(aSchedule);
-      schedule.add(index, aSchedule);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addScheduleAt(aSchedule, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfEmployees()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Employee addEmployee(String aEmail, String aPassword, int aHourlyWage, int aOvertimeHourlyWage)
-  {
-    return new Employee(aEmail, aPassword, aHourlyWage, aOvertimeHourlyWage, this);
+    boolean has = employees.size() > 0;
+    return has;
   }
 
-  public boolean addEmployee(Employee aEmployee)
+  public int indexOfEmployee(Employee aEmployee)
   {
-    boolean wasAdded = false;
-    if (employees.contains(aEmployee)) { return false; }
-    MyMuseum existingApplication = aEmployee.getApplication();
-    boolean isNewApplication = existingApplication != null && !this.equals(existingApplication);
-    if (isNewApplication)
-    {
-      aEmployee.setApplication(this);
-    }
-    else
-    {
-      employees.add(aEmployee);
-    }
-    wasAdded = true;
-    return wasAdded;
+    int index = employees.indexOf(aEmployee);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public WorkDay getOpeningHour(int index)
+  {
+    WorkDay aOpeningHour = openingHours.get(index);
+    return aOpeningHour;
   }
 
-  public boolean removeEmployee(Employee aEmployee)
+  public List<WorkDay> getOpeningHours()
   {
-    boolean wasRemoved = false;
-    //Unable to remove aEmployee, as it must always have a application
-    if (!this.equals(aEmployee.getApplication()))
-    {
-      employees.remove(aEmployee);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addEmployeeAt(Employee aEmployee, int index)
-  {  
-    boolean wasAdded = false;
-    if(addEmployee(aEmployee))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEmployees()) { index = numberOfEmployees() - 1; }
-      employees.remove(aEmployee);
-      employees.add(index, aEmployee);
-      wasAdded = true;
-    }
-    return wasAdded;
+    List<WorkDay> newOpeningHours = Collections.unmodifiableList(openingHours);
+    return newOpeningHours;
   }
 
-  public boolean addOrMoveEmployeeAt(Employee aEmployee, int index)
+  public int numberOfOpeningHours()
   {
-    boolean wasAdded = false;
-    if(employees.contains(aEmployee))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfEmployees()) { index = numberOfEmployees() - 1; }
-      employees.remove(aEmployee);
-      employees.add(index, aEmployee);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addEmployeeAt(aEmployee, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfVisitors()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Visitor addVisitor(String aEmail, String aPassword, boolean aIsBanned)
-  {
-    return new Visitor(aEmail, aPassword, aIsBanned, this);
+    int number = openingHours.size();
+    return number;
   }
 
-  public boolean addVisitor(Visitor aVisitor)
+  public boolean hasOpeningHours()
   {
-    boolean wasAdded = false;
-    if (visitors.contains(aVisitor)) { return false; }
-    MyMuseum existingMyMuseum = aVisitor.getMyMuseum();
-    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
-    if (isNewMyMuseum)
-    {
-      aVisitor.setMyMuseum(this);
-    }
-    else
-    {
-      visitors.add(aVisitor);
-    }
-    wasAdded = true;
-    return wasAdded;
+    boolean has = openingHours.size() > 0;
+    return has;
   }
 
-  public boolean removeVisitor(Visitor aVisitor)
+  public int indexOfOpeningHour(WorkDay aOpeningHour)
   {
-    boolean wasRemoved = false;
-    //Unable to remove aVisitor, as it must always have a myMuseum
-    if (!this.equals(aVisitor.getMyMuseum()))
-    {
-      visitors.remove(aVisitor);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addVisitorAt(Visitor aVisitor, int index)
-  {  
-    boolean wasAdded = false;
-    if(addVisitor(aVisitor))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
-      visitors.remove(aVisitor);
-      visitors.add(index, aVisitor);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveVisitorAt(Visitor aVisitor, int index)
-  {
-    boolean wasAdded = false;
-    if(visitors.contains(aVisitor))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
-      visitors.remove(aVisitor);
-      visitors.add(index, aVisitor);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addVisitorAt(aVisitor, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfLoans()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Loan addLoan(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, Visitor aLoanee, Artifact aArtifact)
-  {
-    return new Loan(aStartDate, aEndDate, aLoanStatus, aLoanee, this, aArtifact);
-  }
-
-  public boolean addLoan(Loan aLoan)
-  {
-    boolean wasAdded = false;
-    if (loans.contains(aLoan)) { return false; }
-    MyMuseum existingMyMuseum = aLoan.getMyMuseum();
-    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
-    if (isNewMyMuseum)
-    {
-      aLoan.setMyMuseum(this);
-    }
-    else
-    {
-      loans.add(aLoan);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeLoan(Loan aLoan)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aLoan, as it must always have a myMuseum
-    if (!this.equals(aLoan.getMyMuseum()))
-    {
-      loans.remove(aLoan);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addLoanAt(Loan aLoan, int index)
-  {  
-    boolean wasAdded = false;
-    if(addLoan(aLoan))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
-      loans.remove(aLoan);
-      loans.add(index, aLoan);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveLoanAt(Loan aLoan, int index)
-  {
-    boolean wasAdded = false;
-    if(loans.contains(aLoan))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
-      loans.remove(aLoan);
-      loans.add(index, aLoan);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addLoanAt(aLoan, index);
-    }
-    return wasAdded;
+    int index = openingHours.indexOf(aOpeningHour);
+    return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfArtifacts()
@@ -616,9 +384,9 @@ public class MyMuseum
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Artifact addArtifact()
+  public Artifact addArtifact(String aName, String aDescription, String aUrl, Room aRoom)
   {
-    return new Artifact(this);
+    return new Artifact(aName, aDescription, aUrl, aRoom, this);
   }
 
   public boolean addArtifact(Artifact aArtifact)
@@ -652,7 +420,7 @@ public class MyMuseum
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addArtifactAt(Artifact aArtifact, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addArtifact(aArtifact))
     {
@@ -675,10 +443,82 @@ public class MyMuseum
       artifacts.remove(aArtifact);
       artifacts.add(index, aArtifact);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addArtifactAt(aArtifact, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfLoans()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Loan addLoan(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, Visitor aLoanee, Artifact aArtifact)
+  {
+    return new Loan(aStartDate, aEndDate, aLoanStatus, aLoanee, aArtifact, this);
+  }
+
+  public boolean addLoan(Loan aLoan)
+  {
+    boolean wasAdded = false;
+    if (loans.contains(aLoan)) { return false; }
+    MyMuseum existingMyMuseum = aLoan.getMyMuseum();
+    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
+    if (isNewMyMuseum)
+    {
+      aLoan.setMyMuseum(this);
+    }
+    else
+    {
+      loans.add(aLoan);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeLoan(Loan aLoan)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aLoan, as it must always have a myMuseum
+    if (!this.equals(aLoan.getMyMuseum()))
+    {
+      loans.remove(aLoan);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addLoanAt(Loan aLoan, int index)
+  {
+    boolean wasAdded = false;
+    if(addLoan(aLoan))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
+      loans.remove(aLoan);
+      loans.add(index, aLoan);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveLoanAt(Loan aLoan, int index)
+  {
+    boolean wasAdded = false;
+    if(loans.contains(aLoan))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
+      loans.remove(aLoan);
+      loans.add(index, aLoan);
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = addLoanAt(aLoan, index);
     }
     return wasAdded;
   }
@@ -688,9 +528,9 @@ public class MyMuseum
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public MuseumPass addMuseumPass(int aPassCost, Date aPassDate, Visitor aOwner)
+  public MuseumPass addMuseumPass(Date aPassDate, Visitor aOwner)
   {
-    return new MuseumPass(aPassCost, aPassDate, aOwner, this);
+    return new MuseumPass(aPassDate, aOwner, this);
   }
 
   public boolean addMuseumPass(MuseumPass aMuseumPass)
@@ -724,7 +564,7 @@ public class MyMuseum
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addMuseumPassAt(MuseumPass aMuseumPass, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addMuseumPass(aMuseumPass))
     {
@@ -747,59 +587,174 @@ public class MyMuseum
       museumPasses.remove(aMuseumPass);
       museumPasses.add(index, aMuseumPass);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addMuseumPassAt(aMuseumPass, index);
     }
     return wasAdded;
   }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfDisplayRoomsValid()
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfVisitors()
   {
-    boolean isValid = numberOfDisplayRooms() >= minimumNumberOfDisplayRooms() && numberOfDisplayRooms() <= maximumNumberOfDisplayRooms();
-    return isValid;
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Visitor addVisitor(String aEmail, String aPassword)
+  {
+    return new Visitor(aEmail, aPassword, this);
+  }
+
+  public boolean addVisitor(Visitor aVisitor)
+  {
+    boolean wasAdded = false;
+    if (visitors.contains(aVisitor)) { return false; }
+    MyMuseum existingMyMuseum = aVisitor.getMyMuseum();
+    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
+    if (isNewMyMuseum)
+    {
+      aVisitor.setMyMuseum(this);
+    }
+    else
+    {
+      visitors.add(aVisitor);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeVisitor(Visitor aVisitor)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aVisitor, as it must always have a myMuseum
+    if (!this.equals(aVisitor.getMyMuseum()))
+    {
+      visitors.remove(aVisitor);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addVisitorAt(Visitor aVisitor, int index)
+  {
+    boolean wasAdded = false;
+    if(addVisitor(aVisitor))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
+      visitors.remove(aVisitor);
+      visitors.add(index, aVisitor);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveVisitorAt(Visitor aVisitor, int index)
+  {
+    boolean wasAdded = false;
+    if(visitors.contains(aVisitor))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfVisitors()) { index = numberOfVisitors() - 1; }
+      visitors.remove(aVisitor);
+      visitors.add(index, aVisitor);
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = addVisitorAt(aVisitor, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfWorkdays()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public WorkDay addWorkday(String aStartTime, String aEndTime, Date aDay, MyMuseum aMuseum)
+  {
+    return new WorkDay(aStartTime, aEndTime, aDay, this, aMuseum);
+  }
+
+  public boolean addWorkday(WorkDay aWorkday)
+  {
+    boolean wasAdded = false;
+    if (workdays.contains(aWorkday)) { return false; }
+    MyMuseum existingMyMuseum = aWorkday.getMyMuseum();
+    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
+    if (isNewMyMuseum)
+    {
+      aWorkday.setMyMuseum(this);
+    }
+    else
+    {
+      workdays.add(aWorkday);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeWorkday(WorkDay aWorkday)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aWorkday, as it must always have a myMuseum
+    if (!this.equals(aWorkday.getMyMuseum()))
+    {
+      workdays.remove(aWorkday);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addWorkdayAt(WorkDay aWorkday, int index)
+  {
+    boolean wasAdded = false;
+    if(addWorkday(aWorkday))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWorkdays()) { index = numberOfWorkdays() - 1; }
+      workdays.remove(aWorkday);
+      workdays.add(index, aWorkday);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveWorkdayAt(WorkDay aWorkday, int index)
+  {
+    boolean wasAdded = false;
+    if(workdays.contains(aWorkday))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWorkdays()) { index = numberOfWorkdays() - 1; }
+      workdays.remove(aWorkday);
+      workdays.add(index, aWorkday);
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = addWorkdayAt(aWorkday, index);
+    }
+    return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfDisplayRooms()
   {
-    return 1;
+    return 0;
   }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfDisplayRooms()
+  /* Code from template association_AddManyToOne */
+  public DisplayRoom addDisplayRoom(String aName, int aRoomCapacity)
   {
-    return 10;
-  }
-  /* Code from template association_AddMNToOnlyOne */
-  public DisplayRoom addDisplayRoom(int aRoomCapacity)
-  {
-    if (numberOfDisplayRooms() >= maximumNumberOfDisplayRooms())
-    {
-      return null;
-    }
-    else
-    {
-      return new DisplayRoom(aRoomCapacity, this);
-    }
+    return new DisplayRoom(aName, aRoomCapacity, this);
   }
 
   public boolean addDisplayRoom(DisplayRoom aDisplayRoom)
   {
     boolean wasAdded = false;
     if (displayRooms.contains(aDisplayRoom)) { return false; }
-    if (numberOfDisplayRooms() >= maximumNumberOfDisplayRooms())
-    {
-      return wasAdded;
-    }
-
     MyMuseum existingMyMuseum = aDisplayRoom.getMyMuseum();
     boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
-
-    if (isNewMyMuseum && existingMyMuseum.numberOfDisplayRooms() <= minimumNumberOfDisplayRooms())
-    {
-      return wasAdded;
-    }
-
     if (isNewMyMuseum)
     {
       aDisplayRoom.setMyMuseum(this);
@@ -816,23 +771,16 @@ public class MyMuseum
   {
     boolean wasRemoved = false;
     //Unable to remove aDisplayRoom, as it must always have a myMuseum
-    if (this.equals(aDisplayRoom.getMyMuseum()))
+    if (!this.equals(aDisplayRoom.getMyMuseum()))
     {
-      return wasRemoved;
+      displayRooms.remove(aDisplayRoom);
+      wasRemoved = true;
     }
-
-    //myMuseum already at minimum (1)
-    if (numberOfDisplayRooms() <= minimumNumberOfDisplayRooms())
-    {
-      return wasRemoved;
-    }
-    displayRooms.remove(aDisplayRoom);
-    wasRemoved = true;
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addDisplayRoomAt(DisplayRoom aDisplayRoom, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addDisplayRoom(aDisplayRoom))
     {
@@ -855,10 +803,154 @@ public class MyMuseum
       displayRooms.remove(aDisplayRoom);
       displayRooms.add(index, aDisplayRoom);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addDisplayRoomAt(aDisplayRoom, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfEmployees()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Employee addEmployee(String aEmail, String aPassword, double aHourlyWage, double aOverTimeHourlyWage)
+  {
+    return new Employee(aEmail, aPassword, aHourlyWage, aOverTimeHourlyWage, this);
+  }
+
+  public boolean addEmployee(Employee aEmployee)
+  {
+    boolean wasAdded = false;
+    if (employees.contains(aEmployee)) { return false; }
+    MyMuseum existingMyMuseum = aEmployee.getMyMuseum();
+    boolean isNewMyMuseum = existingMyMuseum != null && !this.equals(existingMyMuseum);
+    if (isNewMyMuseum)
+    {
+      aEmployee.setMyMuseum(this);
+    }
+    else
+    {
+      employees.add(aEmployee);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeEmployee(Employee aEmployee)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aEmployee, as it must always have a myMuseum
+    if (!this.equals(aEmployee.getMyMuseum()))
+    {
+      employees.remove(aEmployee);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addEmployeeAt(Employee aEmployee, int index)
+  {
+    boolean wasAdded = false;
+    if(addEmployee(aEmployee))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfEmployees()) { index = numberOfEmployees() - 1; }
+      employees.remove(aEmployee);
+      employees.add(index, aEmployee);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveEmployeeAt(Employee aEmployee, int index)
+  {
+    boolean wasAdded = false;
+    if(employees.contains(aEmployee))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfEmployees()) { index = numberOfEmployees() - 1; }
+      employees.remove(aEmployee);
+      employees.add(index, aEmployee);
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = addEmployeeAt(aEmployee, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOpeningHours()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public WorkDay addOpeningHour(String aStartTime, String aEndTime, Date aDay, MyMuseum aMyMuseum)
+  {
+    return new WorkDay(aStartTime, aEndTime, aDay, aMyMuseum, this);
+  }
+
+  public boolean addOpeningHour(WorkDay aOpeningHour)
+  {
+    boolean wasAdded = false;
+    if (openingHours.contains(aOpeningHour)) { return false; }
+    MyMuseum existingMuseum = aOpeningHour.getMuseum();
+    boolean isNewMuseum = existingMuseum != null && !this.equals(existingMuseum);
+    if (isNewMuseum)
+    {
+      aOpeningHour.setMuseum(this);
+    }
+    else
+    {
+      openingHours.add(aOpeningHour);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOpeningHour(WorkDay aOpeningHour)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOpeningHour, as it must always have a museum
+    if (!this.equals(aOpeningHour.getMuseum()))
+    {
+      openingHours.remove(aOpeningHour);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOpeningHourAt(WorkDay aOpeningHour, int index)
+  {
+    boolean wasAdded = false;
+    if(addOpeningHour(aOpeningHour))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOpeningHours()) { index = numberOfOpeningHours() - 1; }
+      openingHours.remove(aOpeningHour);
+      openingHours.add(index, aOpeningHour);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOpeningHourAt(WorkDay aOpeningHour, int index)
+  {
+    boolean wasAdded = false;
+    if(openingHours.contains(aOpeningHour))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOpeningHours()) { index = numberOfOpeningHours() - 1; }
+      openingHours.remove(aOpeningHour);
+      openingHours.add(index, aOpeningHour);
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = addOpeningHourAt(aOpeningHour, index);
     }
     return wasAdded;
   }
@@ -871,53 +963,46 @@ public class MyMuseum
     {
       existingPresident.delete();
     }
-    while (schedule.size() > 0)
-    {
-      WorkDay aSchedule = schedule.get(schedule.size() - 1);
-      aSchedule.delete();
-      schedule.remove(aSchedule);
-    }
-    
-    while (employees.size() > 0)
-    {
-      Employee aEmployee = employees.get(employees.size() - 1);
-      aEmployee.delete();
-      employees.remove(aEmployee);
-    }
-    
-    while (visitors.size() > 0)
-    {
-      Visitor aVisitor = visitors.get(visitors.size() - 1);
-      aVisitor.delete();
-      visitors.remove(aVisitor);
-    }
-    
-    while (loans.size() > 0)
-    {
-      Loan aLoan = loans.get(loans.size() - 1);
-      aLoan.delete();
-      loans.remove(aLoan);
-    }
-    
     while (artifacts.size() > 0)
     {
       Artifact aArtifact = artifacts.get(artifacts.size() - 1);
       aArtifact.delete();
       artifacts.remove(aArtifact);
     }
-    
+
+    while (loans.size() > 0)
+    {
+      Loan aLoan = loans.get(loans.size() - 1);
+      aLoan.delete();
+      loans.remove(aLoan);
+    }
+
     while (museumPasses.size() > 0)
     {
       MuseumPass aMuseumPass = museumPasses.get(museumPasses.size() - 1);
       aMuseumPass.delete();
       museumPasses.remove(aMuseumPass);
     }
-    
-    StorageRoom existingStorageRooms = storageRooms;
-    storageRooms = null;
-    if (existingStorageRooms != null)
+
+    while (visitors.size() > 0)
     {
-      existingStorageRooms.delete();
+      Visitor aVisitor = visitors.get(visitors.size() - 1);
+      aVisitor.delete();
+      visitors.remove(aVisitor);
+    }
+
+    while (workdays.size() > 0)
+    {
+      WorkDay aWorkday = workdays.get(workdays.size() - 1);
+      aWorkday.delete();
+      workdays.remove(aWorkday);
+    }
+
+    StorageRoom existingStorageRoom = storageRoom;
+    storageRoom = null;
+    if (existingStorageRoom != null)
+    {
+      existingStorageRoom.delete();
     }
     while (displayRooms.size() > 0)
     {
@@ -925,18 +1010,32 @@ public class MyMuseum
       aDisplayRoom.delete();
       displayRooms.remove(aDisplayRoom);
     }
-    
+
+    while (employees.size() > 0)
+    {
+      Employee aEmployee = employees.get(employees.size() - 1);
+      aEmployee.delete();
+      employees.remove(aEmployee);
+    }
+
+    while (openingHours.size() > 0)
+    {
+      WorkDay aOpeningHour = openingHours.get(openingHours.size() - 1);
+      aOpeningHour.delete();
+      openingHours.remove(aOpeningHour);
+    }
+
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "openingHours" + ":" + getOpeningHours()+ "]" + System.getProperties().getProperty("line.separator") +
+            "pricePerPass" + ":" + getPricePerPass()+ "," +
+            "address" + ":" + getAddress()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "president = "+(getPresident()!=null?Integer.toHexString(System.identityHashCode(getPresident())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "storageRooms = "+(getStorageRooms()!=null?Integer.toHexString(System.identityHashCode(getStorageRooms())):"null");
+            "  " + "storageRoom = "+(getStorageRoom()!=null?Integer.toHexString(System.identityHashCode(getStorageRoom())):"null");
   }
-
   public void setMuseumId(Long museumId) {
     this.museumId = museumId;
   }
@@ -945,3 +1044,6 @@ public class MyMuseum
     return museumId;
   }
 }
+
+
+

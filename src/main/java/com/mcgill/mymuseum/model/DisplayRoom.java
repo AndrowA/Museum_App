@@ -5,11 +5,9 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-import java.util.*;
 
-// line 71 "model.ump"
-// line 169 "model.ump"
+// line 69 "model.ump"
+// line 164 "model.ump"
 @Entity
 public class DisplayRoom extends Room
 {
@@ -29,9 +27,9 @@ public class DisplayRoom extends Room
   // CONSTRUCTOR
   //------------------------
 
-  public DisplayRoom(int aRoomCapacity, MyMuseum aMyMuseum)
+  public DisplayRoom(String aName, int aRoomCapacity, MyMuseum aMyMuseum)
   {
-    super();
+    super(aName);
     roomCapacity = aRoomCapacity;
     boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
     if (!didAddMyMuseum)
@@ -65,32 +63,20 @@ public class DisplayRoom extends Room
   {
     return myMuseum;
   }
-  /* Code from template association_SetOneToAtMostN */
+  /* Code from template association_SetOneToMany */
   public boolean setMyMuseum(MyMuseum aMyMuseum)
   {
     boolean wasSet = false;
-    //Must provide myMuseum to displayRoom
     if (aMyMuseum == null)
     {
       return wasSet;
     }
 
-    //myMuseum already at maximum (10)
-    if (aMyMuseum.numberOfDisplayRooms() >= MyMuseum.maximumNumberOfDisplayRooms())
-    {
-      return wasSet;
-    }
-    
     MyMuseum existingMyMuseum = myMuseum;
     myMuseum = aMyMuseum;
     if (existingMyMuseum != null && !existingMyMuseum.equals(aMyMuseum))
     {
-      boolean didRemove = existingMyMuseum.removeDisplayRoom(this);
-      if (!didRemove)
-      {
-        myMuseum = existingMyMuseum;
-        return wasSet;
-      }
+      existingMyMuseum.removeDisplayRoom(this);
     }
     myMuseum.addDisplayRoom(this);
     wasSet = true;

@@ -2,12 +2,15 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.*;
 import java.sql.Date;
 
-// line 20 "model.ump"
-// line 109 "model.ump"
+// line 9 "model.ump"
+// line 101 "model.ump"
 @Entity
 public class Visitor extends Account
 {
@@ -16,12 +19,9 @@ public class Visitor extends Account
   // MEMBER VARIABLES
   //------------------------
 
-  //Visitor Attributes
-  private boolean isBanned;
-
   //Visitor Associations
   @OneToMany(mappedBy = "loanee")
-  private List<Loan> loan;
+  private List<Loan> loans;
   @OneToMany(mappedBy = "owner")
   private List<MuseumPass> passes;
   @ManyToOne(cascade = CascadeType.PERSIST)
@@ -31,12 +31,11 @@ public class Visitor extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Visitor(String aEmail, String aPassword, boolean aIsBanned, MyMuseum aMyMuseum)
+  public Visitor(String aEmail, String aPassword, MyMuseum aMyMuseum)
   {
     super(aEmail, aPassword);
-    isBanned = aIsBanned;
-    loan = new ArrayList<Loan>();
     passes = new ArrayList<MuseumPass>();
+    loans = new ArrayList<Loan>();
     boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
     if (!didAddMyMuseum)
     {
@@ -45,60 +44,14 @@ public class Visitor extends Account
   }
 
   public Visitor() {
-
+    super(null, null);
+    passes = new ArrayList<MuseumPass>();
+    loans = new ArrayList<Loan>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setIsBanned(boolean aIsBanned)
-  {
-    boolean wasSet = false;
-    isBanned = aIsBanned;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean getIsBanned()
-  {
-    return isBanned;
-  }
-  /* Code from template attribute_IsBoolean */
-  public boolean isIsBanned()
-  {
-    return isBanned;
-  }
-  /* Code from template association_GetMany */
-  public Loan getLoan(int index)
-  {
-    Loan aLoan = loan.get(index);
-    return aLoan;
-  }
-
-  public List<Loan> getLoan()
-  {
-    List<Loan> newLoan = Collections.unmodifiableList(loan);
-    return newLoan;
-  }
-
-  public int numberOfLoan()
-  {
-    int number = loan.size();
-    return number;
-  }
-
-  public boolean hasLoan()
-  {
-    boolean has = loan.size() > 0;
-    return has;
-  }
-
-  public int indexOfLoan(Loan aLoan)
-  {
-    int index = loan.indexOf(aLoan);
-    return index;
-  }
   /* Code from template association_GetMany */
   public MuseumPass getPass(int index)
   {
@@ -129,99 +82,40 @@ public class Visitor extends Account
     int index = passes.indexOf(aPass);
     return index;
   }
+  /* Code from template association_GetMany */
+  public Loan getLoan(int index)
+  {
+    Loan aLoan = loans.get(index);
+    return aLoan;
+  }
+
+  public List<Loan> getLoans()
+  {
+    List<Loan> newLoans = Collections.unmodifiableList(loans);
+    return newLoans;
+  }
+
+  public int numberOfLoans()
+  {
+    int number = loans.size();
+    return number;
+  }
+
+  public boolean hasLoans()
+  {
+    boolean has = loans.size() > 0;
+    return has;
+  }
+
+  public int indexOfLoan(Loan aLoan)
+  {
+    int index = loans.indexOf(aLoan);
+    return index;
+  }
   /* Code from template association_GetOne */
   public MyMuseum getMyMuseum()
   {
     return myMuseum;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfLoan()
-  {
-    return 0;
-  }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfLoan()
-  {
-    return 3;
-  }
-  /* Code from template association_AddOptionalNToOne */
-  public Loan addLoan(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, MyMuseum aMyMuseum, Artifact aArtifact)
-  {
-    if (numberOfLoan() >= maximumNumberOfLoan())
-    {
-      return null;
-    }
-    else
-    {
-      return new Loan(aStartDate, aEndDate, aLoanStatus, this, aMyMuseum, aArtifact);
-    }
-  }
-
-  public boolean addLoan(Loan aLoan)
-  {
-    boolean wasAdded = false;
-    if (loan.contains(aLoan)) { return false; }
-    if (numberOfLoan() >= maximumNumberOfLoan())
-    {
-      return wasAdded;
-    }
-
-    Visitor existingLoanee = aLoan.getLoanee();
-    boolean isNewLoanee = existingLoanee != null && !this.equals(existingLoanee);
-    if (isNewLoanee)
-    {
-      aLoan.setLoanee(this);
-    }
-    else
-    {
-      loan.add(aLoan);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeLoan(Loan aLoan)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aLoan, as it must always have a loanee
-    if (!this.equals(aLoan.getLoanee()))
-    {
-      loan.remove(aLoan);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addLoanAt(Loan aLoan, int index)
-  {  
-    boolean wasAdded = false;
-    if(addLoan(aLoan))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfLoan()) { index = numberOfLoan() - 1; }
-      loan.remove(aLoan);
-      loan.add(index, aLoan);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveLoanAt(Loan aLoan, int index)
-  {
-    boolean wasAdded = false;
-    if(loan.contains(aLoan))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfLoan()) { index = numberOfLoan() - 1; }
-      loan.remove(aLoan);
-      loan.add(index, aLoan);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addLoanAt(aLoan, index);
-    }
-    return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfPasses()
@@ -229,9 +123,9 @@ public class Visitor extends Account
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public MuseumPass addPass(int aPassCost, Date aPassDate, MyMuseum aMyMuseum)
+  public MuseumPass addPass(Date aPassDate, MyMuseum aMyMuseum)
   {
-    return new MuseumPass(aPassCost, aPassDate, this, aMyMuseum);
+    return new MuseumPass(aPassDate, this, aMyMuseum);
   }
 
   public boolean addPass(MuseumPass aPass)
@@ -295,6 +189,95 @@ public class Visitor extends Account
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfLoans()
+  {
+    return 0;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfLoans()
+  {
+    return 3;
+  }
+  /* Code from template association_AddOptionalNToOne */
+  public Loan addLoan(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, Artifact aArtifact, MyMuseum aMyMuseum)
+  {
+    if (numberOfLoans() >= maximumNumberOfLoans())
+    {
+      return null;
+    }
+    else
+    {
+      return new Loan(aStartDate, aEndDate, aLoanStatus, this, aArtifact, aMyMuseum);
+    }
+  }
+
+  public boolean addLoan(Loan aLoan)
+  {
+    boolean wasAdded = false;
+    if (loans.contains(aLoan)) { return false; }
+    if (numberOfLoans() >= maximumNumberOfLoans())
+    {
+      return wasAdded;
+    }
+
+    Visitor existingLoanee = aLoan.getLoanee();
+    boolean isNewLoanee = existingLoanee != null && !this.equals(existingLoanee);
+    if (isNewLoanee)
+    {
+      aLoan.setLoanee(this);
+    }
+    else
+    {
+      loans.add(aLoan);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeLoan(Loan aLoan)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aLoan, as it must always have a loanee
+    if (!this.equals(aLoan.getLoanee()))
+    {
+      loans.remove(aLoan);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addLoanAt(Loan aLoan, int index)
+  {  
+    boolean wasAdded = false;
+    if(addLoan(aLoan))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
+      loans.remove(aLoan);
+      loans.add(index, aLoan);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveLoanAt(Loan aLoan, int index)
+  {
+    boolean wasAdded = false;
+    if(loans.contains(aLoan))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfLoans()) { index = numberOfLoans() - 1; }
+      loans.remove(aLoan);
+      loans.add(index, aLoan);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addLoanAt(aLoan, index);
+    }
+    return wasAdded;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setMyMuseum(MyMuseum aMyMuseum)
   {
@@ -317,15 +300,15 @@ public class Visitor extends Account
 
   public void delete()
   {
-    for(int i=loan.size(); i > 0; i--)
-    {
-      Loan aLoan = loan.get(i - 1);
-      aLoan.delete();
-    }
     for(int i=passes.size(); i > 0; i--)
     {
       MuseumPass aPass = passes.get(i - 1);
       aPass.delete();
+    }
+    for(int i=loans.size(); i > 0; i--)
+    {
+      Loan aLoan = loans.get(i - 1);
+      aLoan.delete();
     }
     MyMuseum placeholderMyMuseum = myMuseum;
     this.myMuseum = null;
@@ -336,11 +319,4 @@ public class Visitor extends Account
     super.delete();
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "isBanned" + ":" + getIsBanned()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null");
-  }
 }

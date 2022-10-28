@@ -4,8 +4,8 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 
 import javax.persistence.*;
 
-// line 60 "model.ump"
-// line 156 "model.ump"
+// line 49 "model.ump"
+// line 144 "model.ump"
 @Entity
 public class Artifact
 {
@@ -14,7 +14,10 @@ public class Artifact
   // MEMBER VARIABLES
   //------------------------
 
-
+  //Artifact Attributes
+  private String name;
+  private String description;
+  private String url;
 
   //Artifact Associations
   @Id
@@ -26,16 +29,22 @@ public class Artifact
   private Room room;
   @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
-  private String name;
-  private String url;
-  private String description;
+
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Artifact(MyMuseum aMyMuseum)
+  public Artifact(String aName, String aDescription, String aUrl, Room aRoom, MyMuseum aMyMuseum)
   {
+    name = aName;
+    description = aDescription;
+    url = aUrl;
+    boolean didAddRoom = setRoom(aRoom);
+    if (!didAddRoom)
+    {
+      throw new RuntimeException("Unable to create artifact due to room. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     boolean didAddMyMuseum = setMyMuseum(aMyMuseum);
     if (!didAddMyMuseum)
     {
@@ -43,13 +52,51 @@ public class Artifact
     }
   }
 
-  public Artifact() {
+  public Artifact(){
 
   }
-
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setName(String aName)
+  {
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setDescription(String aDescription)
+  {
+    boolean wasSet = false;
+    description = aDescription;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setUrl(String aUrl)
+  {
+    boolean wasSet = false;
+    url = aUrl;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public String getDescription()
+  {
+    return description;
+  }
+
+  public String getUrl()
+  {
+    return url;
+  }
   /* Code from template association_GetOne */
   public Loan getLoan()
   {
@@ -65,12 +112,6 @@ public class Artifact
   public Room getRoom()
   {
     return room;
-  }
-
-  public boolean hasRoom()
-  {
-    boolean has = room != null;
-    return has;
   }
   /* Code from template association_GetOne */
   public MyMuseum getMyMuseum()
@@ -104,20 +145,22 @@ public class Artifact
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOptionalOneToMany */
+  /* Code from template association_SetOneToMany */
   public boolean setRoom(Room aRoom)
   {
     boolean wasSet = false;
+    if (aRoom == null)
+    {
+      return wasSet;
+    }
+
     Room existingRoom = room;
     room = aRoom;
     if (existingRoom != null && !existingRoom.equals(aRoom))
     {
       existingRoom.removeArtifact(this);
     }
-    if (aRoom != null)
-    {
-      aRoom.addArtifact(this);
-    }
+    room.addArtifact(this);
     wasSet = true;
     return wasSet;
   }
@@ -149,10 +192,10 @@ public class Artifact
     {
       existingLoan.delete();
     }
-    if (room != null)
+    Room placeholderRoom = room;
+    this.room = null;
+    if(placeholderRoom != null)
     {
-      Room placeholderRoom = room;
-      this.room = null;
       placeholderRoom.removeArtifact(this);
     }
     MyMuseum placeholderMyMuseum = myMuseum;
@@ -162,35 +205,23 @@ public class Artifact
       placeholderMyMuseum.removeArtifact(this);
     }
   }
+
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "name" + ":" + getName()+ "," +
+            "description" + ":" + getDescription()+ "," +
+            "url" + ":" + getUrl()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "loan = "+(getLoan()!=null?Integer.toHexString(System.identityHashCode(getLoan())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "room = "+(getRoom()!=null?Integer.toHexString(System.identityHashCode(getRoom())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "myMuseum = "+(getMyMuseum()!=null?Integer.toHexString(System.identityHashCode(getMyMuseum())):"null");
+  }
   public Long getArtifactId() {
     return artifactId;
   }
 
   public void setArtifactId(Long artifactId) {
     this.artifactId = artifactId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 }
