@@ -44,7 +44,7 @@ public class Loan
   //Loan Associations
   @ManyToOne(cascade = CascadeType.PERSIST)
   private Visitor loanee;
-  @Transient
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
   @OneToOne(cascade = CascadeType.PERSIST)
   private Artifact artifact;

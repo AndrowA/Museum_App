@@ -2,7 +2,9 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import java.util.*;
 
@@ -17,7 +19,7 @@ public class StorageRoom extends Room
   //------------------------
 
   //StorageRoom Associations
-  @Transient
+  @OneToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
 
   //------------------------

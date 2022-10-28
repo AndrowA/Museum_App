@@ -24,7 +24,7 @@ public class Artifact
   private Loan loan;
   @ManyToOne(cascade = CascadeType.PERSIST)
   private Room room;
-  @Transient
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
   private String name;
   private String url;

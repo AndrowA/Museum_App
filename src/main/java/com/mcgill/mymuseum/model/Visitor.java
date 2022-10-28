@@ -2,9 +2,7 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.*;
 import java.sql.Date;
 
@@ -26,7 +24,7 @@ public class Visitor extends Account
   private List<Loan> loan;
   @OneToMany(mappedBy = "owner")
   private List<MuseumPass> passes;
-  @Transient
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
 
   //------------------------

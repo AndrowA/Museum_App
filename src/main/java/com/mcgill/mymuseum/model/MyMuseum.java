@@ -2,13 +2,13 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 import java.sql.Date;
 
 // line 41 "model.ump"
 // line 127 "model.ump"
+@Entity
 public class MyMuseum
 {
 
@@ -20,15 +20,26 @@ public class MyMuseum
   private String openingHours;
 
   //MyMuseum Associations
+  @OneToOne(mappedBy = "myMuseum")
   private President president;
+  @OneToMany(mappedBy = "myMuseum")
   private List<WorkDay> schedule;
+  @OneToMany(mappedBy = "application")
   private List<Employee> employees;
+  @OneToMany(mappedBy = "myMuseum")
   private List<Visitor> visitors;
+  @OneToMany(mappedBy = "myMuseum")
   private List<Loan> loans;
+  @OneToMany(mappedBy = "myMuseum")
   private List<Artifact> artifacts;
+  @OneToMany(mappedBy = "myMuseum")
   private List<MuseumPass> museumPasses;
+  @OneToOne(mappedBy = "myMuseum")
   private StorageRoom storageRooms;
+  @OneToMany(mappedBy = "myMuseum")
   private List<DisplayRoom> displayRooms;
+  @Id
+  @GeneratedValue
   private Long museumId;
 
   //------------------------
@@ -930,7 +941,6 @@ public class MyMuseum
     this.museumId = museumId;
   }
 
-  @Id
   public Long getMuseumId() {
     return museumId;
   }

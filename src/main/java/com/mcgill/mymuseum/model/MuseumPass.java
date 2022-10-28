@@ -22,7 +22,7 @@ public class MuseumPass
   //MuseumPass Associations
   @ManyToOne(cascade = CascadeType.PERSIST)
   private Visitor owner;
-  @Transient
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
   @Id
   @GeneratedValue

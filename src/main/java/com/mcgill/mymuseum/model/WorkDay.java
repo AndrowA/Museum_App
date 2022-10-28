@@ -23,7 +23,7 @@ public class WorkDay
   //WorkDay Associations
   @ManyToOne(cascade = CascadeType.PERSIST)
   private Employee employee;
-  @Transient
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
   @Id
   @GeneratedValue
