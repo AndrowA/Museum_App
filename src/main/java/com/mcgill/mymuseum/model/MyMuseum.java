@@ -74,6 +74,7 @@ public class MyMuseum
 
   public MyMuseum(String aPricePerPass, String aAddress, String aEmailForPresident, String aPasswordForPresident, double aHourlyWageForPresident, double aOverTimeHourlyWageForPresident, String aNameForStorageRoom)
   {
+    employees = new ArrayList<Employee>();
     pricePerPass = aPricePerPass;
     address = aAddress;
     president = new President(aEmailForPresident, aPasswordForPresident, aHourlyWageForPresident, aOverTimeHourlyWageForPresident, this);
@@ -84,7 +85,6 @@ public class MyMuseum
     workdays = new ArrayList<WorkDay>();
     storageRoom = new StorageRoom(aNameForStorageRoom, this);
     displayRooms = new ArrayList<DisplayRoom>();
-    employees = new ArrayList<Employee>();
     openingHours = new ArrayList<WorkDay>();
   }
 
