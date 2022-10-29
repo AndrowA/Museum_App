@@ -22,8 +22,8 @@ The project consists in designing and implementing a Museum Software System for 
 | Name                | Time spent | Tasks done |
 |---------------------|------------|------------|
 | Hadi Ghaddar        | 10 hours   | UML, Tests, documentation | 
-| Androw Abd El Malak | 8 hours    | UML, Tests, documentation | 
+| Androw Abd El Malak | 10 hours    | UML, Tests, documentation | 
 | Shady Guindi        | 10 hours   | UML, Tests, documentation | 
 | Daniel Makhlin      | 10 hours   | UML, Tests, documentation, database setup | 
-| Yassine Meliani     | 12 hours   | UML, Tests, documentation, database setup, JPA annotation | 
+| Yassine Meliani     | 10 hours   | UML, Tests, documentation, database setup, JPA annotation | 
 | Radu Petrescu       | 10 hours   | UML, Tests, documentation, database setup | 
