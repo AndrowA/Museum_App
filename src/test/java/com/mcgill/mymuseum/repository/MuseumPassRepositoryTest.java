@@ -39,7 +39,6 @@ class MuseumPassRepositoryTest {
         //Assert that object has correct attributes
         assertNotNull(pass);
         assertEquals(passDate,pass.getPassDate());
-        assertInstanceOf(owner.getClass(),pass.getOwner());
-        assertInstanceOf(museum.getClass(),pass.getMyMuseum());
+
     }
 }
