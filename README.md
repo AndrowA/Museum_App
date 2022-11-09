@@ -12,12 +12,12 @@ The project consists in designing and implementing a Museum Software System for 
 # Team members
 | Name                | GitHub username | Team Role      |
 |---------------------|-----------------|----------------|
-| Hadi Ghaddar        | hadi-ghaddar    | Designer       | 
+| Hadi Ghaddar        | hadi-ghaddar    | Developer       | 
 | Androw Abd El Malak | AndrowAM        | Tester         | 
 | Shady Guindi        | Shadysjn        | Scrum Master   | 
-| Daniel Makhlin      | DanielMakhlin   | Designer       | 
+| Daniel Makhlin      | DanielMakhlin   | Developer       | 
 | Yassine Meliani     | yassinemeliani / Imeliani  | Developer | 
-| Radu Petrescu       | PetrescuRad     | Designer       |
+| Radu Petrescu       | PetrescuRad     | Developer       |
 # Time Table Deliverable 1
 | Name                | Time spent | Tasks done |
 |---------------------|------------|------------|
