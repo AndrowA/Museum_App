@@ -20,4 +20,6 @@ public class ArtifactService {
     public Optional<Artifact> retrieveArtifact(long id){
         return artifactRepository.findById(id);
     }
+
+    public Artifact saveArtiact(Artifact artifact){ return artifactRepository.save(artifact);}
 }
