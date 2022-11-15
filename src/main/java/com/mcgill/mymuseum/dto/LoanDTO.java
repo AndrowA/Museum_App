@@ -15,10 +15,10 @@ public class LoanDTO {
     private Loan.LoanStatus aLoanStatus;
     private String aLoaneeName;
     private String aArtifactName;
-    private int aArtifactId;
+    private Long aArtifactId;
     private String aMyMuseumName;
 
-    public LoanDTO(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, String aArtifactId, String aMyMuseumName) {
+    public LoanDTO(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, Long aArtifactId, String aMyMuseumName) {
         this.aStartDate = aStartDate;
         this.aEndDate = aEndDate;
         this.aLoaneeName = aLoaneeName;
@@ -27,7 +27,7 @@ public class LoanDTO {
         this.aMyMuseumName = aMyMuseumName;
     }
 
-    public int getaArtifactId() {
+    public Long getaArtifactId() {
         return aArtifactId;
     }
 

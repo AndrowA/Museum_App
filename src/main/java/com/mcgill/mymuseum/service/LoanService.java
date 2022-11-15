@@ -16,8 +16,12 @@ public class LoanService {
 
     public Iterable<Loan> getLoans() { return loanRepository.findAll(); }
 
-    public Optional<Loan> retrieveLoanById(long id){
-        return loanRepository.findById(id);
+    public Loan retrieveLoanById(long id) throws MuseumException {
+        if (loanRepository.findById(id).isPresent()){
+            return loanRepository.findById(id).get();
+        } else {
+            throw new MuseumException("Could not find the loan");
+        }
     }
 
     public Loan saveLoan(Loan loan){ return loanRepository.save(loan);}
