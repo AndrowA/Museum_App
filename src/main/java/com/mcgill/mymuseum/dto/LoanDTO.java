@@ -13,17 +13,34 @@ public class LoanDTO {
     private Date aStartDate;
     private Date aEndDate;
     private Loan.LoanStatus aLoanStatus;
-    private VisitorDTO aLoanee;
-    private ArtifactDTO aArtifact;
-    private MyMuseumDTO aMyMuseum;
+    private String aLoaneeName;
+    private String aArtifactName;
+    private int aArtifactId;
+    private String aMyMuseumName;
 
-    public LoanDTO(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, Visitor aLoanee, Artifact aArtifact, MyMuseum aMyMuseum) {
+    public LoanDTO(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, String aArtifactId, String aMyMuseumName) {
         this.aStartDate = aStartDate;
         this.aEndDate = aEndDate;
-        this.aLoanee = aLoanee;
+        this.aLoaneeName = aLoaneeName;
         this.aLoanStatus = aLoanStatus;
-        this.aArtifact = aArtifact;
-        this.aMyMuseum = aMyMuseum;
+        this.aArtifactName = aArtifactName;
+        this.aMyMuseumName = aMyMuseumName;
+    }
+
+    public int getaArtifactId() {
+        return aArtifactId;
+    }
+
+    public String getaLoaneeName() {
+        return aLoaneeName;
+    }
+
+    public String getaArtifactName() {
+        return aArtifactName;
+    }
+
+    public String getaMyMuseumName() {
+        return aMyMuseumName;
     }
 
     public Date getaEndDate() {
@@ -36,17 +53,5 @@ public class LoanDTO {
 
     public Loan.LoanStatus getaLoanStatus() {
         return aLoanStatus;
-    }
-
-    public VisitorDTO getaLoanee() {
-        return aLoanee;
-    }
-
-    public ArtifactDTO getaArtifact() {
-        return aArtifact;
-    }
-
-    public MyMuseumDTO getaMyMuseum() {
-        return aMyMuseum;
     }
 }
