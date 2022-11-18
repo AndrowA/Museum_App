@@ -16,7 +16,15 @@ public class ArtifactDTO {
         this.name = artifact.getName();
         this.description = artifact.getDescription();
         this.url = artifact.getUrl();
-        this.loanId = artifact.getLoan().getLoanId();
-        this.roomId = artifact.getRoom().getRoomId();
+        if (artifact.hasLoan()) {
+            this.loanId = artifact.getLoan().getLoanId();
+        }else{
+            this.loanId = null;
+        }
+        if (artifact.getRoom() == null){
+            this.roomId = null;
+        } else {
+            this.roomId = artifact.getRoom().getRoomId();
+        }
     }
 }

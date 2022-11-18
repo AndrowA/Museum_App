@@ -13,12 +13,17 @@ public class ArtifactService {
     @Autowired
     ArtifactRepository artifactRepository;
 
-    public Iterable<Artifact> getArtifacts(){
+    public Iterable<Artifact> getAllArtifacts(){
         return artifactRepository.findAll();
     }
 
-    public Optional<Artifact> retrieveArtifact(long id){
-        return artifactRepository.findById(id);
+    public Artifact retrieveArtifact(long id) throws Exception{
+        Optional<Artifact> artifact = artifactRepository.findById(id);
+        if(artifact.isEmpty()){
+            throw new Exception();
+        }else{
+            return artifact.get();
+        }
     }
 
     public Artifact saveArtiact(Artifact artifact){ return artifactRepository.save(artifact);}
