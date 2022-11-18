@@ -115,6 +115,30 @@ public class AccountService {
         return false;
     }
 
+    public boolean authenticate(long accountId, TargetType type, Action action){
+        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)))||
+                (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
+                (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)));
+
+        // list of permissions that visitor has
+        boolean visitorPermissions = (type.equals(TargetType.LOAN) || action.equals(Action.REQUEST)) ||
+                (type.equals(TargetType.MUSEUMPASS) && (action.equals(Action.BUY))) ||
+                (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)));
+
+        if (accountRepository.findById(accountId).isPresent()){
+            Account account = accountRepository.findById(accountId).get();
+            if (account instanceof President){
+                return true;
+            } else if (account instanceof Employee){
+                return employeePermissions;
+            } else if(account instanceof Visitor){
+                return visitorPermissions;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean isValidEmailAddrRegex(String emailAddrToValidate) {
         return Pattern.compile("^[\\p{L}0-9!#$%&'*+\\/=?^_`{|}~-][\\p{L}0-9.!#$%&'*+\\/=?^_`{|}~-]{0,63}@[\\p{L}0-9-]+(?:\\.[\\p{L}0-9-]{2,7})*$") // 1
                 .matcher(emailAddrToValidate) // 2
