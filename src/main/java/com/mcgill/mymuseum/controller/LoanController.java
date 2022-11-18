@@ -1,3 +1,5 @@
+
+
 package com.mcgill.mymuseum.controller;
 
 import com.mcgill.mymuseum.dto.LoanDTO;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
-import java.util.List;
 
 @RestController
 public class LoanController {

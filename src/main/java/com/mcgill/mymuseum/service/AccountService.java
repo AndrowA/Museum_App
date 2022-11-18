@@ -5,6 +5,7 @@ import com.mcgill.mymuseum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
 
 
 @Service
@@ -29,8 +30,12 @@ public class AccountService {
     WorkDayRepository workDayRepository;
 
 
+    public enum AccountType {
+        VISITOR,
+        EMPLOYEE,
+    }
 
-    enum TargetType {
+    public enum TargetType {
         VISITOR,
         EMPLOYEE,
         ARTIFACT,
@@ -40,7 +45,7 @@ public class AccountService {
         WORKDAY
     }
 
-    enum Action {
+    public enum Action {
         BUY,
         INFO,
         REQUEST,
@@ -80,6 +85,7 @@ public class AccountService {
      */
     public boolean authenticate(long accountId,long targetId, Action action){
 
+
         TargetType type = findTargetType(targetId);
 
         // list of permissions that employee has
@@ -108,4 +114,58 @@ public class AccountService {
 
         return false;
     }
+
+    public static boolean isValidEmailAddrRegex(String emailAddrToValidate) {
+        return Pattern.compile("^[\\p{L}0-9!#$%&'*+\\/=?^_`{|}~-][\\p{L}0-9.!#$%&'*+\\/=?^_`{|}~-]{0,63}@[\\p{L}0-9-]+(?:\\.[\\p{L}0-9-]{2,7})*$") // 1
+                .matcher(emailAddrToValidate) // 2
+                .matches(); // 3
+    }
+
+    public Account findAccountByID(Long id){
+        return accountRepository.findById(id).isPresent()?accountRepository.findById(id).get():null;
+    }
+    public Long findAccountIDByEmailAndPassword(String email, String password){
+
+        Iterable<Account> accounts = accountRepository.findAll();
+
+        for (Account account: accounts){
+            if (account.getEmail().equals(email) && account.getPassword().equals(password)){
+                return Long.valueOf(account.getAccountId());
+            }
+        }
+        return null;
+    }
+
+    public Long createAccount(String email, String password, AccountType accountType){
+        if (!isValidEmailAddrRegex(email)){
+            throw new Error("Invalid Email");
+        }
+        if (findAccountIDByEmailAndPassword(email,password)==null){
+            if (accountType.equals(AccountType.VISITOR)){
+                Visitor newVisitor = new Visitor();
+                newVisitor.setEmail(email);
+                newVisitor.setPassword(password);
+                newVisitor = accountRepository.save(newVisitor);
+                return newVisitor.getAccountId();
+            } else if (accountType.equals(AccountType.EMPLOYEE)){
+                Employee newEmployee = new Employee();
+                newEmployee.setEmail(email);
+                newEmployee.setPassword(password);
+                newEmployee = accountRepository.save(newEmployee);
+                return newEmployee.getAccountId();
+            }
+            throw new Error("Ambiguous account type");
+        }else {
+            throw new Error("Account already exists");
+        }
+    }
+
+    public Long loginAccount(String email, String password){
+        Long accountId = findAccountIDByEmailAndPassword(email,password);
+        if (accountId!=null){
+            return accountId;
+        }
+        throw new Error("Account not found");
+    }
 }
+
