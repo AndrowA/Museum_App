@@ -1,4 +1,5 @@
-package com.mcgill.mymuseum.dto;
+package com.mcgill.mymuseum.DTO;
 
 public class ArtifactDTO {
+
 }

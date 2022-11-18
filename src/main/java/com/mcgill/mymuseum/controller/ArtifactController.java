@@ -16,11 +16,18 @@ public class ArtifactController {
     @Autowired
     ArtifactService artifactService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity getArtifact(@PathVariable(name="id") Long id){
-        return artifactService.retrieveArtifact(id)
+    @GetMapping("/get/{id}")
+    public ResponseEntity getArtifact(@PathVariable(name="id") long id){
+        return new ResponseEntity("path variable is "+id,HttpStatus.OK);
+
+        /*return artifactService.retrieveArtifact(id)
                 .map(artifact -> new ResponseEntity<>(artifact, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));*/
+    }
+
+    @GetMapping("/all/{page}/{count}")
+    public ResponseEntity getManyArtifacts(@PathVariable(name="count") int count, @PathVariable(name="page") int page){
+        return new ResponseEntity("path variables are count: " + count + ", page: " + page, HttpStatus.OK);
     }
 
     @PostMapping("/add") // to create an artifact
@@ -38,4 +45,17 @@ public class ArtifactController {
         }*/
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @PostMapping("/modify/{id}")
+    public ResponseEntity modifyArtifact(@PathVariable(name="id") long id, @RequestBody String body){
+        return null;
+    }
+
+    @PostMapping("/assign/room/{id}")
+    public ResponseEntity assignRoom(@PathVariable(name="id") long roomId, @RequestBody String body){return null;}
+
+    @GetMapping("/assign/room/info/{id}")
+    public ResponseEntity getRoom(@PathVariable(name="id") long roomId, @RequestBody String body){return null;}
+
+
 }
