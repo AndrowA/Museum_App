@@ -1,6 +1,6 @@
 package com.mcgill.mymuseum.controller;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.MuseumPassDTO;
 import com.mcgill.mymuseum.model.MuseumPass;
@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+@JsonFormat(pattern="yyyy-MM-dd")
 @RequestMapping("/museumPass/{id}")
 public class MuseumPassController {
     @Autowired
@@ -24,7 +25,7 @@ public class MuseumPassController {
     @RequestMapping(method = RequestMethod.POST, path = "/buy")
     public ResponseEntity buyMuseumPass(@RequestBody String passDate, @PathVariable String id) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("YYYY-MM-DD"));
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         try {
             MuseumPass pass = mapper.readValue(passDate, MuseumPass.class);
             int visitorID = Integer.parseInt(id);
@@ -33,7 +34,7 @@ public class MuseumPassController {
             return new ResponseEntity<>(museumPassDTO, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);

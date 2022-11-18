@@ -26,6 +26,7 @@ public class MuseumPass
   @Id
   @GeneratedValue
   private Long passId;
+  private int passCost;
   //------------------------
   // CONSTRUCTOR
   //------------------------
@@ -145,6 +146,10 @@ public class MuseumPass
 
   public Long getPassId() {
     return passId;
+  }
+
+  public void setPassCost(int passCost){
+    this.passCost = passCost;
   }
 
   }
