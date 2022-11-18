@@ -3,6 +3,7 @@ package com.mcgill.mymuseum.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mcgill.mymuseum.dto.ArtifactDTO;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.service.ArtifactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/artifact")
 public class ArtifactController {
     @Autowired
     ArtifactService artifactService;
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{id}") //done
     public ResponseEntity getArtifact(@PathVariable(name="id") long id){
-        return new ResponseEntity("path variable is "+id,HttpStatus.OK);
-
-        /*return artifactService.retrieveArtifact(id)
-                .map(artifact -> new ResponseEntity<>(artifact, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));*/
+        Optional<Artifact> artifact = artifactService.retrieveArtifact(id);
+        if (artifact.isEmpty()){
+            return new ResponseEntity<>("Artifact id does not exist", HttpStatus.NOT_FOUND);
+        } else{
+            ArtifactDTO dto = new ArtifactDTO(artifact.get());
+            return new ResponseEntity<>(dto,HttpStatus.OK);
+        }
     }
 
     @GetMapping("/all/{page}/{count}")
