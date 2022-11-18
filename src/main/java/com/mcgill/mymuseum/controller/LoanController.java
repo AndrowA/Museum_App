@@ -1,7 +1,6 @@
-
-
 package com.mcgill.mymuseum.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.exceptions.MuseumException;
 import com.mcgill.mymuseum.model.Loan;
@@ -13,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class LoanController {
@@ -21,14 +23,12 @@ public class LoanController {
     LoanService loanService;
     @GetMapping("/loan/{id}")
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
-        Date startDate = loanService.retrieveLoanById(id).getStartDate();
-        Date endDate = loanService.retrieveLoanById(id).getEndDate();
-        Loan.LoanStatus loanStatus = loanService.retrieveLoanById(id).getLoanStatus();
-        String loaneeEmail = loanService.retrieveLoanById(id).getLoanee().getEmail();
-        String artifactName = loanService.retrieveLoanById(id).getArtifact().getName();
-        Long artifactId = loanService.retrieveLoanById(id).getArtifact().getArtifactId();
-        String museum = loanService.retrieveLoanById(id).getMyMuseum().getAddress();
-        LoanDTO loanDTO = new LoanDTO(startDate,endDate,loanStatus,loaneeEmail,artifactName,artifactId,museum);
-        return new ResponseEntity<>(loanDTO, HttpStatus.OK);
+        try {
+            Loan loan = loanService.retrieveLoanById(id);
+            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
+            return new ResponseEntity<>(loanDTO, HttpStatus.OK);
+        } catch (MuseumException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }
