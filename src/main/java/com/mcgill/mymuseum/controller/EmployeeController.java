@@ -35,9 +35,9 @@ public class EmployeeController {
 
     @PostMapping("/remove/{rid}/{id}")
     public ResponseEntity removeEmployee(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
-        if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)) {
+        if (accountService.authenticate(requesterId, id, AccountService.Action.INFO)) {
             try {
-                boolean out = accountService.removeAccount(requesterId);
+                boolean out = employeeService.removeEmployee(requesterId);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
@@ -51,7 +51,7 @@ public class EmployeeController {
     public ResponseEntity setEmployeeSalary(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId, Double hourlyWage, Double overTimeHourlyWage) {
         if (accountService.authenticate(requesterId,id, AccountService.Action.MODIFY)) {
             try {
-                boolean out = employeeService.setEmployeeSalary(hourlyWage, overTimeHourlyWage, id, requesterId);
+                Double out = employeeService.setEmployeeSalary(hourlyWage, overTimeHourlyWage, id, requesterId);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
@@ -64,7 +64,7 @@ public class EmployeeController {
     @GetMapping("/info/{rid}/{id}")
     public ResponseEntity getEmployee(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId) {
         if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)){
-            Employee employee = employeeService.retrieveEmployee(id,requesterId);
+            Employee employee = employeeService.retrieveEmployee(requesterId);
             EmployeeDTO dto = new EmployeeDTO();
             dto.email = employee.getEmail();
             dto.hourlyWage = employee.getHourlyWage();
