@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.MuseumPassDTO;
 import com.mcgill.mymuseum.model.MuseumPass;
+import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.MuseumPassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import java.util.NoSuchElementException;
 public class MuseumPassController {
     @Autowired
     MuseumPassService museumPassService;
+    @Autowired
+    AccountService accountService;
 
     @RequestMapping(method = RequestMethod.POST, path = "/buy")
     public ResponseEntity buyMuseumPass(@RequestBody String passDate, @PathVariable String id) {
@@ -28,6 +31,9 @@ public class MuseumPassController {
         try {
             MuseumPass pass = mapper.readValue(passDate, MuseumPass.class);
             int visitorID = Integer.parseInt(id);
+            if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             MuseumPass museumPassObject = museumPassService.createPass(pass, visitorID);
             MuseumPassDTO museumPassDTO = new MuseumPassDTO(museumPassObject.getPassId(), 10, museumPassObject.getPassDate(), museumPassObject.getOwner(), museumPassObject.getMyMuseum());
             return new ResponseEntity<>(museumPassDTO, HttpStatus.OK);
@@ -42,8 +48,11 @@ public class MuseumPassController {
     @RequestMapping(method = RequestMethod.GET, path = "/info")
     public ResponseEntity getMuseumPass(@PathVariable String id) {
         try {
-           MuseumPass pass2 = museumPassService.retrieveMuseumPass(Integer.parseInt(id));
+           MuseumPass pass2 = museumPassService.retrieveMuseumPass(Long.parseLong(id));
            MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner(), pass2.getMyMuseum());
+            if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
            if (pass2 == null) {
                throw new NullPointerException();
            }

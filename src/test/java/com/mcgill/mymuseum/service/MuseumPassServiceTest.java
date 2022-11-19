@@ -21,7 +21,8 @@ public class MuseumPassServiceTest {
     private AccountRepository visitorRepository;
     @InjectMocks
     MuseumPassService museumPassService;
-    @JsonFormat(pattern="yyyy-MM-dd")
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     @Test
     public void testGetPassById() {
@@ -32,56 +33,20 @@ public class MuseumPassServiceTest {
         MuseumPass pass = museumPassService.createPass(museumPass, Integer.parseInt(String.valueOf(visitorID)));
         assertEquals(pass.getPassId(), museumPassService.retrieveMuseumPass(visitorID).getPassId());
     }
+
     @Test
-    public void testCreatePass(){
+    public void testCreatePass() {
 
         MuseumPass pass = new MuseumPass();
-        Integer visitorId = 1;
-        MuseumPass passTest = museumPassService.createPass(pass, visitorId);
+        Long visitorId = 1L;
+        MuseumPass passTest = museumPassService.createPass(pass, Math.toIntExact(visitorId));
         MuseumPass passTest2 = museumPassService.retrieveMuseumPass(visitorId);
         assertEquals(passTest2, passTest);
         System.out.println("\n Printing begins \n");
         System.out.println(passTest2.toString());
 
 
-        assertEquals(museumPassService.retrieveMuseumPass(visitorId).getOwner().getAccountId(),visitorId);
+        assertEquals(museumPassService.retrieveMuseumPass(visitorId).getOwner().getAccountId(), visitorId);
 
     }
 }
-//    @Test
-//    public void testGetPersonByInvalidId() {
-//        final int invalidId = 99;
-//        when(personRepo.findPersonById(invalidId)).thenAnswer((InvocationOnMock invocation) -> null);
-//
-//        EventRegistrationException ex = assertThrows(EventRegistrationException.class, () -> personService.getPersonById(invalidId));
-//
-//        assertEquals("Person not found.", ex.getMessage());
-//        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-//    }
-//
-//    @Test
-//    public void testCreatePerson() {
-//        // Just return the Person with no modification
-//        when(personRepo.save(any(Person.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
-//
-//        final String name = "Anakin Skywalker";
-//        final Person anakin = new Person(name);
-//        Person returnedPerson = personService.createPerson(anakin);
-//
-//        assertNotNull(returnedPerson);
-//        assertEquals(name, returnedPerson.getName());
-//        // Check that the service actually saved the person
-//        verify(personRepo, times(1)).save(anakin);
-//    }
-//}
-//    }
-//
-//
-//
-//    {
-//
-//    }
-//
-//
-//
-//}

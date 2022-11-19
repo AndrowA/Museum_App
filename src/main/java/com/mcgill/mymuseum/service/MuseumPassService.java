@@ -19,7 +19,7 @@ public class MuseumPassService {
         return museumPassRepository.findAll();
     }
 
-    public MuseumPass retrieveMuseumPass(long id){
+    public MuseumPass retrieveMuseumPass(Long id){
         return museumPassRepository.findById(id).isPresent()?museumPassRepository.findById(id).get():null;
 
     }
