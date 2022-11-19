@@ -34,7 +34,7 @@ public class MuseumPassController {
             return new ResponseEntity<>(museumPassDTO, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
