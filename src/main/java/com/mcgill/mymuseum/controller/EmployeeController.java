@@ -193,7 +193,7 @@ public class EmployeeController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "//schedule/{rid}/{employeeId}/DeleteWorkDay")
+    @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/DeleteWorkDay")
     public ResponseEntity DeleteWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
             ObjectMapper mapper = new ObjectMapper();
