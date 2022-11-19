@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -34,7 +33,7 @@ public class MuseumPassController {
             return new ResponseEntity<>(museumPassDTO, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
@@ -43,8 +42,8 @@ public class MuseumPassController {
     @RequestMapping(method = RequestMethod.GET, path = "/info")
     public ResponseEntity getMuseumPass(@PathVariable String id) {
         try {
-           Optional<MuseumPass> pass2 = museumPassService.retrieveMuseumPass(Integer.parseInt(id));
-           MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.get().getPassId(), 10, pass2.get().getPassDate(), pass2.get().getOwner(), pass2.get().getMyMuseum());
+           MuseumPass pass2 = museumPassService.retrieveMuseumPass(Integer.parseInt(id));
+           MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner(), pass2.getMyMuseum());
            if (pass2 == null) {
                throw new NullPointerException();
            }

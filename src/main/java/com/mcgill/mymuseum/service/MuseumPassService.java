@@ -1,12 +1,9 @@
 package com.mcgill.mymuseum.service;
-import com.mcgill.mymuseum.dto.MuseumPassDTO;
-import com.mcgill.mymuseum.model.Account;
 import com.mcgill.mymuseum.model.MuseumPass;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 public class MuseumPassService {
@@ -22,8 +19,9 @@ public class MuseumPassService {
         return museumPassRepository.findAll();
     }
 
-    public Optional<MuseumPass> retrieveMuseumPass(long id){
-        return museumPassRepository.findById(id);
+    public MuseumPass retrieveMuseumPass(long id){
+        return museumPassRepository.findById(id).isPresent()?museumPassRepository.findById(id).get():null;
+
     }
 
     public MuseumPass createPass(MuseumPass museumPass, int visitorId) throws NullPointerException {

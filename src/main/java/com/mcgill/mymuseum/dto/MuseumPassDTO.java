@@ -24,7 +24,6 @@ public class MuseumPassDTO {
     public Integer getPassCost() {
         return passCost;
     }
-    public void setPassCost(Integer passCost) {
-        this.passCost = passCost;
-    }
+    public String getEmail() {return aOwner.getEmail();}
+    public Long getPassId() {return passId;}
 }
