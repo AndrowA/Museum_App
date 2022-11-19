@@ -46,16 +46,47 @@ public class EmployeeServiceTest {
     @Test
     public void testRemoveEmployee(){
 
+        // setup president
+        President president =  new President();
+        president = employeeRepository.save(president);
+        Long presidentId = president.getAccountId();
+
+        // setup employee
+        Employee employee = new Employee();
+        employee = employeeRepository.save(employee);
+        Long employeeId = employee.getAccountId();
+
+        assertTrue(employeeService.removeEmployee(employeeId));
     }
 
     @Test
-    public void testRetrieveEmployeesalary(){
+    public void testSetEmployeeSalary(){
 
+        // setup president
+        President president =  new President();
+        president = employeeRepository.save(president);
+        Long presidentId = president.getAccountId();
+
+        // setup employee
+        Employee employee = new Employee();
+        employee = employeeRepository.save(employee);
+        Long employeeId = employee.getAccountId();
+
+        Double hourlyWage = 20.0;
+        Double overtimeHourlyWage = 30.0;
+
+        assertEquals(hourlyWage, employeeService.setEmployeeSalary(hourlyWage, overtimeHourlyWage,presidentId, employeeId));
     }
 
     @Test
     public void testRetrieveEmployee(){
 
+        // setup employee
+        Employee employee = new Employee();
+        employee = employeeRepository.save(employee);
+        Long employeeId = employee.getAccountId();
+
+        assertEquals(employeeId, employeeService.retrieveEmployee(employeeId).getAccountId());
     }
 
 }

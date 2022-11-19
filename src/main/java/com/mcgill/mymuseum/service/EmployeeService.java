@@ -33,37 +33,26 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean removeEmployee(Long id){
-        return accountService.removeAccount(id);
+    public boolean removeEmployee(Long targetId){return accountService.removeAccount(targetId);}
+
+    @Transactional
+    public Double setEmployeeSalary(Double hourlyWage, Double overTimeHourlyWage,Long accountId, Long targetId){
+        employeeRepository.findById(targetId).get().setHourlyWage(hourlyWage);
+        employeeRepository.findById(targetId).get().setOverTimeHourlyWage(overTimeHourlyWage);
+        return employeeRepository.findById(targetId).get().getHourlyWage();
     }
 
     @Transactional
-    public boolean setEmployeeSalary(Double hourlyWage, Double overTimeHourlyWage,long accountId, long targetId){
-        if (accountService.authenticate(accountId, targetId, AccountService.Action.INFO)) {
-            employeeRepository.findById(targetId).get().setHourlyWage(hourlyWage);
-            employeeRepository.findById(targetId).get().setOverTimeHourlyWage(overTimeHourlyWage);
-            return true;
-        }
-
-        return false;
-
-    }
-
-    @Transactional
-    public Employee retrieveEmployee(long accountId, long targetId) {
-        if (accountService.authenticate(accountId, targetId, AccountService.Action.INFO)) {
-            try {
-                Optional<Account> optionalEmployee = accountRepository.findById(targetId);
-                Account a = optionalEmployee.get();
-                if (a instanceof Employee) {
-                    return (Employee) a;
-                } else {
-                    return null;
-                }
-            } catch (NoSuchElementException ex) {
+    public Employee retrieveEmployee(Long targetId) {
+        try {
+            Optional<Account> optionalEmployee = accountRepository.findById(targetId);
+            Account a = optionalEmployee.get();
+            if (a instanceof Employee) {
+                return (Employee) a;
+            } else {
                 return null;
             }
-        }else{
+        } catch (NoSuchElementException ex) {
             return null;
         }
     }
