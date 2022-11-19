@@ -6,7 +6,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @SpringBootTest
 public class EmployeeServiceTest {
@@ -45,12 +53,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void testRemoveEmployee(){
-
-        // setup president
-        President president =  new President();
-        president = employeeRepository.save(president);
-        Long presidentId = president.getAccountId();
-
         // setup employee
         Employee employee = new Employee();
         employee = employeeRepository.save(employee);
@@ -88,5 +90,19 @@ public class EmployeeServiceTest {
 
         assertEquals(employeeId, employeeService.retrieveEmployee(employeeId).getAccountId());
     }
+    @Test
+    public void testGetWorkDayByDate() {
+        MyMuseum myMuseum = new MyMuseum();
+        Employee employee = new Employee("bob@gmail.com", "password", 12, 200, myMuseum);
 
+        WorkDay workDay = new WorkDay();
+        Date day = Date.valueOf("2013-09-04");
+        workDay.setDay(day);
+
+        employee.addSchedule(workDay);
+        employee = employeeRepository.save(employee);
+
+        assertEquals(workDay.getId(), employeeService.getWorkDayByDate(day, employee.getAccountId()));
+
+    }
 }

@@ -1,14 +1,13 @@
 package com.mcgill.mymuseum.service;
 
-import com.mcgill.mymuseum.model.Account;
-import com.mcgill.mymuseum.model.Employee;
-import com.mcgill.mymuseum.model.President;
-import com.mcgill.mymuseum.model.Visitor;
+import com.mcgill.mymuseum.model.*;
 import com.mcgill.mymuseum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -57,4 +56,25 @@ public class EmployeeService {
         }
     }
 
+    // Schedule related methods
+
+    @Transactional
+    public WorkDay saveWorkDay(WorkDay workDay)  {
+        return workDayRepository.save(workDay);
+    }
+
+    @Transactional
+    public WorkDay getWorkDayByDate(Date date, Long employeeId)  {
+        return workDayRepository.findWorkDayByDayAndEmployeeAccountId(date, employeeId);
+    }
+
+    @Transactional
+    public List<WorkDay> getSchedule(Long employeeId) {
+        return workDayRepository.findWorkDaysByEmployee_AccountId(employeeId);
+    }
+
+    @Transactional
+    public WorkDay deleteWorkDay(Date date, Long employeeId) {
+        return workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(date, employeeId);
+    }
 }
