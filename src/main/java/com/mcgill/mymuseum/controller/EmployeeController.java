@@ -66,7 +66,7 @@ public class EmployeeController {
 
     @PostMapping("/salary/{rid}/{id}")
     public ResponseEntity setEmployeeSalary(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId, Double hourlyWage, Double overTimeHourlyWage) {
-        if (accountService.authenticate(requesterId, id, AccountService.Action.MODIFY)) {
+        if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
             try {
                 Double out = employeeService.setEmployeeSalary(hourlyWage, overTimeHourlyWage, id);
                 return new ResponseEntity<>(out, HttpStatus.OK);

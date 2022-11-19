@@ -3,6 +3,7 @@ import com.mcgill.mymuseum.dto.AccountDTO;
 import com.mcgill.mymuseum.dto.EmployeeDTO;
 import com.mcgill.mymuseum.model.Employee;
 import com.mcgill.mymuseum.model.President;
+import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.EmployeeRepository;
 import com.mcgill.mymuseum.service.AccountService;
@@ -103,6 +104,7 @@ public class EmployeeControllerTest {
         AccountDTO employeeDTO = new AccountDTO();
         employeeDTO.setEmail(email);
         employeeDTO.setPassword(password);
+        employeeDTO.setAccountType("EMPLOYEE");
 
         ResponseEntity<Long> out1 =  employeeController.registerEmployee(employeeDTO);
 
@@ -112,10 +114,53 @@ public class EmployeeControllerTest {
     }
 
     @Test
+    public void testSetEmployeeSalaryValidReq(){
+        String email = "test@example.com";
+        String password = "password";
+        String type = "EMPLOYEE";
+        Double hourlyWage = 20.0;
+        Double overTimeHourlyWage = 30.0;
+
+        AccountDTO employeeDTO = new AccountDTO();
+        employeeDTO.setEmail(email);
+        employeeDTO.setPassword(password);
+        employeeDTO.setAccountType(type);
+
+        //President DTO
+        President president = new President();
+        president = employeeRepository.save(president);
+
+        ResponseEntity<Long> out1 =  employeeController.registerEmployee(employeeDTO);
+        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), president.getAccountId(), hourlyWage, overTimeHourlyWage);
+
+        assertTrue(out2.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(hourlyWage,employeeService.retrieveEmployee(out1.getBody()).getHourlyWage());
+    }
+
+    @Test
+    public void testSetEmployeeSalaryInvalidReq(){
+        String email = "test@example.com";
+        String password = "password";
+        String type = "EMPLOYEE";
+        Double hourlyWage = 20.0;
+        Double overTimeHourlyWage = 30.0;
+
+        AccountDTO employeeDTO = new AccountDTO();
+        employeeDTO.setEmail(email);
+        employeeDTO.setPassword(password);
+        employeeDTO.setAccountType(type);
+
+        ResponseEntity<Long> out1 =  employeeController.registerEmployee(employeeDTO);
+        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), out1.getBody(), hourlyWage, overTimeHourlyWage);
+
+        assertEquals(out2.getStatusCode(),HttpStatus.FORBIDDEN);
+    }
+
+    @Test
     public void testGetEmployeeValidReq(){
         String email = "test@example.com";
         String password = "password";
-        String type = "VISITOR";
+        String type = "EMPLOYEE";
         AccountDTO employeeDTO = new AccountDTO();
         employeeDTO.setEmail(email);
         employeeDTO.setPassword(password);
@@ -132,17 +177,21 @@ public class EmployeeControllerTest {
     public void testGetAccountInvalidReq(){
         String email = "test@example.com";
         String password = "password";
-        String type = "VISITOR";
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setEmail(email);
-        accountDTO.setPassword(password);
-        accountDTO.setAccountType(type);
+        String type = "EMPLOYEE";
+        AccountDTO employeeDTO = new AccountDTO();
+        employeeDTO.setEmail(email);
+        employeeDTO.setPassword(password);
+        employeeDTO.setAccountType(type);
 
-        ResponseEntity<Long> out1 = accountController.registerUser(accountDTO);
-        // simlulate user getting their own account
-        ResponseEntity<AccountDTO> out2  = accountController.getAccount(out1.getBody(),Long.valueOf(0));
+        //President DTO
+        Visitor visitor = new Visitor();
+        visitor = accountRepository.save(visitor);
 
-        assertEquals(out2.getStatusCode(),HttpStatus.FORBIDDEN);
+        ResponseEntity<Long> out1 = employeeController.registerEmployee(employeeDTO);
+
+        ResponseEntity<EmployeeDTO> out3  = employeeController.getEmployee(out1.getBody(),visitor.getAccountId());
+
+        assertEquals(out3.getStatusCode(),HttpStatus.FORBIDDEN);
     }
 
 }
