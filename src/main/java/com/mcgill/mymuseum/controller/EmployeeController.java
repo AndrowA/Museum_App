@@ -7,11 +7,22 @@ import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.EmployeeService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mcgill.mymuseum.dto.LoanDTO;
+import com.mcgill.mymuseum.dto.WorkDayDTO;
+import com.mcgill.mymuseum.model.Artifact;
+import com.mcgill.mymuseum.model.Employee;
+import com.mcgill.mymuseum.model.Loan;
+import com.mcgill.mymuseum.model.WorkDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -21,7 +32,6 @@ public class EmployeeController {
     AccountService accountService;
 
     @Autowired
-    EmployeeService employeeService;
 
     @PostMapping("/register")
     public ResponseEntity registerEmployeeSalary(@RequestBody EmployeeDTO employee){
@@ -75,4 +85,85 @@ public class EmployeeController {
         }
     }
 
-}
+    EmployeeService employeeService;
+    @GetMapping("/{employeeId}/schedule")
+    public ResponseEntity getSchedule(@PathVariable long employeeId) throws Exception {
+        //get employee by ID
+        List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();
+        for(WorkDay workDay : employee.getSchedule()) {
+            String startTime = workDay.getStartTime();
+            String endTime = workDay.getEndTime();
+            Date day = workDay.getDay();
+            String employeeName = employee.getEmail();
+            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
+            scheduleDTO.add(workDayDTO);
+        }
+        return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
+    }
+    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/addWorkDay")
+    public ResponseEntity addWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
+            Employee employee = employeeService.getEmployeeById(employeeId);
+            employee.addSchedule(newWorkDay);
+            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
+
+            String startTime = savedWorkday.getStartTime();
+            String endTime = savedWorkday.getEndTime();
+            Date day = savedWorkday.getDay();
+            String employeeName = employee.getEmail();
+            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
+
+            return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/ModifyWorkDay")
+    public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
+            Date date =  newWorkDay.getDay();
+            WorkDay oldWorkDay  = employeeService.getWorkDayByDate(date, employeeId);
+            newWorkDay.setId(oldWorkDay.getId());
+
+            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
+
+            String startTime = savedWorkday.getStartTime();
+            String endTime = savedWorkday.getEndTime();
+            Date day = savedWorkday.getDay();
+            String employeeName = employee.getEmail();
+            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
+
+            return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/DeleteWorkDay")
+    public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            WorkDay deletingWorkDay = mapper.readValue(body, WorkDay.class);
+            Date date =  deletingWorkDay.getDay();
+
+            employeeService.deleteWorkDay(date, employeeId);
+
+            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
+
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
