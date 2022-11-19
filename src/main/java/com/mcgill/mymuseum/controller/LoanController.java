@@ -32,6 +32,12 @@ public class LoanController {
     @Autowired
     ArtifactService artifactService;
 
+    /**
+     * Get for a loan by id
+     * @param id of loan
+     * @return ResponseEntity of DTO and HTTP status
+     * @throws MuseumException if fails to get loan
+     */
     @Transactional
     @GetMapping("/loan/{id}")
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
@@ -44,6 +50,14 @@ public class LoanController {
         }
     }
 
+    /**
+     * Post method for creating a loan request
+     * @param body of the post request
+     * @param visitorId loaneeId that is requesting a loan
+     * @param artifactId id of artifact that is being requested
+     * @return ResponseEntity of DTO and HTTP status
+     * @throws MuseumException if fails to create request
+     */
     @Transactional
     @PostMapping("/createLoanRequest/{visitorId}/{artifactId}")
     public ResponseEntity createRequest(@RequestBody String body,  @PathVariable(name="visitorId") Long visitorId, @PathVariable(name="artifactId") Long artifactId) throws MuseumException {
@@ -52,10 +66,12 @@ public class LoanController {
             Loan loan1 = mapper.readValue(body, Loan.class);
             Visitor loanee = (Visitor) accountService.findAccountByID(visitorId);
             Artifact artifact = artifactService.retrieveArtifact(artifactId);
+            //loan1.setLoanee(loanee)
             if (!loan1.setLoanee(loanee)){
                 throw new MuseumException("Loanee already has too many loans");
             }
             //loanee.addLoan(loan1);
+            //loan1.setArtifact(artifact)
             if (!loan1.setArtifact(artifact)) {
                 throw new MuseumException("Artifact already has a loan");
             }
@@ -68,18 +84,34 @@ public class LoanController {
         }
     }
 
+    /**
+     * Post method to approve a loan if you are allowed to do so.
+     * @param loanId if of the loan
+     * @param userId id of the user approving the loan
+     * @return ResponseEntity of DTO and HTTP status
+     * @throws MuseumException if fails.
+     */
     @Transactional
-    @PostMapping("/approveLoan/{id}")
-    public ResponseEntity approveLoan(@PathVariable(name="id") Long id) throws MuseumException {
+    @PostMapping("/approveLoan/{loanId}/{userId}")
+    public ResponseEntity approveLoan(@PathVariable(name="loanId") Long loanId, @PathVariable(name="userId") Long userId) throws MuseumException {
         try {
-            Loan loan = loanService.acceptLoan(id);
+            if (!accountService.authenticate(userId,loanId, AccountService.Action.APPROVE)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            Loan loan = loanService.acceptLoan(loanId);
             LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Post method for returning a loan request
+     * @param id of loan
+     * @return ResponseEntity of DTO and HTTP status
+     * @throws MuseumException if fails to return a loan
+     */
       @PostMapping("/returnLoan/{id}")
     public ResponseEntity returnLoan(@PathVariable(name="id") Long id) throws MuseumException {
         try {
@@ -91,10 +123,20 @@ public class LoanController {
         }
     }
 
-    @PostMapping("/rejectLoan/{id}")
-    public ResponseEntity rejectLoan(@PathVariable(name="id") Long id) throws MuseumException {
+    /**
+     * Post method for rejecting a loan if allowed to do so.
+     * @param loanId id of loan
+     * @param userId id of user
+     * @return ResponseEntity of the DTO and Http Status
+     * @throws MuseumException if fails.
+     */
+    @PostMapping("/rejectLoan/{loanId}/{userId}")
+    public ResponseEntity rejectLoan(@PathVariable(name="loanId") Long loanId,@PathVariable(name="userId") Long userId) throws MuseumException {
         try {
-            Loan loan = loanService.rejectLoan(id);
+            if (!accountService.authenticate(userId,loanId, AccountService.Action.APPROVE)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            Loan loan = loanService.rejectLoan(loanId);
             LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
