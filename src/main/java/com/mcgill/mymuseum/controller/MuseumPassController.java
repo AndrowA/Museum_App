@@ -59,7 +59,5 @@ public class MuseumPassController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-
     }
 }
