@@ -187,7 +187,7 @@ public class AccountService {
         if (accountId!=null){
             return accountId;
         }
-        throw new Error("Account not found");
+        throw new Error("Incorrect Email or Password");
     }
 }
 
