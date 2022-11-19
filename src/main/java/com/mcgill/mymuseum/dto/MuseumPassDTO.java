@@ -1,9 +1,11 @@
 package com.mcgill.mymuseum.dto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mcgill.mymuseum.model.MyMuseum;
 import com.mcgill.mymuseum.model.Visitor;
 
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MuseumPassDTO {
     private Date aPassDate;
     private Visitor aOwner;
@@ -18,6 +20,9 @@ public class MuseumPassDTO {
         this.passId = passId;
         this.passCost = passCost;
     }
+    public MuseumPassDTO(){
+
+    }
     public Date getaPassDate() {
         return aPassDate;
     }
@@ -26,4 +31,12 @@ public class MuseumPassDTO {
     }
     public String getEmail() {return aOwner.getEmail();}
     public Long getPassId() {return passId;}
+    public Date setaPassDate(Date aPassDate) {
+        return aPassDate;
+    }
+    public Integer setPassCost(Integer passCost) {
+        return passCost;
+    }
+    public String setEmail(String email) {return aOwner.getEmail();}
+    public Long setPassId(Long passId) {return passId;}
 }

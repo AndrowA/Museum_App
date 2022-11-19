@@ -1,68 +1,80 @@
 package com.mcgill.mymuseum.controller;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mcgill.mymuseum.dto.MuseumPassDTO;
+import com.mcgill.mymuseum.model.MyMuseum;
+import com.mcgill.mymuseum.model.Visitor;
+import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
+import com.mcgill.mymuseum.service.MuseumPassService;
+import com.mcgill.mymuseum.service.VisitorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import javax.transaction.Transactional;
+import java.text.ParseException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Tag("integration")
 @SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
 public class MuseumPassControllerTest {
     @Autowired
-    private WebApplicationContext webApplicationContext;
+     MuseumPassController passController;
     @Autowired
-    private MuseumPassRepository passRepository;
+     MuseumPassRepository passRepository;
+    @Autowired
+     VisitorService visitorService;
+    @Autowired
+     MuseumPassService passService;
+    @Autowired
+     AccountRepository accountRepository;
+    @JsonFormat(pattern="yyyy-MM-dd")
 
     @BeforeEach
-    public void setup() {
-        MockMvcWebClientBuilder.webAppContextSetup(webApplicationContext);
-        this.passRepository.deleteAll();
+    public void clearDatabase(){
+        passRepository.deleteAll();
+        accountRepository.deleteAll();
+    }
+
+    @Test
+    public void testCreateMuseumPassValid() throws ParseException {
+        // account DTO
+        MyMuseum museum = new MyMuseum();
+        String id = "777";
+        String passDate = "2022-11-07";
+        MuseumPassDTO museumPassDTO = new MuseumPassDTO();
+        Visitor visitor = new Visitor();
+        visitor.setPassword("1111");
+        visitor.setEmail("h@gmail.com");
+        visitor.setAccountId(Long.parseLong(id));
+        visitor.setMyMuseum(museum);
+        ResponseEntity<Long> out =  passController.buyMuseumPass(s,id);
+        assertTrue(out.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(passDate, passService.retrieveMuseumPass(out.getBody()).getPassDate());
+        assertEquals(id, passService.retrieveMuseumPass(out.getBody()).getPassId());
+    }
+
+    @Test
+    public void testCreateMuseumPassInValid() throws ParseException {
+        // account DTO
+        MyMuseum museum = new MyMuseum();
+        String id = "777";
+        String passDate = "2022-11-07";
+        MuseumPassDTO museumPassDTO = new MuseumPassDTO();
+        Visitor visitor = new Visitor();
+        visitor.setPassword("1111");
+        visitor.setEmail("h@gmail.com");
+        visitor.setAccountId(Long.parseLong(id));
+        visitor.setMyMuseum(museum);
+        ResponseEntity<Long> out =  passController.buyMuseumPass(museumPassDTO,id);
+        assertTrue(out.getStatusCode().equals(HttpStatus.OK));
+        assertEquals(passDate, passService.retrieveMuseumPass(out.getBody()).getPassDate());
+        assertEquals(id, passService.retrieveMuseumPass(out.getBody()).getPassId());
     }
 }
-//
-//    @AfterEach
-//    public void cleanup() {
-//        RestAssuredMockMvc.reset();
-//    }
-//
-//    @Test
-//    public void testGetAllItems() {
-//        when().get("/items/all").then()
-//                .statusCode(200)
-//                .body("$", empty());
-//    }
-//
-//    @Test
-//    public void testCreateAndQueryItemID() {
-//        final int id = given()
-//                .param("name", "cheeseburger")
-//                .param("itemPrice", "20")
-//                .param("inventoryAmount", "3")
-//                .param("isDeliverable", "true")
-//                .param("portionUnit", "20g")
-//                .param("inventoryType", "perishable")
-//                .post("/item/create")
-//                .then().statusCode(200)
-//                .body("name", equalTo("cheeseburger"))
-//                .body("itemPrice", equalTo(20))
-//                .body("inventoryAmount", equalTo(3))
-//                .body("portionUnit", equalTo("20g"))
-//                .body("inventoryType", equalTo(InventoryType.perishable.name()))
-//                .extract().response().body().path("itemID");
-//
-//        when().get("/item/get/id?id=" + id)
-//                .then().statusCode(200)
-//                .body("name", equalTo("cheeseburger"))
-//                .body("itemPrice", equalTo(20))
-//                .body("inventoryAmount", equalTo(3))
-//                .body("portionUnit", equalTo("20g"))
-//                .body("inventoryType", equalTo(InventoryType.perishable.name()))
-//                .body("itemID", equalTo(id));
-//    }
-//}

@@ -5,11 +5,13 @@ import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class VisitorService {
 
     AccountRepository visitorRepository;

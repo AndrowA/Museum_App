@@ -1,19 +1,19 @@
 package com.mcgill.mymuseum.service;
+
 import com.mcgill.mymuseum.model.MuseumPass;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MuseumPassService {
-    private VisitorService visitorService;
-    private MuseumPassRepository museumPassRepository;
-
-    public MuseumPassService(@Autowired MuseumPassRepository museumPassRepository, @Autowired VisitorService visitorService){
-        this.museumPassRepository = museumPassRepository;
-        this.visitorService = visitorService;
-    }
+    @Autowired
+     VisitorService visitorService;
+    @Autowired
+     MuseumPassRepository museumPassRepository;
 
     public Iterable<MuseumPass> getAllMuseumPasses(){
         return museumPassRepository.findAll();
@@ -34,13 +34,10 @@ public class MuseumPassService {
 
         if (visitor == null) {
             throw new NullPointerException("Could not retrieve visitor with id " + visitorId);
-        }
-        else {
+        } else {
             visitor.addPass(museumPass);
             return museumPassRepository.save(museumPass);
 
         }
-
     }
-
 }

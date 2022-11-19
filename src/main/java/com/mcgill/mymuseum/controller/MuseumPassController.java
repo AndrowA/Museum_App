@@ -50,9 +50,6 @@ public class MuseumPassController {
         try {
            MuseumPass pass2 = museumPassService.retrieveMuseumPass(Long.parseLong(id));
            MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner(), pass2.getMyMuseum());
-            if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
            if (pass2 == null) {
                throw new NullPointerException();
            }
