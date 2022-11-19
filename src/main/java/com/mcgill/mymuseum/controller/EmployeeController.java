@@ -88,20 +88,6 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/info/{rid}/{id}")
-    public ResponseEntity getEmployee(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId) {
-        if (accountService.authenticate(requesterId, id, AccountService.Action.INFO)) {
-            Employee employee = employeeService.retrieveEmployee(id);
-            EmployeeDTO dto = new EmployeeDTO();
-            dto.email = employee.getEmail();
-            dto.hourlyWage = employee.getHourlyWage();
-            dto.overTimeHourlyWage = employee.getOverTimeHourlyWage();
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-    }
-
     @GetMapping("/schedule/getSchedule/{rid}/{employeeId}")
     public ResponseEntity getSchedule(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.INFO)) {
@@ -200,91 +186,4 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
-}
-
-
-    @Autowired
-    EmployeeService employeeService;
-    @GetMapping("/{employeeId}/schedule")
-    public ResponseEntity getSchedule(@PathVariable long employeeId) throws Exception {
-        //get employee by ID
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();
-        for(WorkDay workDay : employee.getSchedule()) {
-            String startTime = workDay.getStartTime();
-            String endTime = workDay.getEndTime();
-            Date day = workDay.getDay();
-            String employeeName = employee.getEmail();
-            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
-            scheduleDTO.add(workDayDTO);
-        }
-        return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
-    }
-    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/addWorkDay")
-    public ResponseEntity addWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
-            Employee employee = employeeService.getEmployeeById(employeeId);
-            employee.addSchedule(newWorkDay);
-            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
-
-            String startTime = savedWorkday.getStartTime();
-            String endTime = savedWorkday.getEndTime();
-            Date day = savedWorkday.getDay();
-            String employeeName = employee.getEmail();
-            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
-
-            return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/ModifyWorkDay")
-    public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
-            Date date =  newWorkDay.getDay();
-            WorkDay oldWorkDay  = employeeService.getWorkDayByDate(date, employeeId);
-            newWorkDay.setId(oldWorkDay.getId());
-
-            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
-
-            String startTime = savedWorkday.getStartTime();
-            String endTime = savedWorkday.getEndTime();
-            Date day = savedWorkday.getDay();
-            String employeeName = employee.getEmail();
-            WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
-
-            return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @RequestMapping(method = RequestMethod.POST, path = "/{employeeId}/schedule/DeleteWorkDay")
-    public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @RequestBody String body) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            WorkDay deletingWorkDay = mapper.readValue(body, WorkDay.class);
-            Date date =  deletingWorkDay.getDay();
-
-            employeeService.deleteWorkDay(date, employeeId);
-
-            WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
-
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
 }
