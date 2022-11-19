@@ -191,5 +191,16 @@ public class AccountService {
         }
         throw new Error("Account not found");
     }
+
+
+    public boolean removeAccount(long id){
+
+        if (findAccountByID(id) != null){
+            accountRepository.delete(findAccountByID(id));
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
 
