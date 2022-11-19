@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class AccountDTO {
     public String email=null;
     private String password=null;
-    public String accountType=null;
-    public Double hourlyWage=null;
-    public Double overTimeHourlyWage=null;
+    private String accountType=null;
+    private Double hourlyWage=null;
+    private Double overTimeHourlyWage=null;
     public AccountDTO(){}
 
     public AccountDTO(String email, String password, String accountType){
@@ -24,4 +24,19 @@ public class AccountDTO {
         this.password = password;
     }
 
+    public String getEmail() { return this.email; }
+
+    public void setEmail(String email){ this.email = email;}
+
+    public String getAccountType() { return this.accountType; }
+
+    public void setAccountType(String accountType) { this.accountType = accountType;}
+
+    public Double getHourlyWage() { return this.hourlyWage;}
+
+    public void setHourlyWage(Double hourlyWage) { this.hourlyWage = hourlyWage;}
+
+    public Double getOverTimeHourlyWage() { return this.overTimeHourlyWage; }
+
+    public void setOverTimeHourlyWage(Double overTimeHourlyWage) { this.overTimeHourlyWage = overTimeHourlyWage; }
 }
