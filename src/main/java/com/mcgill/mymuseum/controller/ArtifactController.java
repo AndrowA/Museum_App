@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.ArtifactDTO;
 import com.mcgill.mymuseum.dto.RoomDTO;
+import com.mcgill.mymuseum.model.Account;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.DisplayRoom;
 import com.mcgill.mymuseum.model.Room;
@@ -27,7 +28,6 @@ public class ArtifactController {
     AccountService accountService;
     @Autowired
     RoomService roomService;
-
     @GetMapping("/get/{id}") //done
     public ResponseEntity getArtifact(@PathVariable(name="id") long id) {
         try {
@@ -46,27 +46,31 @@ public class ArtifactController {
     }
 
     @PostMapping("/add") // to create an artifact
-    public ResponseEntity addArtifact(@RequestBody String body){
-        //should check for permission to create
+    public ResponseEntity addArtifact(@RequestParam("token") long rid,@RequestBody String body){
         ObjectMapper mapper = new ObjectMapper();
         try {
-            // map the json body sent by the request to the artifact class
             Artifact newArtifact = mapper.readValue(body, Artifact.class);
+            if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             Artifact savedArtifact = artifactService.saveArtiact(newArtifact);
             return new ResponseEntity<>(savedArtifact, HttpStatus.CREATED); // all good
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/modify/{id}")
-    public ResponseEntity modifyArtifact(@PathVariable(name="id") long id, @RequestBody String body){
+    public ResponseEntity modifyArtifact(@RequestParam("token") long rid, @PathVariable(name="id") long id, @RequestBody String body){
         //should check for permission to create
         ObjectMapper mapper = new ObjectMapper();
         try {
             // map the json body sent by the request to the artifact class
             Artifact newArtifact = mapper.readValue(body, Artifact.class);
+            if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             Artifact toModify = artifactService.retrieveArtifact(id);
             newArtifact.setArtifactId(toModify.getArtifactId());
             Artifact savedArtifact = artifactService.saveArtiact(newArtifact);
@@ -78,10 +82,13 @@ public class ArtifactController {
     }
 
     @PostMapping("/assign/room/{id}/{roomId}")
-    public ResponseEntity assignRoom(@PathVariable(name="id") long id,@PathVariable(name="roomId") long roomId) {
+    public ResponseEntity assignRoom(@RequestParam("token") long rid, @PathVariable(name="id") long id,@PathVariable(name="roomId") long roomId) {
         try {
             Room room = roomService.retrieveRoom(roomId);
             Artifact artifact = artifactService.retrieveArtifact(id);
+            if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             if(room instanceof DisplayRoom && ((DisplayRoom) room).getRoomCapacity()>=500){
                 return new ResponseEntity("Display Room is full", HttpStatus.FORBIDDEN);
             }
