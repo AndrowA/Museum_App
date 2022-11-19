@@ -1,13 +1,14 @@
-package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+package com.mcgill.mymuseum.model;
 
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 // line 2 "model.ump"
-// line 96 "model.ump"
+// line 98 "model.ump"
 @Entity
 public abstract class Account
 {
@@ -19,16 +20,20 @@ public abstract class Account
   //Account Attributes
   @Id
   @GeneratedValue
-  private Long accountId;
+  private String firstName;
+  private String lastName;
   private String email;
   private String password;
+  private Long accountId;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aEmail, String aPassword)
+  public Account(String aFirstName, String aLastName, String aEmail, String aPassword)
   {
+    firstName = aFirstName;
+    lastName = aLastName;
     email = aEmail;
     password = aPassword;
   }
@@ -40,6 +45,22 @@ public abstract class Account
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setFirstName(String aFirstName)
+  {
+    boolean wasSet = false;
+    firstName = aFirstName;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setLastName(String aLastName)
+  {
+    boolean wasSet = false;
+    lastName = aLastName;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setEmail(String aEmail)
   {
@@ -55,6 +76,16 @@ public abstract class Account
     password = aPassword;
     wasSet = true;
     return wasSet;
+  }
+
+  public String getFirstName()
+  {
+    return firstName;
+  }
+
+  public String getLastName()
+  {
+    return lastName;
   }
 
   public String getEmail()
@@ -74,9 +105,12 @@ public abstract class Account
   public String toString()
   {
     return super.toString() + "["+
+            "firstName" + ":" + getFirstName()+ "," +
+            "lastName" + ":" + getLastName()+ "," +
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "]";
   }
+
   public void setAccountId(Long accountId) {
     this.accountId = accountId;
   }

@@ -1,6 +1,8 @@
 class Account
 {
   abstract;
+  firstName;
+  lastName;
   email;
   password;
 }
@@ -94,7 +96,7 @@ namespace -;
 
 class Account
 {
-  position 670 46 138.766 91.3594;
+  position 645 31 120 226.5;
 }
 
 class Visitor
@@ -104,12 +106,12 @@ class Visitor
 
 class Employee
 {
-  position 696 207 218.297 75.3594;
+  position 773 201 149.734 102.867;
   position.association Employee__WorkDay 143,15 0,53;
   position.association EmployeeAccount:employee__WorkDay 26,0 0,10;
   position.association EmployeeAccount:employee__WorkDay:schedule 142,0 0,45;
   position.association Employee__MyMuseum 0,32 138,0;
-  position.association Employee:employee__WorkDay:schedule 219,59 0,10;
+  position.association Employee:employee__WorkDay:schedule 151,59 0,10;
 }
 
 class President
@@ -128,7 +130,7 @@ class MuseumPass
   position.association MuseumPass__Visitor 138,31 0,17;
   position.association MuseumPass:passes__Visitor 138,19 0,34;
   position.association MuseumPass:passes__VisitorAccount:owner 138,58 7,0;
-  position.association MuseumPass:passes__Visitor:owner 138,51 22,0;
+  position.association MuseumPass:passes__Visitor:owner 129,52 22,0;
 }
 
 class Loan
@@ -170,16 +172,16 @@ class DisplayRoom
 class MyMuseum
 {
   position 448 338 159.062 75.3594;
-  position.association MyMuseum__President 143,75 0,10;
-  position.association Loan__MyMuseum 0,10 182,55;
+  position.association MyMuseum__President 145,77 0,10;
+  position.association Loan__MyMuseum 0,10 182,56;
   position.association Artifact__MyMuseum 0,45 150,8;
   position.association MuseumPass__MyMuseum 24,0 41,58;
   position.association MyMuseum__Visitor 99,0 50,29;
   position.association MyMuseum__WorkDay 169,16 40,92;
   position.association MyMuseum__StorageRoom 14,86 33,0;
-  position.association DisplayRoom__MyMuseum 160,66 95,0;
-  position.association Employee__MyMuseum 78,0 0,44;
+  position.association DisplayRoom__MyMuseum 160,75 56,0;
+  position.association Employee__MyMuseum 76,0 0,58;
   position.association MyMuseum__WorkDay 169,0 0,80;
   position.association MyMuseum__WorkDay:workdays 160,10 0,44;
   position.association MyMuseum:museum__WorkDay:openingHours 160,49 0,78;
-}
+}//$?[End_of_model]$?
