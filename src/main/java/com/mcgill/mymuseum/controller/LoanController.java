@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping("/loan")
 public class LoanController {
     @Autowired
     LoanService loanService;
@@ -39,7 +40,7 @@ public class LoanController {
      * @throws MuseumException if fails to get loan
      */
     @Transactional
-    @GetMapping("/loan/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
         try {
             Loan loan = loanService.retrieveLoanById(id);
@@ -63,27 +64,15 @@ public class LoanController {
     public ResponseEntity createRequest(@RequestBody String body,  @PathVariable(name="visitorId") Long visitorId, @PathVariable(name="artifactId") Long artifactId) throws MuseumException {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            Loan loan1 = mapper.readValue(body, Loan.class);
-            Visitor loanee = (Visitor) accountService.findAccountByID(visitorId);
-            Artifact artifact = artifactService.retrieveArtifact(artifactId);
-            //loan1.setLoanee(loanee)
-            if (!loan1.setLoanee(loanee)){
-                throw new MuseumException("Loanee already has too many loans");
-            }
-            //loanee.addLoan(loan1);
-            //loan1.setArtifact(artifact)
-            if (!loan1.setArtifact(artifact)) {
-                throw new MuseumException("Artifact already has a loan");
-            }
-            //artifact.setLoan(loan1);
-            loanService.saveLoan(loan1);
-            LoanDTO loanDTO = new LoanDTO(loan1.getStartDate(), loan1.getEndDate(), loan1.getLoanStatus(), loan1.getLoanee().getEmail(), loan1.getArtifact().getName(), loan1.getArtifact().getArtifactId(),null);
+            Loan loan = mapper.readValue(body, Loan.class);
+            //call the service
+            loan = loanService.createLoan(loan, visitorId, artifactId);
+            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
     /**
      * Post method to approve a loan if you are allowed to do so.
      * @param loanId if of the loan

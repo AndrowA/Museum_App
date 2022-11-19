@@ -65,20 +65,23 @@ public class LoanService {
      * @return Loan
      * @throws Exception
      */
-    @Transactional
+
     public Loan createLoan(Loan loan, long visitorId, long artifactId) throws Exception {
         Visitor loanee = (Visitor) accountService.findAccountByID(visitorId);
         Artifact artifact = artifactService.retrieveArtifact(artifactId);
-        if (artifact == null){
-            throw new MuseumException("Could not retrieve artifact with id " + artifactId);
-        } else {
-            artifact.setLoan(loan);
+        //validate that the visitor doesn't already have 3 loans
+        if (loanee.getLoans().size() == Visitor.maximumNumberOfLoans()) {
+            throw new MuseumException("Visitor has reached the maximum amount of loans already.");
         }
-        if (loanee == null) {
-            throw new MuseumException("Could not retrieve visitor with id " + visitorId);
-        } else {
-            loanee.addLoan(loan);
+        loan.setLoanee(loanee);
+        //validate that the artifact is available
+        if (artifact.hasLoan()) {
+            if (!artifact.getLoan().getLoanStatus().equals(Loan.LoanStatus.Available)){
+                throw new MuseumException("Artifact not available for loan.");
+            }
+            artifact.setLoan(null);
         }
+        loan.setArtifact(artifact);
         loanRepository.save(loan);
         return loan;
     }
