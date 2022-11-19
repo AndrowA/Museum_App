@@ -38,7 +38,7 @@ public class ArtifactController {
         }
     }
 
-    @GetMapping("/all/{page}/{count}") //will do later
+    @GetMapping("/all/{page}/{count}")
     public ResponseEntity getManyArtifacts(@PathVariable(name="count") int count, @PathVariable(name="page") int page) {
         try{
             ArrayList<Artifact> artifactArrayList = (ArrayList<Artifact>) artifactService.getManyArtifacts(count,page);
