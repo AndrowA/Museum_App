@@ -27,7 +27,7 @@ public class Loan
   // ENUMERATIONS
   //------------------------
 
-  public enum LoanStatus { Requested, InReview, Approved, Rejected }
+  public enum LoanStatus { Available, InReview, Approved, Rejected }
 
   //------------------------
   // MEMBER VARIABLES

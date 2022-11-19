@@ -1,18 +1,30 @@
 package com.mcgill.mymuseum.service;
 
+import com.mcgill.mymuseum.dto.ArtifactDTO;
+import com.mcgill.mymuseum.dto.MyMuseumDTO;
 import com.mcgill.mymuseum.exceptions.MuseumException;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.Loan;
+import com.mcgill.mymuseum.model.MyMuseum;
+import com.mcgill.mymuseum.model.Visitor;
+import com.mcgill.mymuseum.repository.ArtifactRepository;
 import com.mcgill.mymuseum.repository.LoanRepository;
+import com.mcgill.mymuseum.repository.MyMuseumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.AnnotatedType;
+import java.sql.Date;
 import java.util.Optional;
 
 @Service
 public class LoanService {
     @Autowired
     LoanRepository loanRepository;
+    @Autowired
+    ArtifactRepository artifactRepository;
+    @Autowired
+    MyMuseumRepository museumRepository;
 
     public Iterable<Loan> getLoans() { return loanRepository.findAll(); }
 

@@ -24,6 +24,7 @@ public class LoanDTO {
         this.aLoaneeName = aLoaneeName;
         this.aLoanStatus = aLoanStatus;
         this.aArtifactName = aArtifactName;
+        this.aArtifactId = aArtifactId;
         this.aMyMuseumName = aMyMuseumName;
     }
 
