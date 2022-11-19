@@ -1,5 +1,6 @@
 package com.mcgill.mymuseum.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.DisplayRoom;
 import com.mcgill.mymuseum.model.Loan;
@@ -101,6 +102,68 @@ class ArtifactServiceTest {
             try {
                 assertEquals(artifact, artifactService.saveArtifact(artifact));
                 Mockito.verify(artifactRepository).save(artifact);
+            }catch(Exception e){
+                fail();
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("testing getManyArtifacts method")
+    class GetManyArtifacts{
+        @Test
+        void noArtifacts(){
+            Mockito.when(artifactRepository.findAll()).thenReturn(Collections.emptyList());
+            assertThrows(Exception.class, ()->artifactService.getManyArtifacts(50,1));
+        }
+
+        @Test
+        void lessThan50Artifacts(){
+            try {
+                ArrayList<Artifact> artifactArrayList = new ArrayList<>(25);
+                for (int i = 0; i < 25; i++) {
+                    artifactArrayList.add(new Artifact());
+                }
+                Mockito.when(artifactRepository.findAll()).thenReturn(artifactArrayList);
+                assertEquals(artifactArrayList, artifactService.getManyArtifacts(50, 1));
+            }catch(Exception e){
+                fail();
+            }
+        }
+
+        @Test
+        void moreThan50Artifacts(){
+            try {
+                ArrayList<Artifact> artifactArrayList = new ArrayList<>(75);
+                ArrayList<Artifact> artifactArrayList2 = new ArrayList<>(50);
+                for (int i = 0; i < 75; i++) {
+                    Artifact artifact = new Artifact();
+                    if(i<50){
+                        artifactArrayList2.add(artifact);
+                    }
+                    artifactArrayList.add(artifact);
+                }
+                Mockito.when(artifactRepository.findAll()).thenReturn(artifactArrayList);
+                assertEquals(artifactArrayList2, artifactService.getManyArtifacts(50, 1));
+            }catch(Exception e){
+                fail();
+            }
+        }
+
+        @Test
+        void moreThan50ArtifactsSecondPage(){
+            try {
+                ArrayList<Artifact> artifactArrayList = new ArrayList<>(75);
+                ArrayList<Artifact> artifactArrayList2 = new ArrayList<>(25);
+                for (int i = 0; i < 75; i++) {
+                    Artifact artifact = new Artifact();
+                    if(i>=50){
+                        artifactArrayList2.add(artifact);
+                    }
+                    artifactArrayList.add(artifact);
+                }
+                Mockito.when(artifactRepository.findAll()).thenReturn(artifactArrayList);
+                assertEquals(artifactArrayList2, artifactService.getManyArtifacts(50, 2));
             }catch(Exception e){
                 fail();
             }
