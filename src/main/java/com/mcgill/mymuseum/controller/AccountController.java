@@ -46,6 +46,21 @@ public class AccountController {
 
     }
 
+    @PostMapping("/remove/{rid}/{id}")
+    public ResponseEntity removeUser(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
+        if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)) {
+            try {
+                boolean out = accountService.removeAccount(requesterId);
+                return new ResponseEntity<>(out, HttpStatus.OK);
+            } catch (Error err) {
+                return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
     @GetMapping("/info/{rid}/{id}")
     public ResponseEntity getAccount(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
         if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)){

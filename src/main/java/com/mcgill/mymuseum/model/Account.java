@@ -22,6 +22,8 @@ public abstract class Account
   private Long accountId;
   private String email;
   private String password;
+  private String firstName;
+  private String lastName;
 
   //------------------------
   // CONSTRUCTOR
@@ -65,6 +67,21 @@ public abstract class Account
   public String getPassword()
   {
     return password;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
   }
 
   public void delete()

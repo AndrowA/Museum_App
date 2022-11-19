@@ -189,5 +189,16 @@ public class AccountService {
         }
         throw new Error("Incorrect Email or Password");
     }
+
+
+    public boolean removeAccount(long id){
+
+        if (findAccountByID(id) != null){
+            accountRepository.delete(findAccountByID(id));
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
 
