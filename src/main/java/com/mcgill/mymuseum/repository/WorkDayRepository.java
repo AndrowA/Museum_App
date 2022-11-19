@@ -7,5 +7,6 @@ import java.sql.Date;
 
 public interface WorkDayRepository extends CrudRepository<WorkDay,Long> {
     Iterable<WorkDay> findWorkDaysByDayAndEmployee_AccountId(Date day, Long employeeId);
-    Void deleteWorkDayByDayAndEmployee_AccountId(Date day, Long employeeId);
+    WorkDay findWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
+    WorkDay deleteWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
 }
