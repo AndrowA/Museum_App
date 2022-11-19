@@ -22,9 +22,8 @@ public class AccountController {
     public ResponseEntity registerUser(@RequestBody AccountDTO account){
         AccountService.AccountType accountType;
         try {
-            accountType = AccountService.AccountType.valueOf(account.accountType);
+            accountType = AccountService.AccountType.valueOf(account.getAccountType());
         } catch(IllegalArgumentException err){
-            System.out.println("Catching");
             return new ResponseEntity<>("Invalid Data",HttpStatus.UNPROCESSABLE_ENTITY);
         }
         try {
@@ -53,10 +52,10 @@ public class AccountController {
             Account account = accountService.findAccountByID(id);
             AccountDTO dto = new AccountDTO();
             dto.email = account.getEmail();
-            dto.accountType = account instanceof President ? "PRESIDENT" : account instanceof  Employee ? "EMPLOYEE" : account instanceof Visitor ? "VISITOR" : null;
-            if (dto.accountType=="EMPLOYEE"){
-                dto.hourlyWage = ((Employee) account).getHourlyWage();
-                dto.overTimeHourlyWage = ((Employee) account).getOverTimeHourlyWage();
+            dto.setAccountType(account instanceof President ? "PRESIDENT" : account instanceof  Employee ? "EMPLOYEE" : account instanceof Visitor ? "VISITOR" : null);
+            if (dto.getAccountType()=="EMPLOYEE"){
+                dto.setHourlyWage(((Employee) account).getHourlyWage());
+                dto.setOverTimeHourlyWage(((Employee) account).getOverTimeHourlyWage());
             }
             return new ResponseEntity<>(dto,HttpStatus.OK);
         } else {
