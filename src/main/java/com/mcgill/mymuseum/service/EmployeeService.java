@@ -38,6 +38,18 @@ public class EmployeeService {
     }
 
     @Transactional
+    public boolean setEmployeeSalary(Double hourlyWage, Double overTimeHourlyWage,long accountId, long targetId){
+        if (accountService.authenticate(accountId, targetId, AccountService.Action.INFO)) {
+            employeeRepository.findById(targetId).get().setHourlyWage(hourlyWage);
+            employeeRepository.findById(targetId).get().setOverTimeHourlyWage(overTimeHourlyWage);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    @Transactional
     public Employee retrieveEmployee(long accountId, long targetId) {
         if (accountService.authenticate(accountId, targetId, AccountService.Action.INFO)) {
             try {
@@ -54,17 +66,6 @@ public class EmployeeService {
         }else{
             return null;
         }
-    }
-
-    @Transactional
-    public boolean setEmployeeSalary(int salary, long accountId, long targetId){
-        if (accountService.authenticate(accountId, targetId, AccountService.Action.INFO)) {
-            employeeRepository.findById(targetId).get().setHourlyWage(salary);
-            return true;
-        }
-
-        return false;
-
     }
 
 }
