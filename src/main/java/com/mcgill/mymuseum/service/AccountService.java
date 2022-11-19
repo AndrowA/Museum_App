@@ -33,6 +33,7 @@ public class AccountService {
     public enum AccountType {
         VISITOR,
         EMPLOYEE,
+        PRESIDENT
     }
 
     public enum TargetType {
@@ -42,7 +43,8 @@ public class AccountService {
         LOAN,
         MUSEUMPASS,
         ROOM,
-        WORKDAY
+        WORKDAY,
+        PRESIDENT
     }
 
     public enum Action {
@@ -52,12 +54,15 @@ public class AccountService {
         APPROVE,
         CANCEL,
         MODIFY,
-        ASSIGN
+        ASSIGN,
+        REMOVE
     }
 
     public TargetType findTargetType(long targetId){
         if (accountRepository.findById(targetId).isPresent()){
-            if (accountRepository.findById(targetId).get() instanceof Employee){
+            if (accountRepository.findById(targetId).get() instanceof President) {
+                return TargetType.PRESIDENT;
+            }else if (accountRepository.findById(targetId).get() instanceof Employee){
                 return TargetType.EMPLOYEE;
             }else if (accountRepository.findById(targetId).get() instanceof Visitor){
                 return TargetType.VISITOR;
@@ -91,13 +96,13 @@ public class AccountService {
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)) ||
                 (type.equals(TargetType.WORKDAY) && workDayRepository.findById(targetId).get().getEmployee().getAccountId()==accountId && action.equals(Action.INFO))) ||
-                (targetId==accountId);
+                (targetId==accountId && !action.equals(Action.REMOVE));
 
         // list of permissions that visitor has
         boolean visitorPermissions = (type.equals(TargetType.LOAN) && ((action.equals(Action.INFO)|| action.equals(Action.CANCEL) && loanRepository.findById(targetId).get().getLoanee().getAccountId()==accountId)||action.equals(Action.REQUEST))) ||
                 (type.equals(TargetType.MUSEUMPASS) && (action.equals(Action.BUY) || action.equals(Action.INFO))) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO))) ||
-                (targetId==accountId);
+                (targetId==accountId && !action.equals(Action.REMOVE));
 
         if (accountRepository.findById(accountId).isPresent()){
             Account account = accountRepository.findById(accountId).get();

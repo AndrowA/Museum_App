@@ -45,12 +45,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void testRemoveEmployee(){
-
-        // setup president
-        President president =  new President();
-        president = employeeRepository.save(president);
-        Long presidentId = president.getAccountId();
-
         // setup employee
         Employee employee = new Employee();
         employee = employeeRepository.save(employee);
