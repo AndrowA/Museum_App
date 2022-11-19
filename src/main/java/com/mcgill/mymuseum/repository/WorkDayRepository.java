@@ -4,9 +4,10 @@ import com.mcgill.mymuseum.model.WorkDay;
 import org.springframework.data.repository.CrudRepository;
 
 import java.sql.Date;
+import java.util.List;
 
 public interface WorkDayRepository extends CrudRepository<WorkDay,Long> {
-    Iterable<WorkDay> findWorkDaysByDayAndEmployee_AccountId(Date day, Long employeeId);
+    List<WorkDay> findWorkDaysByEmployee_AccountId(Long employeeId);
     WorkDay findWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
     WorkDay deleteWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
 }

@@ -95,7 +95,7 @@ public class EmployeeController {
             try {
                 Employee employee = employeeService.retrieveEmployee(employeeId);
                 List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();
-                for (WorkDay workDay : employee.getSchedule()) {
+                for (WorkDay workDay : employeeService.getSchedule(employeeId)) {
                     String startTime = workDay.getStartTime();
                     String endTime = workDay.getEndTime();
                     Date day = workDay.getDay();
@@ -104,6 +104,27 @@ public class EmployeeController {
                     scheduleDTO.add(workDayDTO);
                 }
                 return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
+            } catch(Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @GetMapping("/schedule/getWorkDayByDateAndId/{rid}/{employeeId}")
+    public ResponseEntity getWorkDayByDate(@RequestBody String date, @PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
+        if (accountService.authenticate(requesterId, employeeId, AccountService.Action.INFO)) {
+            //get employee by ID
+            Employee employee = employeeService.retrieveEmployee(employeeId);
+            try {
+                WorkDay workDay = employeeService.getWorkDayByDate(Date.valueOf(date), employeeId);
+                String startTime = workDay.getStartTime();
+                String endTime = workDay.getEndTime();
+                Date day = workDay.getDay();
+                String employeeName = employee.getEmail();
+                WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
+                return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
             } catch(Exception e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }

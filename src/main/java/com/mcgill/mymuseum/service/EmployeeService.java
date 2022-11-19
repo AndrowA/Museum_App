@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -58,16 +59,16 @@ public class EmployeeService {
     // Schedule related methods
 
     @Transactional
-    public WorkDay saveWorkDay(WorkDay workDay) {
+    public WorkDay saveWorkDay(WorkDay workDay)  {
         return workDayRepository.save(workDay);
     }
     @Transactional
-    public WorkDay getWorkDayByDate(Date date, Long employeeId) {
+    public WorkDay getWorkDayByDate(Date date, Long employeeId)  {
         return workDayRepository.findWorkDayByDayAndEmployeeAccountId(date, employeeId);
     }
     @Transactional
-    public <Iterable>WorkDay getSchedule(Date date, Long employeeId) {
-        return workDayRepository.findWorkDayByDayAndEmployeeAccountId(date, employeeId);
+    public List<WorkDay> getSchedule(Long employeeId) {
+        return workDayRepository.findWorkDaysByEmployee_AccountId(employeeId);
     }
     @Transactional
     public WorkDay deleteWorkDay(Date date, Long employeeId) {
