@@ -36,7 +36,7 @@ public class EmployeeService {
     public boolean removeEmployee(Long targetId){return accountService.removeAccount(targetId);}
 
     @Transactional
-    public Double setEmployeeSalary(Double hourlyWage, Double overTimeHourlyWage,Long accountId, Long targetId){
+    public Double setEmployeeSalary(Double hourlyWage, Double overTimeHourlyWage, Long targetId){
         employeeRepository.findById(targetId).get().setHourlyWage(hourlyWage);
         employeeRepository.findById(targetId).get().setOverTimeHourlyWage(overTimeHourlyWage);
         return employeeRepository.findById(targetId).get().getHourlyWage();

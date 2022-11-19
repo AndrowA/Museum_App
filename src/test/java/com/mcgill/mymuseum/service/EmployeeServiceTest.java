@@ -75,7 +75,7 @@ public class EmployeeServiceTest {
         Double hourlyWage = 20.0;
         Double overtimeHourlyWage = 30.0;
 
-        assertEquals(hourlyWage, employeeService.setEmployeeSalary(hourlyWage, overtimeHourlyWage,presidentId, employeeId));
+        assertEquals(hourlyWage, employeeService.setEmployeeSalary(hourlyWage, overtimeHourlyWage, employeeId));
     }
 
     @Test
