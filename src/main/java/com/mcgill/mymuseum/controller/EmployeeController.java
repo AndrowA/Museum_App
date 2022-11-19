@@ -37,20 +37,24 @@ public class EmployeeController {
 
 
     @PostMapping("/register")
-    public ResponseEntity registerEmployeeSalary(@RequestBody EmployeeDTO employee) {
-        try {
-            Long out = accountService.createAccount(employee.email, employee.getPassword(), AccountService.AccountType.EMPLOYEE);
-            return new ResponseEntity<>(out, HttpStatus.OK);
-        } catch (Error err) {
-            return new ResponseEntity<>(err.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity registerEmployee(@RequestBody AccountDTO employee) {
+        if (employee.getAccountType().equals("EMPLOYEE")){
+            try {
+                Long out = accountService.createAccount(employee.email, employee.getPassword(), AccountService.AccountType.EMPLOYEE);
+                return new ResponseEntity<>(out, HttpStatus.OK);
+            } catch (Error err) {
+                return new ResponseEntity<>(err.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }else{
+            return new ResponseEntity<>("Invalid Data",HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @PostMapping("/remove/{rid}/{id}")
     public ResponseEntity removeEmployee(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
-        if (accountService.authenticate(requesterId, id, AccountService.Action.INFO)) {
+        if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
             try {
-                boolean out = employeeService.removeEmployee(id);
+                Boolean out = employeeService.removeEmployee(id);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
@@ -62,7 +66,7 @@ public class EmployeeController {
 
     @PostMapping("/salary/{rid}/{id}")
     public ResponseEntity setEmployeeSalary(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId, Double hourlyWage, Double overTimeHourlyWage) {
-        if (accountService.authenticate(requesterId, id, AccountService.Action.MODIFY)) {
+        if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
             try {
                 Double out = employeeService.setEmployeeSalary(hourlyWage, overTimeHourlyWage, id);
                 return new ResponseEntity<>(out, HttpStatus.OK);
