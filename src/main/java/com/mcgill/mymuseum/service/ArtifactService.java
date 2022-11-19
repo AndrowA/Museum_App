@@ -24,7 +24,7 @@ public class ArtifactService {
     public Iterable<Artifact> getManyArtifacts(int count, int page) throws Exception{
         ArrayList<Artifact> listOfArtifacts = (ArrayList<Artifact>) getAllArtifacts();
         ArrayList<Artifact> listToReturn = new ArrayList<Artifact>();
-        if((page-1)*count > listOfArtifacts.size()){
+        if((page-1)*count > listOfArtifacts.size() || listOfArtifacts.size()==0){
             throw new Exception("no new artifacts to send");
         }else{
             for (int i = (page-1)*count; i<listOfArtifacts.size() && i<page*count; i++){

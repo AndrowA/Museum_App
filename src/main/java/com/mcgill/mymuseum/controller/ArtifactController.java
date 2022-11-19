@@ -110,6 +110,7 @@ public class ArtifactController {
             ArtifactDTO dto = new ArtifactDTO(savedArtifact);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

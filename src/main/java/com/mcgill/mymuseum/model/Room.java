@@ -2,10 +2,7 @@ package com.mcgill.mymuseum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.*;
 
 // line 58 "model.ump"
@@ -22,7 +19,7 @@ public abstract class Room
   private String name;
 
   //Room Associations
-  @OneToMany(mappedBy = "room")
+  @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
   private List<Artifact> artifacts;
   @Id
   @GeneratedValue
@@ -102,7 +99,7 @@ public abstract class Room
   public boolean addArtifact(Artifact aArtifact)
   {
     boolean wasAdded = false;
-    if (artifacts.contains(aArtifact)) { return false; }
+    if (artifacts.contains(aArtifact)) { return false; } //causes issues for some reason (typical umple L)
     Room existingRoom = aArtifact.getRoom();
     boolean isNewRoom = existingRoom != null && !this.equals(existingRoom);
     if (isNewRoom)

@@ -25,7 +25,7 @@ public class Artifact
   private Long artifactId;
   @OneToOne(mappedBy = "artifact")
   private Loan loan;
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = CascadeType.MERGE)
   private Room room;
   @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
