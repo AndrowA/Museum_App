@@ -89,6 +89,7 @@ public class EmployeeController {
     @GetMapping("/{employeeId}/schedule")
     public ResponseEntity getSchedule(@PathVariable long employeeId) throws Exception {
         //get employee by ID
+        Employee employee = employeeService.getEmploye(employeeId);
         List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();
         for(WorkDay workDay : employee.getSchedule()) {
             String startTime = workDay.getStartTime();
@@ -105,7 +106,7 @@ public class EmployeeController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
-            Employee employee = employeeService.getEmployeeById(employeeId);
+            Employee employee = employeeService.getEmploye(employeeId);
             employee.addSchedule(newWorkDay);
             WorkDay savedWorkday = employeeService.saveWorkDay(newWorkDay);
 
