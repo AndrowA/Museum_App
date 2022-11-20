@@ -23,8 +23,9 @@ class LoanRepositoryTest {
 
     @AfterEach
     public void clearDatabase() {
-        artifactRepository.deleteAll();
         loanRepository.deleteAll();
+        artifactRepository.deleteAll();
+        roomRepository.deleteAll();
     }
 
     @Test
@@ -78,22 +79,28 @@ class LoanRepositoryTest {
         loan1.setStartDate(startDate);
         loan1.setEndDate(endDate);
 
-        artifact1.setLoan(loan1);
+
         Room room1 = new DisplayRoom();
 
 
 
         //Save Object
 
-        loan1 = loanRepository.save(loan1);
-        Long id2 = loan1.getLoanId();
+
+
         room1 = roomRepository.save(room1);
         artifact1.setRoom(room1);
         artifact1 = artifactRepository.save(artifact1);
         Long id = artifact1.getArtifactId();
+        loan1.setArtifact(artifact1);
+        loan1 = loanRepository.save(loan1);
+        Long id2 = loan1.getLoanId();
+
+
 
         //Read Object
         artifact1 = artifactRepository.findById(id).get();
+
 
         //Assert that object has correct attributes
         assertNotNull(artifact1);

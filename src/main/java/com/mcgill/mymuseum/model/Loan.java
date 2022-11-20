@@ -43,7 +43,7 @@ public class Loan
   private Visitor loanee;
   @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
-  @OneToOne(cascade = CascadeType.PERSIST)
+  @OneToOne(cascade = CascadeType.MERGE)
   private Artifact artifact;
 
   //------------------------
