@@ -20,7 +20,7 @@ public class VisitorService {
         this.visitorRepository = visitorRepository;
     }
 
-
+    @Transactional
     public Visitor createVisitor(Visitor visitor) throws NullPointerException {
         try {
             Visitor createdVisitor = visitorRepository.save(visitor);
@@ -29,6 +29,8 @@ public class VisitorService {
             throw new NullPointerException("Visitor already existed");
         }
     }
+
+    @Transactional
     public Visitor retrieveVisitor(long id) {
         try {
             Optional<Account> optionalAccount = visitorRepository.findById(id);

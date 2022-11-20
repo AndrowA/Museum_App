@@ -5,6 +5,7 @@ import com.mcgill.mymuseum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.regex.Pattern;
 
 
@@ -57,7 +58,7 @@ public class AccountService {
         ASSIGN,
         REMOVE
     }
-
+    @Transactional
     public TargetType findTargetType(long targetId){
         if (accountRepository.findById(targetId).isPresent()){
             if (accountRepository.findById(targetId).get() instanceof President) {
@@ -88,6 +89,7 @@ public class AccountService {
      * @return if the current user is permitted to perform actions in target
      * function checks if the target object has restricted access depending on the type of user
      */
+    @Transactional
     public boolean authenticate(long accountId,long targetId, Action action){
         TargetType type = findTargetType(targetId);
 
@@ -118,6 +120,7 @@ public class AccountService {
         return false;
     }
 
+    @Transactional
     public boolean authenticate(long accountId, TargetType type, Action action){
         boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)))||
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
@@ -142,15 +145,19 @@ public class AccountService {
         return false;
     }
 
+    @Transactional
     public boolean isValidEmail(String emailAddrToValidate) {
         return Pattern.compile("^[\\p{L}0-9!#$%&'*+\\/=?^_`{|}~-][\\p{L}0-9.!#$%&'*+\\/=?^_`{|}~-]{0,63}@[\\p{L}0-9-]+(?:\\.[\\p{L}0-9-]{2,7})*$") // 1
                 .matcher(emailAddrToValidate) // 2
                 .matches(); // 3
     }
 
+    @Transactional
     public Account findAccountByID(Long id){
         return accountRepository.findById(id).isPresent()?accountRepository.findById(id).get():null;
     }
+
+    @Transactional
     public Long findAccountIDByEmailAndPassword(String email, String password){
 
         Iterable<Account> accounts = accountRepository.findAll();
@@ -162,6 +169,7 @@ public class AccountService {
         return null;
     }
 
+    @Transactional
     public Long createAccount(String email, String password, AccountType accountType){
         if (!isValidEmail(email)){
             throw new Error("Invalid Email");
@@ -186,6 +194,7 @@ public class AccountService {
         }
     }
 
+    @Transactional
     public Long loginAccount(String email, String password){
         Long accountId = findAccountIDByEmailAndPassword(email,password);
         if (accountId!=null){
@@ -194,7 +203,7 @@ public class AccountService {
         throw new Error("Incorrect Email or Password");
     }
 
-
+    @Transactional
     public boolean removeAccount(long id){
 
         if (findAccountByID(id) != null){

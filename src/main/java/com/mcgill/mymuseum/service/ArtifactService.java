@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class ArtifactService {
      * Method that returns all artifacts
      * @return List of artifacts
      */
+    @Transactional
     public Iterable<Artifact> getAllArtifacts(){
         return artifactRepository.findAll();
     }
@@ -31,6 +33,7 @@ public class ArtifactService {
      * @return list of Artifacts
      * @throws Exception
      */
+    @Transactional
     public Iterable<Artifact> getManyArtifacts(int count, int page) throws Exception{
         ArrayList<Artifact> listOfArtifacts = (ArrayList<Artifact>) getAllArtifacts();
         ArrayList<Artifact> listToReturn = new ArrayList<Artifact>();
@@ -50,6 +53,7 @@ public class ArtifactService {
      * @return artifact
      * @throws Exception
      */
+    @Transactional
     public Artifact retrieveArtifact(long id) throws Exception{
         Optional<Artifact> artifact = artifactRepository.findById(id);
         if(artifact.isEmpty()){
@@ -65,6 +69,7 @@ public class ArtifactService {
      * @return artifact
      * @throws Exception
      */
+    @Transactional
     public Artifact saveArtifact(Artifact artifact) throws Exception{
         if (artifact.getDescription().isBlank() || artifact.getName().isBlank() || artifact.getUrl().isBlank()){
             throw new Exception("artifact si missing crucial information");

@@ -25,6 +25,7 @@ public class LoanService {
      * Service for getting all loans
      * @return Iterable<Loan>
      */
+    @Transactional
     public Iterable<Loan> getLoans() { return loanRepository.findAll(); }
 
     /**
@@ -33,6 +34,7 @@ public class LoanService {
      * @return Loan
      * @throws MuseumException if unable to retrieve loan
      */
+    @Transactional
     public Loan retrieveLoanById(long id) throws MuseumException {
         if (loanRepository.findById(id).isPresent()){
             return loanRepository.findById(id).get();
@@ -46,6 +48,7 @@ public class LoanService {
      * @param loan
      * @return loan
      */
+    @Transactional
     public Loan saveLoan(Loan loan){ return loanRepository.save(loan);}
 
     /**
@@ -57,6 +60,7 @@ public class LoanService {
      * @throws Exception
      */
 
+    @Transactional
     public Loan createLoan(Loan loan, long visitorId, long artifactId) throws Exception {
         Visitor loanee = (Visitor) accountService.findAccountByID(visitorId);
         Artifact artifact = artifactService.retrieveArtifact(artifactId);

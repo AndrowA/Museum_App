@@ -19,6 +19,7 @@ public class MuseumPassService {
      * Method to get all museum passes
      * @return list of museum passes
      */
+    @Transactional
     public Iterable<MuseumPass> getAllMuseumPasses(){
         return museumPassRepository.findAll();
     }
@@ -28,6 +29,7 @@ public class MuseumPassService {
      * @param id of pass
      * @return museum pass
      */
+    @Transactional
     public MuseumPass retrieveMuseumPass(Long id){
         return museumPassRepository.findById(id).isPresent()?museumPassRepository.findById(id).get():null;
 
@@ -40,6 +42,7 @@ public class MuseumPassService {
      * @return museumPass
      * @throws NullPointerException
      */
+    @Transactional
     public MuseumPass createPass(MuseumPass museumPass, int visitorId) throws NullPointerException {
         Visitor visitor = visitorService.retrieveVisitor(visitorId);
         museumPass.setMyMuseum(visitor.getMyMuseum());
