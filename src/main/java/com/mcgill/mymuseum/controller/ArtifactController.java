@@ -26,6 +26,12 @@ public class ArtifactController {
     AccountService accountService;
     @Autowired
     RoomService roomService;
+
+    /**
+     * Controller method for retrieving an artifact
+     * @param id of artifact
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
     @GetMapping("/get/{id}") //done
     public ResponseEntity getArtifact(@PathVariable(name="id") long id) {
         try {
@@ -38,6 +44,12 @@ public class ArtifactController {
         }
     }
 
+    /**
+     * Controller method for retrieving all artifacts
+     * @param count how many artifacts to display
+     * @param page which page to display
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
     @GetMapping("/all/{page}/{count}")
     public ResponseEntity getManyArtifacts(@PathVariable(name="count") int count, @PathVariable(name="page") int page) {
         try{
@@ -53,6 +65,12 @@ public class ArtifactController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Controller method to add an atrifact
+     * @param rid id of requester
+     * @param body body of the post request
+     * @return ResponseEntity of artifact if successful or HTTP status
+     */
     @PostMapping("/add") // to create an artifact
     public ResponseEntity addArtifact(@RequestParam("token") long rid,@RequestBody String body){
         ObjectMapper mapper = new ObjectMapper();
@@ -69,6 +87,13 @@ public class ArtifactController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Controller method to modify an artifact
+     * @param rid requester's id
+     * @param id id of the artifact to be modified
+     * @param body body of the post request
+     * @return ResponseEntity of artifact if successful or HTTP status
+     */
     @PostMapping("/modify/{id}")
     public ResponseEntity modifyArtifact(@RequestParam("token") long rid, @PathVariable(name="id") long id, @RequestBody String body){
         //should check for permission to create
@@ -89,6 +114,13 @@ public class ArtifactController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Method to assign an artifact to a room
+     * @param rid requester's id
+     * @param id of artifact
+     * @param roomId
+     * @return ResponseEntity if successful or HTTP status
+     */
     @PostMapping("/assign/room/{id}/{roomId}")
     public ResponseEntity assignRoom(@RequestParam("token") long rid, @PathVariable(name="id") long id,@PathVariable(name="roomId") long roomId) {
         try {
@@ -115,6 +147,11 @@ public class ArtifactController {
         }
     }
 
+    /**
+     * Controller method to get room fo an artifact
+     * @param id of artifact
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
     @GetMapping("/assign/room/info/{id}")
     public ResponseEntity getRoom(@PathVariable(name="id") long id){
         try{
