@@ -2,33 +2,44 @@ package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.*;
 import com.mcgill.mymuseum.repository.*;
+import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
+@DisplayName("Account Service Test")
 public class AccountServiceTest {
 
-    @Autowired
+    @InjectMocks
     AccountService accountService;
-    @Autowired
+    @Mock
     AccountRepository accountRepository;
 
-    @Autowired
+    @Mock
     ArtifactRepository artifactRepository;
 
-    @Autowired
+    @Mock
     LoanRepository loanRepository;
 
-    @Autowired
+    @Mock
     MuseumPassRepository museumPassRepository;
 
-    @Autowired
+    @Mock
     RoomRepository roomRepository;
 
-    @Autowired
+    @Mock
     WorkDayRepository workDayRepository;
 
     @AfterEach
@@ -40,54 +51,49 @@ public class AccountServiceTest {
 
     @Test
     public void testFindTargetType(){
+
+
+
         // setup president
-        President president =  new President();
-        president = accountRepository.save(president);
-        Long presidentId = president.getAccountId();
+        Long presidentId = 1l;
+        Mockito.when(accountRepository.findById(presidentId)).thenReturn(Optional.of(new President()));
 
         // setup employee
-        Employee employee = new Employee();
-        employee = accountRepository.save(employee);
-        Long employeeId = employee.getAccountId();
+        Long employeeId = 2l;
+        Mockito.when(accountRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
 
         // setup visitor
-        Visitor visitor = new Visitor();
-        visitor = accountRepository.save(visitor);
-        Long visitorID = visitor.getAccountId();
+        Long visitorId = 3l;
+        Mockito.when(accountRepository.findById(visitorId)).thenReturn(Optional.of(new Visitor()));
 
         // setup artifact
-        Artifact artifact = new Artifact();
-        artifact = artifactRepository.save(artifact);
-        Long artifactId = artifact.getArtifactId();
+        Long artifactId = 4l;
+        Mockito.when(artifactRepository.findById(artifactId)).thenReturn(Optional.of(new Artifact()));
 
         // setup loan
-        Loan loan = new Loan();
-        loan = loanRepository.save(loan);
-        Long loanId = loan.getLoanId();
+        Long loanId = 5l;
+        Mockito.when(loanRepository.findById(loanId)).thenReturn(Optional.of(new Loan()));
 
         // setup museum pass
-        MuseumPass museumPass = new MuseumPass();
-        museumPass = museumPassRepository.save(museumPass);
-        Long museumPassId = museumPass.getPassId();
+        Long museumPassId = 6l;
+        Mockito.when(museumPassRepository.findById(museumPassId)).thenReturn(Optional.of(new MuseumPass()));
 
         // setup room
-        Room room = new StorageRoom();
-        room = roomRepository.save(room);
-        Long roomID = room.getRoomId();
+        Long roomID = 7l;
+        Mockito.when(roomRepository.findById(roomID)).thenReturn(Optional.of(new StorageRoom()));
 
         // setup workday
-        WorkDay workday = new WorkDay();
-        workday = workDayRepository.save(workday);
-        Long workdayID = workday.getId();
+        Long workdayId = 8l;
+        Mockito.when(workDayRepository.findById(workdayId)).thenReturn(Optional.of(new WorkDay()));
 
         assertEquals(accountService.findTargetType(presidentId), AccountService.TargetType.PRESIDENT);
         assertEquals(accountService.findTargetType(employeeId), AccountService.TargetType.EMPLOYEE);
-        assertEquals(accountService.findTargetType(visitorID), AccountService.TargetType.VISITOR);
+        assertEquals(accountService.findTargetType(visitorId), AccountService.TargetType.VISITOR);
         assertEquals(accountService.findTargetType(artifactId), AccountService.TargetType.ARTIFACT);
         assertEquals(accountService.findTargetType(loanId), AccountService.TargetType.LOAN);
         assertEquals(accountService.findTargetType(museumPassId),AccountService.TargetType.MUSEUMPASS);
         assertEquals(accountService.findTargetType(roomID), AccountService.TargetType.ROOM);
-        assertEquals(accountService.findTargetType(workdayID), AccountService.TargetType.WORKDAY);
+        assertEquals(accountService.findTargetType(workdayId), AccountService.TargetType.WORKDAY);
 
     }
 
@@ -96,44 +102,34 @@ public class AccountServiceTest {
 
         // setup
         // setup president
-        President president =  new President();
-        president = accountRepository.save(president);
-        Long presidentId = president.getAccountId();
+        Long presidentId = 1l;
+        Mockito.when(accountRepository.findById(presidentId)).thenReturn(Optional.of(new President()));
 
         // setup employee
-        Employee employee = new Employee();
-        employee = accountRepository.save(employee);
-        Long employeeId = employee.getAccountId();
+        Long employeeId = 2l;
+        Mockito.when(accountRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
 
         // setup visitor
-        Visitor visitor = new Visitor();
-        visitor = accountRepository.save(visitor);
-        Long visitorID = visitor.getAccountId();
-
-
-        // setup loan (target object)
-        Loan loan = new Loan();
-        //loan.setLoanee(visitor);
-        loan = loanRepository.save(loan);
-        loan.setLoanee(visitor);
-        loan = loanRepository.save(loan);
-        Long loanId = loan.getLoanId();
-
+        Long visitorId = 3l;
+        Mockito.when(accountRepository.findById(visitorId)).thenReturn(Optional.of(new Visitor()));
+        // setup loan
+        Long loanId = 5l;
+        Mockito.when(loanRepository.findById(loanId)).thenReturn(Optional.of(new Loan()));
         // valid permissions with target ID
-        assertTrue(accountService.authenticate(presidentId, loanId, AccountService.Action.CANCEL));
-        assertTrue(accountService.authenticate(visitorID, loanId, AccountService.Action.CANCEL));
+        assertTrue(accountService.authenticate(presidentId, visitorId, AccountService.Action.REMOVE));
+        assertTrue(accountService.authenticate(visitorId, visitorId, AccountService.Action.INFO));
 
         // invalid permissions with target ID
         assertFalse(accountService.authenticate(employeeId,loanId, AccountService.Action.REQUEST));
-        assertFalse(accountService.authenticate(visitorID,loanId, AccountService.Action.APPROVE));
+        assertFalse(accountService.authenticate(visitorId, visitorId, AccountService.Action.REMOVE));
 
         // valid permissions with target Type
         assertTrue(accountService.authenticate(presidentId, AccountService.TargetType.LOAN, AccountService.Action.REQUEST));
-        assertTrue(accountService.authenticate(visitorID, AccountService.TargetType.LOAN, AccountService.Action.REQUEST));
+        assertTrue(accountService.authenticate(visitorId, AccountService.TargetType.LOAN, AccountService.Action.REQUEST));
 
         // invalid permissions with target Type
         assertFalse(accountService.authenticate(employeeId, AccountService.TargetType.LOAN, AccountService.Action.REQUEST));
-        assertFalse(accountService.authenticate(visitorID, AccountService.TargetType.LOAN, AccountService.Action.APPROVE));
+        assertFalse(accountService.authenticate(visitorId, AccountService.TargetType.LOAN, AccountService.Action.APPROVE));
 
 
     }
@@ -154,30 +150,25 @@ public class AccountServiceTest {
         assertFalse(accountService.isValidEmail(invalidEmail2));
         assertFalse(accountService.isValidEmail(invalidEmail3));
         assertFalse(accountService.isValidEmail(invalidEmail4));
-
-
     }
 
     @Test
     public void testFindAccountByID(){
         // setup president
-        President president =  new President();
-        president = accountRepository.save(president);
-        Long presidentId = president.getAccountId();
+        Long presidentId = 1l;
+        Mockito.when(accountRepository.findById(presidentId)).thenReturn(Optional.of(new President()));
 
         // setup employee
-        Employee employee = new Employee();
-        employee = accountRepository.save(employee);
-        Long employeeId = employee.getAccountId();
+        Long employeeId = 2l;
+        Mockito.when(accountRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
 
         // setup visitor
-        Visitor visitor = new Visitor();
-        visitor = accountRepository.save(visitor);
-        Long visitorID = visitor.getAccountId();
+        Long visitorId = 3l;
+        Mockito.when(accountRepository.findById(visitorId)).thenReturn(Optional.of(new Visitor()));
 
-        assertEquals(president.getAccountId(), accountService.findAccountByID(presidentId).getAccountId());
-        assertEquals(visitor.getAccountId(), accountService.findAccountByID(visitorID).getAccountId());
-        assertEquals(employee.getAccountId(), accountService.findAccountByID(employeeId).getAccountId());
+        assertEquals(presidentId, accountService.findAccountByID(presidentId).getAccountId());
+        assertEquals(visitorId, accountService.findAccountByID(visitorId).getAccountId());
+        assertEquals(employeeId, accountService.findAccountByID(employeeId).getAccountId());
 
 
     }
@@ -187,14 +178,17 @@ public class AccountServiceTest {
 
         String email = "test@example.com";
         String password = "password";
+        Employee employee = new Employee();
+        employee.setEmail(email);
+        employee.setPassword(password);
+
+        Mockito.when(accountRepository.save(Mockito.any(Employee.class))).thenReturn(employee);
+
         AccountService.AccountType type = AccountService.AccountType.EMPLOYEE;
         Long id = accountService.createAccount(email,password,type);
 
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(employee));
         Account account = accountService.findAccountByID(id);
-        System.out.println("\n Printing begins \n");
-        System.out.println(account.toString());
-
-
         assertEquals(accountService.findAccountByID(id).getEmail(),email);
         assertEquals(accountService.findAccountByID(id).getPassword(),password);
         assertSame(Employee.class,accountService.findAccountByID(id).getClass());
@@ -206,24 +200,15 @@ public class AccountServiceTest {
 
         String email = "test@example.com";
         String password = "password";
-        AccountService.AccountType type = AccountService.AccountType.EMPLOYEE;
-        Long id = accountService.createAccount(email,password,type);
-
-
+        Employee employee = new Employee();
+        employee.setEmail(email);
+        employee.setPassword(password);
+        Long id = 4l;
+        employee.setAccountId(id);
+        Employee[] employeeList = new Employee[1];
+        employeeList[0] = employee;
+        Mockito.when(accountRepository.findAll()).thenReturn(List.of(employeeList));
         assertEquals(accountService.loginAccount(email,password),id);
 
     }
-
-    @Test
-    public void testRemoveAccount(){
-
-        String email = "test@example.com";
-        String password = "password";
-        AccountService.AccountType type = AccountService.AccountType.EMPLOYEE;
-        Long id = accountService.createAccount(email,password,type);
-
-        assertTrue(accountService.removeAccount(id));
-
-    }
-
 }
