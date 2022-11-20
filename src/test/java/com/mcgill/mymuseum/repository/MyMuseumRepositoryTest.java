@@ -21,7 +21,11 @@ class MyMuseumRepositoryTest {
     RoomRepository roomRepository;
 
     @AfterEach
-    public void clearDatabase() { myMuseumRepository.deleteAll(); presidentRepository.deleteAll(); roomRepository.deleteAll();}
+    public void clearDatabase() {
+        presidentRepository.deleteAll();
+        roomRepository.deleteAll();
+        myMuseumRepository.deleteAll();
+    }
 
     @Test
     public void testPersistAndLoadMyMuseum() {

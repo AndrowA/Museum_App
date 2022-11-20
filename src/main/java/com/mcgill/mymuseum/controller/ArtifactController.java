@@ -1,11 +1,9 @@
 package com.mcgill.mymuseum.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.ArtifactDTO;
 import com.mcgill.mymuseum.dto.RoomDTO;
-import com.mcgill.mymuseum.model.Account;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.DisplayRoom;
 import com.mcgill.mymuseum.model.Room;
@@ -17,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/artifact")
@@ -40,9 +38,19 @@ public class ArtifactController {
         }
     }
 
-    @GetMapping("/all/{page}/{count}") //will do later
-    public ResponseEntity getManyArtifacts(@PathVariable(name="count") int count, @PathVariable(name="page") int page){
-        return new ResponseEntity("path variables are count: " + count + ", page: " + page, HttpStatus.OK);
+    @GetMapping("/all/{page}/{count}")
+    public ResponseEntity getManyArtifacts(@PathVariable(name="count") int count, @PathVariable(name="page") int page) {
+        try{
+            ArrayList<Artifact> artifactArrayList = (ArrayList<Artifact>) artifactService.getManyArtifacts(count,page);
+            ArrayList<ArtifactDTO> dtos = new ArrayList<>();
+            for(Artifact artifact : artifactArrayList ){
+                dtos.add(new ArtifactDTO(artifact));
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/add") // to create an artifact
@@ -53,7 +61,7 @@ public class ArtifactController {
             if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-            Artifact savedArtifact = artifactService.saveArtiact(newArtifact);
+            Artifact savedArtifact = artifactService.saveArtifact(newArtifact);
             return new ResponseEntity<>(savedArtifact, HttpStatus.CREATED); // all good
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +81,7 @@ public class ArtifactController {
             }
             Artifact toModify = artifactService.retrieveArtifact(id);
             newArtifact.setArtifactId(toModify.getArtifactId());
-            Artifact savedArtifact = artifactService.saveArtiact(newArtifact);
+            Artifact savedArtifact = artifactService.saveArtifact(newArtifact);
             return new ResponseEntity<>(savedArtifact, HttpStatus.CREATED); // all good
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,10 +106,11 @@ public class ArtifactController {
                 ((DisplayRoom) room).setRoomCapacity(++cap);
                 roomService.saveRoom(room);
             }
-            Artifact savedArtifact = artifactService.saveArtiact(artifact);
+            Artifact savedArtifact = artifactService.saveArtifact(artifact);
             ArtifactDTO dto = new ArtifactDTO(savedArtifact);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
