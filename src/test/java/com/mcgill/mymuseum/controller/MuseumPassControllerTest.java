@@ -7,6 +7,8 @@ import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
 import com.mcgill.mymuseum.service.MuseumPassService;
 import com.mcgill.mymuseum.service.VisitorService;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,7 @@ public class MuseumPassControllerTest {
      MuseumPassService passService;
     @Autowired
      AccountRepository accountRepository;
-    @BeforeEach
+    @AfterEach
     public void clearDatabase(){
         passRepository.deleteAll();
         accountRepository.deleteAll();
