@@ -11,6 +11,10 @@ public class ArtifactDTO {
     public final Long loanId;
     public final Long roomId;
 
+    /**
+     * constructor for artifact
+     * @param artifact
+     */
     public ArtifactDTO(Artifact artifact){
         this.id = artifact.getArtifactId();
         this.name = artifact.getName();
