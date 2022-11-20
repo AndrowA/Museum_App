@@ -80,15 +80,16 @@ class LoanRepositoryTest {
 
         artifact1.setLoan(loan1);
         Room room1 = new DisplayRoom();
-        artifact1.setRoom(room1);
+
 
 
         //Save Object
 
         loan1 = loanRepository.save(loan1);
         Long id2 = loan1.getLoanId();
-        artifact1 = artifactRepository.save(artifact1);
         room1 = roomRepository.save(room1);
+        artifact1.setRoom(room1);
+        artifact1 = artifactRepository.save(artifact1);
         Long id = artifact1.getArtifactId();
 
         //Read Object
