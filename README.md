@@ -1,5 +1,5 @@
 # 🎨 Museum Software System 
-# Welcome to Group 16 Project
+## Welcome to Group 16 Project
 
 ### Group Introduction 
 
