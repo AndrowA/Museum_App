@@ -1,5 +1,6 @@
 package com.mcgill.mymuseum.controller;
 import com.mcgill.mymuseum.dto.AccountDTO;
+import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.service.AccountService;
 import org.apache.coyote.Response;
@@ -138,6 +139,44 @@ public class AccountControllerTest {
         ResponseEntity<Long> out1 = accountController.registerUser(accountDTO);
         // simlulate user getting their own account
         ResponseEntity<AccountDTO> out2  = accountController.getAccount(out1.getBody(),Long.valueOf(0));
+
+        assertEquals(out2.getStatusCode(),HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void testRemoveEmployeeValidReq(){
+
+        // Employee DTO
+        String email = "test@example.com";
+        String password = "password";
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setEmail(email);
+        accountDTO.setPassword(password);
+        accountDTO.setAccountType("EMPLOYEE");
+
+        //President DTO
+        President president = new President();
+        president = accountRepository.save(president);
+
+        ResponseEntity<Long> out1 =  accountController.registerUser(accountDTO);
+        ResponseEntity<Boolean> out2 = accountController.removeUser(out1.getBody(), president.getAccountId());
+
+        assertEquals(out2.getStatusCode(),HttpStatus.OK);
+    }
+
+    @Test
+    public void testRemoveEmployeeInvalidReq(){
+        // Employee DTO
+        String email = "test@example.com";
+        String password = "password";
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setEmail(email);
+        accountDTO.setPassword(password);
+        accountDTO.setAccountType("EMPLOYEE");
+
+        ResponseEntity<Long> out1 =  accountController.registerUser(accountDTO);
+
+        ResponseEntity<Boolean> out2 = accountController.removeUser(out1.getBody(),out1.getBody());
 
         assertEquals(out2.getStatusCode(),HttpStatus.FORBIDDEN);
     }
