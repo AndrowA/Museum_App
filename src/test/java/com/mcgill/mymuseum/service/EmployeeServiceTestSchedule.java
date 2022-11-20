@@ -84,8 +84,8 @@ public class EmployeeServiceTestSchedule {
             long id = 21;
             Date day = Date.valueOf("2013-09-04");
             workDay.setDay(day);
-            Mockito.when(workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(day,id)).thenReturn(null);
-            assertEquals(employeeService.deleteWorkDay(day, id), null);
+            Mockito.when(workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(day,id)).thenReturn(0);
+            assertEquals(employeeService.deleteWorkDay(day, id), 0);
         }
 
         @Test
@@ -94,8 +94,8 @@ public class EmployeeServiceTestSchedule {
             long id = 21;
             Date day = Date.valueOf("2013-09-04");
             workDay.setDay(day);
-            Mockito.when(workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(day,id)).thenReturn(workDay);
-            assertEquals(employeeService.deleteWorkDay(day,id), workDay);
+            Mockito.when(workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(day,id)).thenReturn(1);
+            assertEquals(employeeService.deleteWorkDay(day,id), 1);
         }
     }
     @Nested
