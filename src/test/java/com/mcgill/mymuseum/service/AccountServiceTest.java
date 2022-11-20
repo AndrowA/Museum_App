@@ -213,4 +213,17 @@ public class AccountServiceTest {
         assertEquals(accountService.loginAccount(email,password),id);
 
     }
+
+    @Test
+    public void testRemoveAccount(){
+
+        String email = "test@example.com";
+        String password = "password";
+        AccountService.AccountType type = AccountService.AccountType.EMPLOYEE;
+        Long id = accountService.createAccount(email,password,type);
+
+        assertTrue(accountService.removeAccount(id));
+
+    }
+
 }
