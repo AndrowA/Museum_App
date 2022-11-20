@@ -19,12 +19,12 @@ public class MuseumPassService {
         return museumPassRepository.findAll();
     }
 
-    public MuseumPass retrieveMuseumPass(Long id){
+    public MuseumPass retrieveMuseumPass(Long id){ //retrieve museum pass from visitor ID
         return museumPassRepository.findById(id).isPresent()?museumPassRepository.findById(id).get():null;
 
     }
 
-    public MuseumPass createPass(MuseumPass museumPass, int visitorId) throws NullPointerException {
+    public MuseumPass createPass(MuseumPass museumPass, int visitorId) throws NullPointerException { //create pass for visitor
         Visitor visitor = visitorService.retrieveVisitor(visitorId);
         museumPass.setMyMuseum(visitor.getMyMuseum());
         museumPass.setPassId(museumPass.getPassId());

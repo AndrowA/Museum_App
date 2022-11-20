@@ -1,68 +1,95 @@
 package com.mcgill.mymuseum.controller;
+
+import com.mcgill.mymuseum.dto.MuseumPassDTO;
+import com.mcgill.mymuseum.model.Employee;
+import com.mcgill.mymuseum.model.Visitor;
+import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
+import com.mcgill.mymuseum.service.MuseumPassService;
+import com.mcgill.mymuseum.service.VisitorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import javax.transaction.Transactional;
+import static org.junit.jupiter.api.Assertions.*;
+
 @Tag("integration")
 @SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
 public class MuseumPassControllerTest {
     @Autowired
-    private WebApplicationContext webApplicationContext;
+     MuseumPassController passController;
     @Autowired
-    private MuseumPassRepository passRepository;
-
+     MuseumPassRepository passRepository;
+    @Autowired
+     VisitorService visitorService;
+    @Autowired
+     MuseumPassService passService;
+    @Autowired
+     AccountRepository accountRepository;
     @BeforeEach
-    public void setup() {
-        MockMvcWebClientBuilder.webAppContextSetup(webApplicationContext);
-        this.passRepository.deleteAll();
+    public void clearDatabase(){
+        passRepository.deleteAll();
+        accountRepository.deleteAll();
+    }
+
+    @Test
+    public void testCreateMuseumPassValid() {
+        // example visitor creation
+        String passDate = "{ \"passDate\" : \"2022-011-27\" }";
+        String expectedPassDate = "2022-11-27";
+        Visitor visitor = new Visitor();
+        visitor = accountRepository.save(visitor);
+        Long visitorID = visitor.getAccountId();
+        ResponseEntity<MuseumPassDTO> out =  passController.buyMuseumPass(passDate,visitorID.toString()); //call controller to create pass for Visitor
+        System.out.println(out.getStatusCode());
+        assertTrue(out.getStatusCode().equals(HttpStatus.OK)); //make sure pass is created
+        assertEquals(out.getBody().getaPassDate().toString(), expectedPassDate); //verify if info is correct
+
+    }
+
+    @Test
+    public void testCreateMuseumPassInvalid() {
+        // account DTO
+        String passDate = "{ \"passDate\" : \"2022-011-27\" }";
+        Employee employee = new Employee();
+        employee = accountRepository.save(employee);
+        Long id = employee.getAccountId();
+        ResponseEntity<MuseumPassDTO> out =  passController.buyMuseumPass(passDate,id.toString());
+        assertTrue(out.getStatusCode().equals(HttpStatus.FORBIDDEN)); //make sure employee cannot create pass
+
+    }
+
+
+    @Test
+    public void testGetMuseumPassValid() {
+        //Create mock visitor
+        String passDate = "{ \"passDate\" : \"2022-011-27\" }";
+        String expectedPassDate = "2022-11-27";
+        Visitor visitor = new Visitor();
+        visitor = accountRepository.save(visitor);
+        Long id = visitor.getAccountId();
+        ResponseEntity<MuseumPassDTO> out =  passController.buyMuseumPass(passDate,id.toString());
+        ResponseEntity<MuseumPassDTO> out2 = passController.getMuseumPass(out.getBody().getPassId().toString()); //get visitor's pass from pass ID
+        assertEquals(out2.getStatusCode(),HttpStatus.OK); //make sure GET was sent through Request
+        assertEquals(out2.getBody().getaPassDate().toString(), expectedPassDate); //make sure values match
+
+    }
+    @Test
+    public void testGetMuseumPassInvalid() {
+        //Create mock visitor
+        String passDate = "{ \"passDate\" : \"2022-011-27\" }";
+        String expectedPassDate = "2020-11-27";
+        Visitor visitor = new Visitor();
+        visitor = accountRepository.save(visitor);
+        Long id = visitor.getAccountId();
+        ResponseEntity<MuseumPassDTO> out =  passController.buyMuseumPass(passDate,id.toString());
+        ResponseEntity<MuseumPassDTO> out2 = passController.getMuseumPass(out.getBody().getPassId().toString()); //get visitor pass from id
+        assertEquals(out2.getStatusCode(),HttpStatus.OK);
+        assertNotEquals(out2.getBody().getaPassDate().toString(), expectedPassDate);//values do not match up
+
     }
 }
-//
-//    @AfterEach
-//    public void cleanup() {
-//        RestAssuredMockMvc.reset();
-//    }
-//
-//    @Test
-//    public void testGetAllItems() {
-//        when().get("/items/all").then()
-//                .statusCode(200)
-//                .body("$", empty());
-//    }
-//
-//    @Test
-//    public void testCreateAndQueryItemID() {
-//        final int id = given()
-//                .param("name", "cheeseburger")
-//                .param("itemPrice", "20")
-//                .param("inventoryAmount", "3")
-//                .param("isDeliverable", "true")
-//                .param("portionUnit", "20g")
-//                .param("inventoryType", "perishable")
-//                .post("/item/create")
-//                .then().statusCode(200)
-//                .body("name", equalTo("cheeseburger"))
-//                .body("itemPrice", equalTo(20))
-//                .body("inventoryAmount", equalTo(3))
-//                .body("portionUnit", equalTo("20g"))
-//                .body("inventoryType", equalTo(InventoryType.perishable.name()))
-//                .extract().response().body().path("itemID");
-//
-//        when().get("/item/get/id?id=" + id)
-//                .then().statusCode(200)
-//                .body("name", equalTo("cheeseburger"))
-//                .body("itemPrice", equalTo(20))
-//                .body("inventoryAmount", equalTo(3))
-//                .body("portionUnit", equalTo("20g"))
-//                .body("inventoryType", equalTo(InventoryType.perishable.name()))
-//                .body("itemID", equalTo(id));
-//    }
-//}
