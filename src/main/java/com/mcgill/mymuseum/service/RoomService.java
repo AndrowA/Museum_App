@@ -1,7 +1,6 @@
 package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.Artifact;
-import com.mcgill.mymuseum.model.DisplayRoom;
 import com.mcgill.mymuseum.model.Room;
 import com.mcgill.mymuseum.repository.ArtifactRepository;
 import com.mcgill.mymuseum.repository.RoomRepository;

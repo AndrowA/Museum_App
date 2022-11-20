@@ -1,14 +1,9 @@
 package com.mcgill.mymuseum.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.exceptions.MuseumException;
-import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.Loan;
-import com.mcgill.mymuseum.model.MyMuseum;
-import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.ArtifactService;
 import com.mcgill.mymuseum.service.LoanService;
@@ -18,10 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.sql.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/loan")

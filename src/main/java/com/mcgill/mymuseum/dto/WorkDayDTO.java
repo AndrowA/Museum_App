@@ -1,8 +1,5 @@
 package com.mcgill.mymuseum.dto;
 
-import com.mcgill.mymuseum.model.MyMuseum;
-import com.mcgill.mymuseum.model.Visitor;
-
 import java.sql.Date;
 
 public class WorkDayDTO {

@@ -1,9 +1,7 @@
 package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.exceptions.MuseumException;
-import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.Loan;
-import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.LoanRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,25 +1,14 @@
 package com.mcgill.mymuseum.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.mcgill.mymuseum.model.Artifact;
-import com.mcgill.mymuseum.model.DisplayRoom;
-import com.mcgill.mymuseum.model.Loan;
-import com.mcgill.mymuseum.model.Room;
 import com.mcgill.mymuseum.repository.ArtifactRepository;
-import com.mcgill.mymuseum.repository.LoanRepository;
-import com.mcgill.mymuseum.repository.RoomRepository;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.text.html.Option;
-import java.sql.Date;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;

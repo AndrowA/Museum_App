@@ -1,6 +1,5 @@
 package com.mcgill.mymuseum.dto;
 
-
 import com.mcgill.mymuseum.model.Artifact;
 
 public class ArtifactDTO {

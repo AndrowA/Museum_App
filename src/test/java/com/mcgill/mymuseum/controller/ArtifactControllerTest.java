@@ -4,7 +4,6 @@ import com.mcgill.mymuseum.dto.ArtifactDTO;
 import com.mcgill.mymuseum.dto.RoomDTO;
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.DisplayRoom;
-import com.mcgill.mymuseum.model.MyMuseum;
 import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.repository.*;
 import org.junit.jupiter.api.AfterEach;
