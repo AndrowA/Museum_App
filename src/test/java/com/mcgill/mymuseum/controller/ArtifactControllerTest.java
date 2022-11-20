@@ -43,7 +43,6 @@ class ArtifactControllerTest {
 
     @BeforeEach
     void setUp() {
-        clearDB();
         President president = new President();
         this.president = accountRepository.save(president);
         DisplayRoom room = new DisplayRoom();

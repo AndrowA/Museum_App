@@ -21,7 +21,7 @@ class LoanRepositoryTest {
     @Autowired
     RoomRepository roomRepository;
 
-    @BeforeEach
+    @AfterEach
     public void clearDatabase() {
         artifactRepository.deleteAll();
         loanRepository.deleteAll();
