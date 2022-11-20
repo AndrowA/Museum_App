@@ -5,6 +5,7 @@ import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class MuseumPassServiceTest {
     AccountService accountService;
     @Autowired
     VisitorService visitorService;
-    @BeforeEach
-    public void clearDatabase(){ //db clear
+
+    @AfterEach
+    public void clearDatabase() { //db clear
         passRepository.deleteAll();
         accountRepository.deleteAll();
     }
@@ -50,6 +52,7 @@ public class MuseumPassServiceTest {
         MuseumPass PassTest = museumPassService.createPass(museumPass, Math.toIntExact(visitorID));
         assertEquals(PassTest.getOwner().getAccountId(), museumPassService.retrieveMuseumPass(museumPassId).getOwner().getAccountId());
         assertEquals(PassTest.getOwner().getAccountId(), visitorID);
+    }
 
     @Test
     public void testEmployeeCantCreatePass() { //test to check if an employee can't create a pass
@@ -60,11 +63,11 @@ public class MuseumPassServiceTest {
             MuseumPass museumPass = new MuseumPass();
             museumPass = passRepository.save(museumPass);
             museumPassService.createPass(museumPass, Math.toIntExact(employeeId));
-        }
-        catch(NullPointerException e){
-            assertEquals("visitor with id "+employeeId +" does not exist", e.getMessage());
+        } catch (NullPointerException e) {
+            assertEquals("visitor with id " + employeeId + " does not exist", e.getMessage());
         }
     }
+
     @Test
     public void testPresidentCantCreatePass() { //test to check if a president can't create a pass
         President president = new President();
@@ -74,11 +77,11 @@ public class MuseumPassServiceTest {
             MuseumPass museumPass = new MuseumPass();
             museumPass = passRepository.save(museumPass);
             museumPassService.createPass(museumPass, Math.toIntExact(presidentAccountId));
-        }
-        catch(NullPointerException e){
-            assertEquals("visitor with id "+ presidentAccountId +" does not exist", e.getMessage());
+        } catch (NullPointerException e) {
+            assertEquals("visitor with id " + presidentAccountId + " does not exist", e.getMessage());
         }
     }
+
     @Test
     public void testDeletePass() { //test to check if a pass can be deleted
         MuseumPass museumPass = new MuseumPass();
@@ -86,7 +89,6 @@ public class MuseumPassServiceTest {
         museumPass.delete();
         assertNull(museumPass.getOwner());
     }
+}
 
-
-    }
 
