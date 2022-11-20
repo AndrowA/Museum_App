@@ -35,7 +35,11 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-
+    /**
+     * Post method for Registering an employee
+     * @param employee
+     * @return ResponseEntity of DTO and HTTP status
+     */
     @PostMapping("/register")
     public ResponseEntity registerEmployee(@RequestBody AccountDTO employee) {
         if (employee.getAccountType().equals("EMPLOYEE")){
@@ -50,6 +54,12 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Post method for removing an employee
+     * @param id of the employee to remove
+     * @param requesterId of the person trying to remove the employee
+     * @return ResponseEntity of boolean and HTTP status
+     */
     @PostMapping("/remove/{rid}/{id}")
     public ResponseEntity removeEmployee(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
         if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
@@ -64,6 +74,14 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Post method for Setting the salary of an employee
+     * @param id of the employee to remove
+     * @param requesterId of the person trying to remove the employee
+     * @param hourlyWage of the employee
+     * @param overTimeHourlyWage of the employee
+     * @return ResponseEntity of the hourlyWage of the employee and HTTP status
+     */
     @PostMapping("/salary/{rid}/{id}")
     public ResponseEntity setEmployeeSalary(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId, Double hourlyWage, Double overTimeHourlyWage) {
         if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
@@ -78,6 +96,12 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Getter method to get an employee
+     * @param id of the employee in question
+     * @param requesterId of the person requesting the employee info
+     * @return ResponseEntity of Employee and HTTP status
+     */
     @GetMapping("/info/{rid}/{id}")
     public ResponseEntity getEmployee(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId) {
         if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)){
@@ -92,6 +116,13 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Getter method to get the schedule of an employee
+     * @param employeeId of the employee in question
+     * @param requesterId of the person requesting the employee schedule
+     * @return ResponseEntity of Schedule and HTTP status
+     * @throws Exception
+     */
     @GetMapping("/schedule/getSchedule/{rid}/{employeeId}")
     public ResponseEntity getSchedule(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.INFO)) {
@@ -116,6 +147,14 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Getter method to get an employee's workday by date
+     * @param date of a workday
+     * @param employeeId of the employee in question
+     * @param requesterId of the person requesting the employee schedule
+     * @return ResponseEntity of Workday and HTTP status
+     * @throws Exception
+     */
     @GetMapping("/schedule/getWorkDayByDateAndId/{rid}/{employeeId}")
     public ResponseEntity getWorkDayByDate(@RequestBody String date, @PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.INFO)) {
@@ -137,6 +176,14 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Add an employee's workday
+     * @param employeeId of the employee in question
+     * @param requesterId of the person adding the employee's workday
+     * @param body of the post request
+     * @return ResponseEntity of Workday and HTTP status
+     * @throws Exception
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/addWorkDay")
     public ResponseEntity addWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.ASSIGN)) {
@@ -164,6 +211,14 @@ public class EmployeeController {
 
     }
 
+    /**
+     * Modify an employee's workday
+     * @param employeeId of the employee in question
+     * @param requesterId of the person modifying the employee's workday
+     * @param body of the post request
+     * @return ResponseEntity of Workday and HTTP status
+     * @throws Exception
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/ModifyWorkDay")
     public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
@@ -193,6 +248,14 @@ public class EmployeeController {
 
     }
 
+    /**
+     * Delete an employee's workday
+     * @param employeeId of the employee in question
+     * @param requesterId of the person deleting the employee's workday
+     * @param body of the post request
+     * @return ResponseEntity of HTTP status
+     * @throws Exception
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/DeleteWorkDay")
     public ResponseEntity DeleteWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
