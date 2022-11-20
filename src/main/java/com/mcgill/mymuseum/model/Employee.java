@@ -45,6 +45,7 @@ public class Employee extends Account
       throw new RuntimeException("Unable to create employee due to myMuseum. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
+
   public Employee() {
 
   }

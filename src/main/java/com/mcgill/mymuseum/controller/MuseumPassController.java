@@ -23,8 +23,13 @@ public class MuseumPassController {
     MuseumPassService museumPassService;
     @Autowired
     AccountService accountService;
-
-    @RequestMapping(method = RequestMethod.POST, path = "/buy") //POST Method to buy MuseumPass for a visitor
+    /**
+     * Method to buy a museum pass
+     * @param passDate
+     * @param id of visitor
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/buy")
     public ResponseEntity buyMuseumPass(@RequestBody String passDate, @PathVariable String id) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -45,14 +50,16 @@ public class MuseumPassController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/info") //GET method to get pass info from passID
+    /**
+     * Controller method to get information regarding a pass
+     * @param id of pass
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/info")
     public ResponseEntity getMuseumPass(@PathVariable String id) {
         try {
            MuseumPass pass2 = museumPassService.retrieveMuseumPass(Long.parseLong(id)); //retrieve MuseumPass from visitor ID
            MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner(), pass2.getMyMuseum());
-            if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
            if (pass2 == null) {
                throw new NullPointerException();
            }
@@ -62,7 +69,5 @@ public class MuseumPassController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-
     }
 }

@@ -22,7 +22,6 @@ public class DisplayRoom extends Room
   //DisplayRoom Associations
   @ManyToOne(cascade = CascadeType.PERSIST)
   private MyMuseum myMuseum;
-  //this is a test comment for commir
 
   //------------------------
   // CONSTRUCTOR

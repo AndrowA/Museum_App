@@ -1,12 +1,9 @@
 package com.mcgill.mymuseum.dto;
 
-import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.Loan;
-import com.mcgill.mymuseum.model.MyMuseum;
-import com.mcgill.mymuseum.model.Visitor;
 
 import java.sql.Date;
-/*
+/**
     Data Transfer Object for the Loan class.
  */
 public class LoanDTO {
@@ -24,33 +21,56 @@ public class LoanDTO {
         this.aLoaneeName = aLoaneeName;
         this.aLoanStatus = aLoanStatus;
         this.aArtifactName = aArtifactName;
+        this.aArtifactId = aArtifactId;
         this.aMyMuseumName = aMyMuseumName;
     }
 
+    /**
+     * getter for artifactId
+     * @return artifactId
+     */
     public Long getaArtifactId() {
         return aArtifactId;
     }
-
+    /**
+     * getter for loaneeName
+     * @return loaneeName
+     */
     public String getaLoaneeName() {
         return aLoaneeName;
     }
-
+    /**
+     * getter for artifactName
+     * @return artifactName
+     */
     public String getaArtifactName() {
         return aArtifactName;
     }
-
+    /**
+     * getter for MyMuseumName
+     * @return MyMuseumName
+     */
     public String getaMyMuseumName() {
         return aMyMuseumName;
     }
-
+    /**
+     * getter for endDate
+     * @return endDate
+     */
     public Date getaEndDate() {
         return aEndDate;
     }
-
+    /**
+     * getter for startDate
+     * @return startDate
+     */
     public Date getaStartDate() {
         return aStartDate;
     }
-
+    /**
+     * getter for loanStatus
+     * @return loanStatus
+     */
     public Loan.LoanStatus getaLoanStatus() {
         return aLoanStatus;
     }

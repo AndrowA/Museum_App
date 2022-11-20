@@ -5,11 +5,13 @@ import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class VisitorService {
 
     AccountRepository visitorRepository;
@@ -18,7 +20,7 @@ public class VisitorService {
         this.visitorRepository = visitorRepository;
     }
 
-
+    @Transactional
     public Visitor createVisitor(Visitor visitor) throws NullPointerException {
         try {
             Visitor createdVisitor = visitorRepository.save(visitor);
@@ -27,6 +29,8 @@ public class VisitorService {
             throw new NullPointerException("Visitor already existed");
         }
     }
+
+    @Transactional
     public Visitor retrieveVisitor(long id) {
         try {
             Optional<Account> optionalAccount = visitorRepository.findById(id);

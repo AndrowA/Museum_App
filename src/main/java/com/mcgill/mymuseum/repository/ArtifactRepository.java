@@ -1,13 +1,10 @@
 package com.mcgill.mymuseum.repository;
 
 import com.mcgill.mymuseum.model.Artifact;
-import org.springframework.data.jpa.repository.Modifying;
+import com.mcgill.mymuseum.model.Room;
 import org.springframework.data.repository.CrudRepository;
 
-import java.awt.print.Pageable;
+import java.util.Optional;
 
 public interface ArtifactRepository extends CrudRepository<Artifact,Long> {
-    Iterable<Artifact> findArtifactsByPageAndNumber(int amount, Pageable page);
-    Artifact modifyArtifact(int id, Artifact newArtifact);
-
 }

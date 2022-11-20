@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class MuseumPassServiceTest {
     @Autowired
-     MuseumPassRepository passRepository;
+    MuseumPassRepository passRepository;
     @Autowired
     AccountRepository accountRepository;
     @Autowired
@@ -50,7 +50,7 @@ public class MuseumPassServiceTest {
         MuseumPass PassTest = museumPassService.createPass(museumPass, Math.toIntExact(visitorID));
         assertEquals(PassTest.getOwner().getAccountId(), museumPassService.retrieveMuseumPass(museumPassId).getOwner().getAccountId());
         assertEquals(PassTest.getOwner().getAccountId(), visitorID);
-    }
+
     @Test
     public void testEmployeeCantCreatePass() { //test to check if an employee can't create a pass
         Employee employee = new Employee();
