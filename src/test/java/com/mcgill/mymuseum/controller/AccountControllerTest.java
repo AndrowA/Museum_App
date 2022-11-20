@@ -2,8 +2,8 @@ package com.mcgill.mymuseum.controller;
 import com.mcgill.mymuseum.dto.AccountDTO;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.service.AccountService;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("integration")
 @SpringBootTest
 public class AccountControllerTest {
 

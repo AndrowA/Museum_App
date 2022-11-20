@@ -154,7 +154,6 @@ public class AccountService {
     public Long findAccountIDByEmailAndPassword(String email, String password){
 
         Iterable<Account> accounts = accountRepository.findAll();
-
         for (Account account: accounts){
             if (account.getEmail()!=null && account.getPassword()!=null && account.getEmail().equals(email) && account.getPassword().equals(password)){
                 return Long.valueOf(account.getAccountId());
