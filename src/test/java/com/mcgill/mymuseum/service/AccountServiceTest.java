@@ -80,7 +80,7 @@ public class AccountServiceTest {
         workday = workDayRepository.save(workday);
         Long workdayID = workday.getId();
 
-        assertEquals(accountService.findTargetType(presidentId), AccountService.TargetType.EMPLOYEE);
+        assertEquals(accountService.findTargetType(presidentId), AccountService.TargetType.PRESIDENT);
         assertEquals(accountService.findTargetType(employeeId), AccountService.TargetType.EMPLOYEE);
         assertEquals(accountService.findTargetType(visitorID), AccountService.TargetType.VISITOR);
         assertEquals(accountService.findTargetType(artifactId), AccountService.TargetType.ARTIFACT);
