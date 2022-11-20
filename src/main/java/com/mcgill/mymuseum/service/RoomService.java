@@ -6,6 +6,7 @@ import com.mcgill.mymuseum.repository.ArtifactRepository;
 import com.mcgill.mymuseum.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ public class RoomService {
     @Autowired
     ArtifactRepository artifactRepository;
 
+    @Transactional
     public Room retrieveRoom(long id) throws Exception{
         Optional<Room> room = roomRepository.findById(id);
         if(room.isEmpty()){
@@ -25,6 +27,7 @@ public class RoomService {
         }
     }
 
+    @Transactional
     public Room retrieveRoomByArtifactId(long artifactId) throws Exception{
         Optional<Artifact> artifact = artifactRepository.findById(artifactId);
 
@@ -35,6 +38,7 @@ public class RoomService {
         }
     }
 
+    @Transactional
     public Room saveRoom(Room room){
         return roomRepository.save(room);
     }
