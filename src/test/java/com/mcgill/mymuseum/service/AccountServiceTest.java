@@ -2,15 +2,12 @@ package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.*;
 import com.mcgill.mymuseum.repository.*;
-import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;

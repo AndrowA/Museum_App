@@ -1,14 +1,10 @@
 package com.mcgill.mymuseum.dto;
 
-import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.model.Loan;
-import com.mcgill.mymuseum.model.MyMuseum;
-import com.mcgill.mymuseum.model.Visitor;
 
 import java.sql.Date;
 /**
     Data Transfer Object for the Loan class.
-    @author Radu Petrescu
  */
 public class LoanDTO {
     private Date aStartDate;

@@ -9,7 +9,6 @@ import com.mcgill.mymuseum.repository.WorkDayRepository;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.EmployeeService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -219,6 +218,8 @@ public class EmployeeControllerTest {
 
         String startTime = "9:00";
         String endTime = "13:00";
+        workDay.setStartTime(startTime);
+        workDay.setEndTime(endTime);
         String employeeEmail = employee.getEmail();
         WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeEmail, employee.getAccountId());
         List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();

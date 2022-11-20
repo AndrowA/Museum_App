@@ -24,6 +24,12 @@ public class MuseumPassController {
     @Autowired
     AccountService accountService;
 
+    /**
+     * Method to buy a museum pass
+     * @param passDate
+     * @param id of visitor
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/buy")
     public ResponseEntity buyMuseumPass(@RequestBody String passDate, @PathVariable String id) {
         ObjectMapper mapper = new ObjectMapper();
@@ -45,6 +51,11 @@ public class MuseumPassController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Controller method to get information regarding a pass
+     * @param id of pass
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
     @RequestMapping(method = RequestMethod.GET, path = "/info")
     public ResponseEntity getMuseumPass(@PathVariable String id) {
         try {
