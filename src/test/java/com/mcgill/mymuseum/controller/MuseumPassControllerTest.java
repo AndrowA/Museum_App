@@ -54,7 +54,7 @@ public class MuseumPassControllerTest {
         visitor.setEmail("h@gmail.com");
         visitor.setAccountId(Long.parseLong(id));
         visitor.setMyMuseum(museum);
-        ResponseEntity<Long> out =  passController.buyMuseumPass(s,id);
+        ResponseEntity<Long> out =  passController.buyMuseumPass(passDate,id);
         assertTrue(out.getStatusCode().equals(HttpStatus.OK));
         assertEquals(passDate, passService.retrieveMuseumPass(out.getBody()).getPassDate());
         assertEquals(id, passService.retrieveMuseumPass(out.getBody()).getPassId());
@@ -72,7 +72,7 @@ public class MuseumPassControllerTest {
         visitor.setEmail("h@gmail.com");
         visitor.setAccountId(Long.parseLong(id));
         visitor.setMyMuseum(museum);
-        ResponseEntity<Long> out =  passController.buyMuseumPass(museumPassDTO,id);
+        ResponseEntity<Long> out =  passController.buyMuseumPass(passDate,id);
         assertTrue(out.getStatusCode().equals(HttpStatus.OK));
         assertEquals(passDate, passService.retrieveMuseumPass(out.getBody()).getPassDate());
         assertEquals(id, passService.retrieveMuseumPass(out.getBody()).getPassId());

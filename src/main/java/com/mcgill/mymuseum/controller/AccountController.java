@@ -48,7 +48,7 @@ public class AccountController {
 
     @PostMapping("/remove/{rid}/{id}")
     public ResponseEntity removeUser(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
-        if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)) {
+        if (accountService.authenticate(requesterId,id, AccountService.Action.REMOVE)) {
             try {
                 boolean out = accountService.removeAccount(requesterId);
                 return new ResponseEntity<>(out, HttpStatus.OK);

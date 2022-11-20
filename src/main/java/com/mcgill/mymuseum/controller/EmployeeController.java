@@ -107,6 +107,8 @@ public class EmployeeController {
                     WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
                     scheduleDTO.add(workDayDTO);
                 }
+                //System.out.println(scheduleDTO);
+                //System.out.println(scheduleDTO.get(0).getStartTime());
                 return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
             } catch(Exception e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -123,6 +125,7 @@ public class EmployeeController {
             Employee employee = employeeService.retrieveEmployee(employeeId);
             try {
                 WorkDay workDay = employeeService.getWorkDayByDate(Date.valueOf(date), employeeId);
+                System.out.println("this is the work day:" + workDay);
                 String startTime = workDay.getStartTime();
                 String endTime = workDay.getEndTime();
                 Date day = workDay.getDay();
@@ -165,7 +168,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/ModifyWorkDay")
-    public ResponseEntity ModifyWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
+    public ResponseEntity modifyWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -194,17 +197,22 @@ public class EmployeeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/DeleteWorkDay")
-    public ResponseEntity DeleteWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
+    public ResponseEntity deleteWorkDay(@RequestBody String date, @PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
-            ObjectMapper mapper = new ObjectMapper();
+            Employee employee = employeeService.retrieveEmployee(employeeId);
             try {
-                WorkDay deletingWorkDay = mapper.readValue(body, WorkDay.class);
-                Date date = deletingWorkDay.getDay();
-
-                employeeService.deleteWorkDay(date, employeeId);
-                return new ResponseEntity<>(HttpStatus.OK);
+                WorkDay workDay = employeeService.getWorkDayByDate(Date.valueOf(date), employeeId);
+                System.out.println(workDay);
+                if(workDay != null) {
+                    System.out.println("less go");
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } else {
+                    System.out.println("option 2");
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("option 3");
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else {
