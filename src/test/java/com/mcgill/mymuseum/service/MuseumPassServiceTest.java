@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 public class MuseumPassServiceTest {
     @Autowired
-     MuseumPassRepository passRepository;
+    MuseumPassRepository passRepository;
     @Autowired
     AccountRepository accountRepository;
     @Autowired
@@ -26,13 +26,13 @@ public class MuseumPassServiceTest {
     @Autowired
     VisitorService visitorService;
     @BeforeEach
-    public void clearDatabase(){
+    public void clearDatabase(){ //db clear
         passRepository.deleteAll();
         accountRepository.deleteAll();
     }
 
     @Test
-    public void testGetPassById() {
+    public void testGetPassById() { //tests if we can get pass through service
         MuseumPass museumPass = new MuseumPass();
         museumPass = passRepository.save(museumPass);
         Long museumPassId = museumPass.getPassId();
@@ -40,7 +40,7 @@ public class MuseumPassServiceTest {
     }
 
     @Test
-    public void testCreatePass() {
+    public void testCreatePass() { //test if we can create pass for a visitor
         Visitor visitor = new Visitor();
         visitor = accountRepository.save(visitor);
         Long visitorID = visitor.getAccountId();
@@ -50,9 +50,9 @@ public class MuseumPassServiceTest {
         MuseumPass PassTest = museumPassService.createPass(museumPass, Math.toIntExact(visitorID));
         assertEquals(PassTest.getOwner().getAccountId(), museumPassService.retrieveMuseumPass(museumPassId).getOwner().getAccountId());
         assertEquals(PassTest.getOwner().getAccountId(), visitorID);
-    }
+
     @Test
-    public void testEmployeeCantCreatePass() {
+    public void testEmployeeCantCreatePass() { //test to check if an employee can't create a pass
         Employee employee = new Employee();
         employee = accountRepository.save(employee);
         Long employeeId = employee.getAccountId();
@@ -66,7 +66,7 @@ public class MuseumPassServiceTest {
         }
     }
     @Test
-    public void testPresidentCantCreatePass() {
+    public void testPresidentCantCreatePass() { //test to check if a president can't create a pass
         President president = new President();
         president = accountRepository.save(president);
         Long presidentAccountId = president.getAccountId();
@@ -80,7 +80,7 @@ public class MuseumPassServiceTest {
         }
     }
     @Test
-    public void testDeletePass() {
+    public void testDeletePass() { //test to check if a pass can be deleted
         MuseumPass museumPass = new MuseumPass();
         museumPass = passRepository.save(museumPass);
         museumPass.delete();

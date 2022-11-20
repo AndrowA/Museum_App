@@ -24,6 +24,7 @@ public class MuseumPassService {
         return museumPassRepository.findAll();
     }
 
+
     /**
      * Method to retrieve museum pass by id
      * @param id of pass
@@ -34,6 +35,7 @@ public class MuseumPassService {
         return museumPassRepository.findById(id).isPresent()?museumPassRepository.findById(id).get():null;
 
     }
+
 
     /**
      * Method to create pass for a visitor
