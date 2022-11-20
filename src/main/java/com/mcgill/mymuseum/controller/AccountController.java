@@ -18,6 +18,11 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
+    /**
+     * Controller method to register an account
+     * @param account body of an account DTO as a post request
+     * @return ResponseEntity of account if successful or HTTP status
+     */
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody AccountDTO account){
         AccountService.AccountType accountType;
@@ -35,6 +40,11 @@ public class AccountController {
 
     }
 
+    /**
+     * Controller method to login into system
+     * @param account body of an account DTO as a post request
+     * @return ResponseEntity of account if successful or HTTP status
+     */
     @PostMapping("/login")
     public ResponseEntity loginUser(@RequestBody AccountDTO account){
         try {
@@ -46,6 +56,12 @@ public class AccountController {
 
     }
 
+    /**
+     * Controller method to remove an account
+     * @param id of account to be removed
+     * @param requesterId
+     * @return ResponseEntity of account if successful or HTTP status
+     */
     @PostMapping("/remove/{rid}/{id}")
     public ResponseEntity removeUser(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
         if (accountService.authenticate(requesterId,id, AccountService.Action.REMOVE)) {
@@ -61,6 +77,12 @@ public class AccountController {
 
     }
 
+    /**
+     *
+     * @param id
+     * @param requesterId
+     * @return
+     */
     @GetMapping("/info/{rid}/{id}")
     public ResponseEntity getAccount(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
         if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)){

@@ -11,6 +11,12 @@ public class AccountDTO {
     private Double overTimeHourlyWage=null;
     public AccountDTO(){}
 
+    /**
+     * Constructor of accountDTO
+     * @param email
+     * @param password
+     * @param accountType
+     */
     public AccountDTO(String email, String password, String accountType){
         this.email = email;
         this.password = password;
