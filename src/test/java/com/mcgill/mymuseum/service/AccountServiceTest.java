@@ -174,12 +174,9 @@ public class AccountServiceTest {
         Visitor visitor = new Visitor();
         visitor = accountRepository.save(visitor);
         Long visitorID = visitor.getAccountId();
-
         assertEquals(president.getAccountId(), accountService.findAccountByID(presidentId).getAccountId());
         assertEquals(visitor.getAccountId(), accountService.findAccountByID(visitorID).getAccountId());
         assertEquals(employee.getAccountId(), accountService.findAccountByID(employeeId).getAccountId());
-
-
     }
 
     @Test
@@ -216,7 +213,6 @@ public class AccountServiceTest {
 
     @Test
     public void testRemoveAccount(){
-
         String email = "test@example.com";
         String password = "password";
         AccountService.AccountType type = AccountService.AccountType.EMPLOYEE;
