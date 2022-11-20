@@ -13,6 +13,14 @@ public class MuseumPassDTO {
     private Long passId;
     private Integer passCost;
 
+    /**
+     * Constructor of museum pass DTO
+     * @param passId
+     * @param passCost
+     * @param aPassDate
+     * @param aOwner
+     * @param aMyMuseum
+     */
     public MuseumPassDTO(Long passId, Integer passCost, Date aPassDate, Visitor aOwner, MyMuseum aMyMuseum) {
         this.aPassDate = aPassDate;
         this.aOwner = aOwner;
