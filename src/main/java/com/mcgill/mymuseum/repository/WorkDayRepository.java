@@ -9,5 +9,5 @@ import java.util.List;
 public interface WorkDayRepository extends CrudRepository<WorkDay,Long> {
     List<WorkDay> findWorkDaysByEmployee_AccountId(Long employeeId);
     WorkDay findWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
-    WorkDay deleteWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
+    Integer deleteWorkDayByDayAndEmployeeAccountId(Date day, Long employeeId);
 }

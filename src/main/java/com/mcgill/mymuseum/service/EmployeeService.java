@@ -74,7 +74,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public WorkDay deleteWorkDay(Date date, Long employeeId) {
+    public Integer deleteWorkDay(Date date, Long employeeId) {
         return workDayRepository.deleteWorkDayByDayAndEmployeeAccountId(date, employeeId);
     }
 }
