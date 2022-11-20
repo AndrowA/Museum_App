@@ -218,6 +218,8 @@ public class EmployeeControllerTest {
 
         String startTime = "9:00";
         String endTime = "13:00";
+        workDay.setStartTime(startTime);
+        workDay.setEndTime(endTime);
         String employeeEmail = employee.getEmail();
         WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeEmail, employee.getAccountId());
         List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();

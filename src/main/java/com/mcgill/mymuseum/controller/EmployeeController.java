@@ -99,16 +99,19 @@ public class EmployeeController {
             try {
                 Employee employee = employeeService.retrieveEmployee(employeeId);
                 List<WorkDayDTO> scheduleDTO = new ArrayList<WorkDayDTO>();
-                for (WorkDay workDay : employeeService.getSchedule(employeeId)) {
+                List<WorkDay> loopingList = employeeService.getSchedule(employeeId);
+                System.out.println(loopingList.get(0));
+                for (WorkDay workDay : loopingList) {
                     String startTime = workDay.getStartTime();
+                    System.out.println(startTime);
                     String endTime = workDay.getEndTime();
                     Date day = workDay.getDay();
                     String employeeName = employee.getEmail();
                     WorkDayDTO workDayDTO = new WorkDayDTO(startTime, endTime, day, employeeName, employeeId);
                     scheduleDTO.add(workDayDTO);
                 }
-                //System.out.println(scheduleDTO);
-                //System.out.println(scheduleDTO.get(0).getStartTime());
+                System.out.println(scheduleDTO);
+                System.out.println(scheduleDTO.get(0).getStartTime());
                 return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
             } catch(Exception e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
