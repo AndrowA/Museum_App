@@ -1,31 +1,40 @@
-# 🎨 Museum Software System 
-## Welcome to Group 16 Project
+## Minimal [(Free version)](https://minimal-kit-react.vercel.app/)
 
-### Group Introduction 
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Here you will find a brief description of the project, overview table with names, team roles, and individual efforts along with a project report.
+> Free React Admin Dashboard made with Material-UI components and React.
 
-## Project description and scope
+![preview](public/assets/preview.jpg)
 
-The project consists in designing and implementing a Museum Software System for a customer that will allow museum visitors to buy passes and loan items online. It should also allow for managers and employees to view their schedules, approve loans (if clearance permits) and store artefacts in a database. The system should be accessible through a web frontend for all users and function in a proper manner.
+| [Minimal Free](https://minimal-kit-react.vercel.app/) | [Minimal](https://material-ui.com/store/items/minimal-dashboard/) |
+| ----------------------------------------------------- | :---------------------------------------------------------------- |
+| **6** Demo pages                                      | **50+** demo pages                                                |
+| -                                                     | ✓ Multi-language                                                  |
+| -                                                     | ✓ Dark/Light Mode 🌓                                              |
+| -                                                     | ✓ [More components](https://minimals.cc/components)               |
+| -                                                     | ✓ Next.js version                                                 |
+| -                                                     | ✓ TypeScript version                                              |
+| -                                                     | ✓ Design files (Figma & Sketch)                                   |
 
-This iteration of the project focused on the implementation and testing of backend services and creating a RESTful api to allow the frontend to interface with the CRUD functionality of the application. 
+## Page demo
 
-# Team members
-| Name                | GitHub username | Team Role      |
-|---------------------|-----------------|----------------|
-| Hadi Ghaddar        | hadi-ghaddar    | Developer       | 
-| Androw Abd El Malak | AndrowAM        | Tester         | 
-| Shady Guindi        | Shadysjn        | Scrum Master   | 
-| Daniel Makhlin      | DanielMakhlin   | Developer       | 
-| Yassine Meliani     | yassinemeliani  | Developer | 
-| Radu Petrescu       | PetrescuRad     | Developer       |
-# Time Table Deliverable 2
-| Name                | Time spent | Tasks done |
-|---------------------|------------|------------|
-| Hadi Ghaddar        | 25 hours   | controller development, Tests, documentation | 
-| Androw Abd El Malak | 25 hours   | controller development, Tests, documentation | 
-| Shady Guindi        | 25 hours   | controller development, Tests, documentation | 
-| Daniel Makhlin      | 25 hours   | controller development, Tests, documentation | 
-| Yassine Meliani     | 25 hours   | controller development, Tests, documentation | 
-| Radu Petrescu       | 25 hours   | controller development, Tests, documentation | 
+- [Dashboard](https://minimal-kit-react.vercel.app/dashboard/app)
+- [Users](https://minimal-kit-react.vercel.app/dashboard/user)
+- [Product](https://minimal-kit-react.vercel.app/dashboard/products)
+- [Blog](https://minimal-kit-react.vercel.app/dashboard/blog)
+- [Login](https://minimal-kit-react.vercel.app/login)
+- [Not Found](https://minimal-kit-react.vercel.app/404)
+
+## Getting started
+
+- Recommended `node js 16.x` and `npm 6+`. (suggestion v16.15.0)
+- Install dependencies: `npm install` / `yarn install`
+- Start the project: `npm run start` / `yarn start`
+
+## License
+
+Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
+
+## Contact us
+
+Email Us: support@minimals.cc
