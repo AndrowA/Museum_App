@@ -128,6 +128,113 @@ export const useApiClient = () => {
     return output;
   }, []);
 
+  // Employee endpoint
+  const registerEmployeeWithEmailAndPassword = useCallback(async (email, password) => {
+    await axios
+      .post(`${url}/employee/register`, {
+        email,
+        password,
+        accountType: 'EMPLOYEE',
+      })
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `registered new employee`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  const removeEmployee = useCallback(async (requesterId, employeeId) => {
+    await axios
+      .post(`${url}/employee/remove/${requesterId}/${employeeId}`)
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Employee successfully removed`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  // TOOD: verify format
+  const setEmployeeSalary = useCallback(async (requesterId, employeeId, hourlyWage, overTimeHourlyWage) => {
+    axios
+      .post(`${url}/employee/${requesterId}/${employeeId}`, {
+        hourlyWage,
+        overTimeHourlyWage,
+      })
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Employee salary updated`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  const getEmployee = useCallback(async (requesterId, employeeId) => {
+    const output = await axios
+      .get(`${url}/employee/info/${requesterId}/${employeeId}`)
+      .then((response) => response.data)
+      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+    return output;
+  }, []);
+
+  const getEmployeeSchedule = useCallback(async (requesterId, employeeId) => {
+    const output = await axios
+      .get(`${url}/employee/getSchedule/${requesterId}/${employeeId}`)
+      .then((response) => response.data)
+      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+    return output;
+  }, []);
+
+  const getWorkdayByDate = useCallback(async (requesterId, employeeId) => {
+    const output = await axios
+      .get(`${url}/employee/schedule/getWorkDayByDateAndId/${requesterId}/${employeeId}`)
+      .then((response) => response.data)
+      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+    return output;
+  });
+
+  const addWorkDayForEmployee = useCallback(async (employeeId, requesterId, startTime, endTime, day) => {
+    await axios
+      .post(`${url}/employee/schedule/${requesterId}/${employeeId}/addWorkDay`, {
+        startTime,
+        endTime,
+        day,
+      })
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Workday added to employee schedule`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  const modifyWorkDayForEmployee = useCallback(async (employeeId, requesterId, startTime, endTime, day) => {
+    await axios
+      .post(`${url}/employee/schedule/${requesterId}/${employeeId}/ModifyWorkDay`, {
+        startTime,
+        endTime,
+        day,
+      })
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Workday modified in employee schedule`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  const removeWorkDayForEmployee = useCallback(async (employeeId, requesterId, day) => {
+    await axios
+      .post(`${url}/employee/schedule/${requesterId}/${employeeId}/ModifyWorkDay`, day)
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Workday removed from employee schedule`, severity: 'success' }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
   return {
     registerWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -139,5 +246,14 @@ export const useApiClient = () => {
     modifyArtifact,
     assignArtifactRoom,
     getRoomInfo,
+    registerEmployeeWithEmailAndPassword,
+    removeEmployee,
+    setEmployeeSalary,
+    getEmployee,
+    getEmployeeSchedule,
+    getWorkdayByDate,
+    addWorkDayForEmployee,
+    modifyWorkDayForEmployee,
+    removeWorkDayForEmployee,
   };
 };
