@@ -4,28 +4,42 @@ import { useNavigate } from 'react-router-dom';
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
+// eslint-disable-next-line import/no-unresolved
+import { useApiClient } from 'apiClient/useApiClient';
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
-
+  const { signInWithEmailAndPassword } = useApiClient();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState(undefined);
+  const [password, setPassword] = useState(undefined);
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const handleClick = async () => {
+    // signInWithEmailAndPassword(email, password);
+    navigate('/artifacts');
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField
+          name="email"
+          label="Email address"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
