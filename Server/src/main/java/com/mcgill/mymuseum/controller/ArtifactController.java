@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/artifact")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArtifactController {
     @Autowired
     ArtifactService artifactService;

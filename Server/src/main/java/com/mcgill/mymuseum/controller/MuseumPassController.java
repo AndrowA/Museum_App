@@ -15,9 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.NoSuchElementException;
 
 @RestController
-@CrossOrigin(origins = "*")
 @JsonFormat(pattern="yyyy-MM-dd")
 @RequestMapping("/museumPass/{id}")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MuseumPassController {
     @Autowired
     MuseumPassService museumPassService;

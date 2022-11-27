@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LoanController {
     @Autowired
     LoanService loanService;
