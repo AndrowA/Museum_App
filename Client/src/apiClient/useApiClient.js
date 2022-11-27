@@ -192,7 +192,7 @@ export const useApiClient = () => {
       .then((response) => response.data)
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
     return output;
-  });
+  },[]);
 
   const addWorkDayForEmployee = useCallback(async (employeeId, requesterId, startTime, endTime, day) => {
     await axios

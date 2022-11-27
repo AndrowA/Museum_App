@@ -1,8 +1,12 @@
+/* eslint-disable import/no-unresolved */
 import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
+import { logOut } from 'redux/loginSlice';
+import { useDispatch } from 'react-redux';
+import { sendMessage } from 'redux/alertSlice';
 import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
@@ -26,6 +30,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const dispatch = useDispatch();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -97,7 +102,14 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            dispatch(logOut());
+            dispatch(sendMessage({ open: true, message: 'Logged out', severity: 'success' }));
+          }}
+          sx={{ m: 1 }}
+        >
           Logout
         </MenuItem>
       </Popover>

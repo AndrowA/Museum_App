@@ -3,8 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
 // hooks
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
@@ -43,14 +41,12 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-
   const mdUp = useResponsive('up', 'md');
 
   return (
     <>
       <Helmet>
-        <title> Login | MyMuseum </title>
+        <title> Sign Up | MyMuseum </title>
       </Helmet>
 
       <StyledRoot>
@@ -65,7 +61,7 @@ export default function LoginPage() {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              Welcome to MyMuseum
             </Typography>
             <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
@@ -74,13 +70,13 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to MyMuseum
+              Sign up to MyMuseum
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              <Link href="/register" variant="subtitle2">
-                Get started
+              Already have an account? {''}
+              <Link variant="subtitle2" href="/login">
+                Sign In
               </Link>
             </Typography>
 
@@ -89,7 +85,7 @@ export default function LoginPage() {
                 What color is your bugatti
               </Typography>
             </Divider>
-            <LoginForm />
+            <SignUpForm />
           </StyledContent>
         </Container>
       </StyledRoot>
