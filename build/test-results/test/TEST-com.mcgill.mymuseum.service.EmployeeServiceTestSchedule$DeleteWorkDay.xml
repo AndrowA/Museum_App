@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test delete work day" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-11-27T04:26:29" hostname="DESKTOP-DD9SDJD" time="0.002">
+  <properties/>
+  <testcase name="workDayDoesntExist()" classname="com.mcgill.mymuseum.service.EmployeeServiceTestSchedule$DeleteWorkDay" time="0.001"/>
+  <testcase name="workDayExists()" classname="com.mcgill.mymuseum.service.EmployeeServiceTestSchedule$DeleteWorkDay" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

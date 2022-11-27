@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - AccountControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>AccountControllerTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mcgill.mymuseum.controller.html">com.mcgill.mymuseum.controller</a> &gt; AccountControllerTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">8</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.457s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testGetAccountInvalidReq()</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testGetAccountValidReq()</td>
+<td class="success">0.033s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testLoginUserInvalidReq()</td>
+<td class="success">0.050s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testLoginUserValidReq()</td>
+<td class="success">0.017s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRegisterUserInvalidReq()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRegisterUserValidReq()</td>
+<td class="success">0.034s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRemoveEmployeeInvalidReq()</td>
+<td class="success">0.286s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRemoveEmployeeValidReq()</td>
+<td class="success">0.018s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2022-11-26 23:26:27.665  INFO 24424 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.mcgill.mymuseum.controller.AccountControllerTest], using SpringBootContextLoader
+2022-11-26 23:26:27.666  INFO 24424 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.mcgill.mymuseum.controller.AccountControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2022-11-26 23:26:27.666  INFO 24424 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mcgill.mymuseum.controller.AccountControllerTest]: AccountControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2022-11-26 23:26:27.675  INFO 24424 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mcgill.mymuseum.MyMuseumApplication for test class com.mcgill.mymuseum.controller.AccountControllerTest
+2022-11-26 23:26:27.677  INFO 24424 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2022-11-26 23:26:27.677  INFO 24424 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5ab70df7, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6764201e, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@5a3d52a0, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7a0f1f9d, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@18356d9e, org.springframework.test.context.support.DirtiesContextTestExecutionListener@5e97da56, org.springframework.test.context.transaction.TransactionalTestExecutionListener@6e8f3b76, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6cfe32cd, org.springframework.test.context.event.EventPublishingTestExecutionListener@5f14eb51, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@3f31cf8f, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@28721794, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3507200d, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@4db10b9f, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@7c4de811, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@443b9ebb]
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, hourly_wage, my_museum_museum_id, over_time_hourly_wage, dtype, account_id) values (?, ?, ?, ?, ?, ?, ?, 'Employee', ?)
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, my_museum_museum_id, dtype, account_id) values (?, ?, ?, ?, ?, 'Visitor', ?)
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, hourly_wage, my_museum_museum_id, over_time_hourly_wage, dtype, account_id) values (?, ?, ?, ?, ?, ?, ?, 'President', ?)
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, hourly_wage, my_museum_museum_id, over_time_hourly_wage, dtype, account_id) values (?, ?, ?, ?, ?, ?, ?, 'Employee', ?)
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, hourly_wage, my_museum_museum_id, over_time_hourly_wage, dtype, account_id) values (?, ?, ?, ?, ?, ?, ?, 'Employee', ?)
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, my_museum_museum_id, dtype, account_id) values (?, ?, ?, ?, ?, 'Visitor', ?)
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, my_museum_museum_id, dtype, account_id) values (?, ?, ?, ?, ?, 'Visitor', ?)
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: select nextval ('hibernate_sequence')
+Hibernate: insert into account (email, first_name, last_name, password, my_museum_museum_id, dtype, account_id) values (?, ?, ?, ?, ?, 'Visitor', ?)
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_0_, account0_.email as email3_0_0_, account0_.first_name as first_na4_0_0_, account0_.last_name as last_nam5_0_0_, account0_.password as password6_0_0_, account0_.hourly_wage as hourly_w7_0_0_, account0_.my_museum_museum_id as my_museu9_0_0_, account0_.over_time_hourly_wage as over_tim8_0_0_, account0_.dtype as dtype1_0_0_, mymuseum1_.museum_id as museum_i1_4_1_, mymuseum1_.address as address2_4_1_, mymuseum1_.price_per_pass as price_pe3_4_1_, storageroo2_.room_id as room_id2_5_2_, storageroo2_.name as name3_5_2_, storageroo2_.my_museum_museum_id as my_museu5_5_2_, artifacts3_.room_room_id as room_roo6_1_3_, artifacts3_.artifact_id as artifact1_1_3_, artifacts3_.artifact_id as artifact1_1_4_, artifacts3_.description as descript2_1_4_, artifacts3_.my_museum_museum_id as my_museu5_1_4_, artifacts3_.name as name3_1_4_, artifacts3_.room_room_id as room_roo6_1_4_, artifacts3_.url as url4_1_4_, mymuseum4_.museum_id as museum_i1_4_5_, mymuseum4_.address as address2_4_5_, mymuseum4_.price_per_pass as price_pe3_4_5_, loan5_.loan_id as loan_id1_2_6_, loan5_.artifact_artifact_id as artifact5_2_6_, loan5_.end_date as end_date2_2_6_, loan5_.loan_status as loan_sta3_2_6_, loan5_.loanee_account_id as loanee_a6_2_6_, loan5_.my_museum_museum_id as my_museu7_2_6_, loan5_.start_date as start_da4_2_6_, visitor6_.account_id as account_2_0_7_, visitor6_.email as email3_0_7_, visitor6_.first_name as first_na4_0_7_, visitor6_.last_name as last_nam5_0_7_, visitor6_.password as password6_0_7_, visitor6_.my_museum_museum_id as my_museu9_0_7_, mymuseum7_.museum_id as museum_i1_4_8_, mymuseum7_.address as address2_4_8_, mymuseum7_.price_per_pass as price_pe3_4_8_ from account account0_ left outer join my_museum mymuseum1_ on account0_.my_museum_museum_id=mymuseum1_.museum_id left outer join room storageroo2_ on mymuseum1_.museum_id=storageroo2_.my_museum_museum_id and storageroo2_.dtype='StorageRoom' left outer join artifact artifacts3_ on storageroo2_.room_id=artifacts3_.room_room_id left outer join my_museum mymuseum4_ on artifacts3_.my_museum_museum_id=mymuseum4_.museum_id left outer join loan loan5_ on artifacts3_.artifact_id=loan5_.artifact_artifact_id left outer join account visitor6_ on loan5_.loanee_account_id=visitor6_.account_id left outer join my_museum mymuseum7_ on loan5_.my_museum_museum_id=mymuseum7_.museum_id where account0_.account_id=?
+Hibernate: select account0_.account_id as account_2_0_, account0_.email as email3_0_, account0_.first_name as first_na4_0_, account0_.last_name as last_nam5_0_, account0_.password as password6_0_, account0_.hourly_wage as hourly_w7_0_, account0_.my_museum_museum_id as my_museu9_0_, account0_.over_time_hourly_wage as over_tim8_0_, account0_.dtype as dtype1_0_ from account account0_
+Hibernate: delete from account where account_id=?
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.5.1</a> at Nov. 26, 2022, 11:26:31 p.m.</p>
+</div>
+</div>
+</body>
+</html>

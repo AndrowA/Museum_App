@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Test get loan method" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-11-27T04:26:29" hostname="DESKTOP-DD9SDJD" time="0.005">
+  <properties/>
+  <testcase name="saving loan successfully" classname="com.mcgill.mymuseum.service.LoanServiceTest$GetLoan" time="0.002"/>
+  <testcase name="Approve loan successfully" classname="com.mcgill.mymuseum.service.LoanServiceTest$GetLoan" time="0.001"/>
+  <testcase name="getLoan()" classname="com.mcgill.mymuseum.service.LoanServiceTest$GetLoan" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
