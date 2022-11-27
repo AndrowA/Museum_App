@@ -234,6 +234,71 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
       });
   }, []);
+  
+  // Loan endpoints
+  const getLoan = useCallback(async (loanId) => {
+    const output = await axios
+        .get(`${url}/loan/get/${loanId}`)
+        .then((res)=>res.data)
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+    return output;
+  }, []);
+
+  const requestLoan = useCallback(async (visitorId, artifactId) => {
+    await axios
+        .post(`${url}/loan/createLoanRequest/${visitorId}/${artifactId}`)
+        .then(() => {
+          dispatch( sendMessage({ open: true, message: "Loan successfully requested", severity: 'success' }));
+        })
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+  }, []);
+
+  const approveLoan = useCallback(async (loanId, requesterId) => {
+    await axios
+        .post(`${url}/loan/approveLoan/${loanId}/${requesterId}`)
+        .then((res) => {
+          dispatch( sendMessage({ open: true, message: "Successfully approved loan", severity: 'success' }));
+        })
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+  }, []);
+
+  const returnLoan = useCallback(async (loanId) => {
+    await axios
+        .post(`${url}/loan/returnLoan/${loanId}`)
+        .then((res) => {
+          dispatch( sendMessage({ open: true, message: "Loan has been returned successfully", severity: 'success' }));
+        })
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+  }, []);
+
+  const rejectLoan = useCallback(async (loanId, requesterId) => {
+    await axios
+        .post(`${url}/loan/rejectLoan/${loanId}/${requesterId}`)
+        .then((res) => {
+          dispatch( sendMessage({ open: true, message: "Loan rejected", severity: 'success' }));
+        })
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+  }, []);
+
+//pass endpoints
+  const buyPass = useCallback(async (visitorId, passDate) => {
+    await axios
+        .post(`${url}/museumPass/${visitorId}/buy}`,{
+          passDate,
+        })
+        .then((res) => {
+          dispatch( sendMessage({ open: true, message: "Successfully bought a pass", severity: 'success' }));
+        })
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+  }, []);
+
+  const getPass = useCallback(async (visitorId, passDate) => {
+    const output = await axios
+        .get(`${url}/museumPass/${visitorId}/info}`)
+        .then((res) => res.data)
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+    return output;
+  }, []);
 
   return {
     registerWithEmailAndPassword,
@@ -255,5 +320,12 @@ export const useApiClient = () => {
     addWorkDayForEmployee,
     modifyWorkDayForEmployee,
     removeWorkDayForEmployee,
+    getLoan,
+    requestLoan,
+    approveLoan,
+    returnLoan,
+    rejectLoan,
+    buyPass,
+    getPass,
   };
 };
