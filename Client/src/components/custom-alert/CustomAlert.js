@@ -9,7 +9,6 @@ export function CustomAlert() {
   const dispatch = useDispatch();
   const snackbar = useSelector((state) => state.alert);
 
-  console.log(snackbar);
   const handleClose = () => {
     dispatch(removeMessage());
   };
@@ -21,7 +20,13 @@ export function CustomAlert() {
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
-      <MuiAlert onClose={handleClose} severity={'error'} sx={{ width: '100%' }} variant="filled" elevation={6}>
+      <MuiAlert
+        onClose={handleClose}
+        severity={snackbar.severity}
+        sx={{ width: '100%' }}
+        variant="filled"
+        elevation={6}
+      >
         {snackbar.message}
       </MuiAlert>
     </Snackbar>
