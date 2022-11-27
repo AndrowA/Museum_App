@@ -1,17 +1,20 @@
+/* eslint-disable import/no-unresolved */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
-// eslint-disable-next-line import/no-unresolved
 import { useApiClient } from 'apiClient/useApiClient';
+import { useDispatch } from 'react-redux';
+import { logIn } from 'redux/loginSlice';
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { signInWithEmailAndPassword } = useApiClient();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(undefined);
@@ -19,7 +22,7 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     // signInWithEmailAndPassword(email, password);
-    navigate('/artifacts');
+    // dispatch(logIn());
   };
 
   return (
