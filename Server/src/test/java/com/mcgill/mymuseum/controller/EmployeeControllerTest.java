@@ -45,7 +45,7 @@ public class EmployeeControllerTest {
     @Autowired
     WorkDayRepository workDayRepository;
 
-    @AfterEach
+  //  @AfterEach
     public void clearDatabase() {
         workDayRepository.deleteAll();
         accountRepository.deleteAll();
@@ -254,7 +254,7 @@ public class EmployeeControllerTest {
         Employee employee = new Employee("bob@gmail.com", "password", 12, 200, myMuseum);
 
         WorkDay workDay = new WorkDay();
-        Date day = Date.valueOf("2013-09-04");
+        Date day = Date.valueOf("2013-10-04");
         workDay.setDay(day);
 
         String startTime = "9:00";

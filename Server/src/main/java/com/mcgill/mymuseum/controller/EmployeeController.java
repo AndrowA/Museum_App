@@ -1,19 +1,12 @@
 package com.mcgill.mymuseum.controller;
 import com.mcgill.mymuseum.dto.AccountDTO;
 import com.mcgill.mymuseum.dto.EmployeeDTO;
-import com.mcgill.mymuseum.model.Account;
 import com.mcgill.mymuseum.model.Employee;
-import com.mcgill.mymuseum.model.President;
-import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.EmployeeService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.dto.WorkDayDTO;
-import com.mcgill.mymuseum.model.Artifact;
-import com.mcgill.mymuseum.model.Employee;
-import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.model.WorkDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -264,23 +257,27 @@ public class EmployeeController {
      * @throws Exception
      */
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/DeleteWorkDay")
-    public ResponseEntity deleteWorkDay(@RequestBody String date, @PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
+    public ResponseEntity deleteWorkDay(@RequestBody String body, @PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId) throws Exception {
         if (accountService.authenticate(requesterId, employeeId, AccountService.Action.MODIFY)) {
+            System.out.println(body);
             Employee employee = employeeService.retrieveEmployee(employeeId);
+            ObjectMapper mapper = new ObjectMapper();
             try {
-                WorkDay workDay = employeeService.getWorkDayByDate(Date.valueOf(date), employeeId);
+                WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
+                Date date = newWorkDay.getDay();
+                Integer workDay = employeeService.deleteWorkDay(date, employeeId);
                 System.out.println(workDay);
                 if(workDay != null) {
                     System.out.println("less go");
                     return new ResponseEntity<>(HttpStatus.OK);
                 } else {
                     System.out.println("option 2");
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>("not found 1",HttpStatus.NOT_FOUND);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("option 3");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("not found 1",HttpStatus.NOT_FOUND);
             }
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

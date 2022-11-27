@@ -180,7 +180,7 @@ export const useApiClient = () => {
 
   const getEmployeeSchedule = useCallback(async (requesterId, employeeId) => {
     const output = await axios
-      .get(`${url}/employee/getSchedule/${requesterId}/${employeeId}`)
+      .get(`${url}/employee/schedule/getSchedule/${requesterId}/${employeeId}`)
       .then((response) => response.data)
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
     return output;
@@ -224,9 +224,9 @@ export const useApiClient = () => {
       });
   }, []);
 
-  const removeWorkDayForEmployee = useCallback(async (employeeId, requesterId, day) => {
+  const removeWorkDayForEmployee = useCallback(async (requesterId, employeeId, day) => {
     await axios
-      .post(`${url}/employee/schedule/${requesterId}/${employeeId}/ModifyWorkDay`, day)
+      .post(`${url}/employee/schedule/${requesterId}/${employeeId}/DeleteWorkDay`, {'day': day} )
       .then(() => {
         dispatch(sendMessage({ open: true, message: `Workday removed from employee schedule`, severity: 'success' }));
       })
@@ -280,7 +280,7 @@ export const useApiClient = () => {
         .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
   }, []);
 
-//pass endpoints
+// pass endpoints
   const buyPass = useCallback(async (visitorId, passDate) => {
     await axios
         .post(`${url}/museumPass/${visitorId}/buy}`,{
