@@ -11,6 +11,7 @@ import SignUpPage from './pages/SignUpPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import EmployeeSchedulePage from './pages/EmployeeSchedulePage';
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ export default function Router() {
   const isLoggedIn = useSelector((state) => state.login.value);
   console.log(isLoggedIn);
   const routes = useRoutes([
+
     isLoggedIn
       ? { path: '*', element: <Navigate to="artifacts" /> }
       : {
