@@ -1,8 +1,10 @@
 package com.mcgill.mymuseum.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mcgill.mymuseum.dto.ArtifactDTO;
 import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.exceptions.MuseumException;
+import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.ArtifactService;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/loan")
@@ -25,6 +28,22 @@ public class LoanController {
     @Autowired
     ArtifactService artifactService;
 
+    @Transactional
+    @GetMapping("/getLoans")
+    public ResponseEntity getLoans() throws MuseumException {
+        try{
+            ArrayList<Loan> loanArrayList = (ArrayList<Loan>) loanService.getLoans();
+            ArrayList<LoanDTO> dtos = new ArrayList<>();
+            for(Loan loan : loanArrayList ){
+                dtos.add(new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress()));
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     /**
      * Get for a loan by id
      * @param id of loan
@@ -36,7 +55,7 @@ public class LoanController {
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
         try {
             Loan loan = loanService.retrieveLoanById(id);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null);
+            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
