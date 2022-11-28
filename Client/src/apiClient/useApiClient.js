@@ -186,6 +186,14 @@ export const useApiClient = () => {
     return output;
   }, []);
 
+  const getVisitors = useCallback(async (requesterId) => {
+    const output = await axios
+      .get(`${url}/employee/getVisitors/{rid}`)
+      .then((response) => response.data)
+      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+    return output;
+  }, []);
+
   const getEmployeeSchedule = useCallback(async (requesterId, employeeId) => {
     const output = await axios
       .get(`${url}/employee/schedule/getSchedule/${requesterId}/${employeeId}`)
@@ -324,6 +332,7 @@ export const useApiClient = () => {
     setEmployeeSalary,
     getEmployee,
     getEmployees,
+    getVisitors,
     getEmployeeSchedule,
     getWorkdayByDate,
     addWorkDayForEmployee,
