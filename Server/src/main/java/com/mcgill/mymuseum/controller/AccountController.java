@@ -115,7 +115,7 @@ public class AccountController {
      * @return ResponseEntity of Visitors and HTTP status
      * @throws Exception
      */
-    @GetMapping("/getEmployees/{rid}")
+    @GetMapping("/getVisitors/{rid}")
     public ResponseEntity getEmployees(@PathVariable long rid) throws Exception {
         if (accountService.authenticate(rid, rid, AccountService.Action.INFO)) {
             //get employee by ID

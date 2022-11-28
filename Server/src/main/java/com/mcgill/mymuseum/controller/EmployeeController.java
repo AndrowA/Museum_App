@@ -125,7 +125,6 @@ public class EmployeeController {
                 List<AccountDTO> employeesDTO = new ArrayList<AccountDTO>();
                 Iterable<Employee> loopingList = employeeService.retrieveAllEmployees();
                 for (Employee employee : loopingList) {
-                    Long id = employee.getAccountId();
                     String email = employee.getEmail();
                     String password = employee.getPassword();
                     String accountType = "EMPLOYEE";
