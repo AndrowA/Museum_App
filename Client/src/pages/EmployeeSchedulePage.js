@@ -202,7 +202,7 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {workDayList?.map((row) => {
+                  {workDayList?.map?.((row) => {
                     console.log("this is the workDay List", workDayList)
                     const { startTime, endTime, day} = row;
                     const selectedUser = selected.indexOf(day) !== -1;

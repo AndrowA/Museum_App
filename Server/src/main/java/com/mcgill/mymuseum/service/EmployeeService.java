@@ -86,6 +86,14 @@ public class EmployeeService {
         }
     }
 
+    /**
+     * Service to retreive employee
+     * @return Employee
+     */
+
+    @Transactional
+    public Iterable<Employee> retrieveAllEmployees() {return employeeRepository.findAll();}
+
     // Schedule related methods
 
     /**
