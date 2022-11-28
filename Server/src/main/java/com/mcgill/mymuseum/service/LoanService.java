@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
+
 /**
  * @author Radu Petrescu
  */
@@ -116,25 +118,22 @@ public class LoanService {
      */
     @Transactional
     public Loan rejectLoan(long id) throws MuseumException {
-        if (loanRepository.findById(id).isPresent()) {
-            if (loanRepository.findById(id).get().getLoanStatus().equals(Loan.LoanStatus.Approved)) {
+        Optional<Loan> loan1 = loanRepository.findById(id);
+        if (loan1.isPresent()) {
+            Loan loan = loan1.get();
+            if (loan.getLoanStatus().equals(Loan.LoanStatus.Approved)) {
                 throw new MuseumException("Loan with id: " + id + " has already been approved.");
-            } else if (loanRepository.findById(id).get().getLoanStatus().equals(Loan.LoanStatus.Rejected)) {
+            } else if (loan.getLoanStatus().equals(Loan.LoanStatus.Rejected)) {
                 throw new MuseumException("Loan with id: " + id + " has already been rejected.");
-            } else if (loanRepository.findById(id).get().getLoanStatus().equals(Loan.LoanStatus.Available)) {
+            } else if (loan.getLoanStatus().equals(Loan.LoanStatus.Available)) {
                 throw new MuseumException("Loan with id: "+id+" has already been returned and is available.");
             } else {
-                //set status to available the loan
-                loanRepository.findById(id).get().setLoanStatus(Loan.LoanStatus.Rejected);
-                //remove loan from loanee
-                loanRepository.findById(id).get().getLoanee().removeLoan(loanRepository.findById(id).get());
-                //remove loan from artifact
-                loanRepository.findById(id).get().getArtifact().setLoan(null);
+                loanRepository.deleteById(loan.getLoanId());
             }
         } else {
             throw new MuseumException("Loan with id: "+id+" does not exist.");
         }
-        return loanRepository.findById(id).get();
+        return loan1.get();
     }
 
     /**
@@ -145,8 +144,9 @@ public class LoanService {
      */
     @Transactional
     public Loan returnLoan(long id) throws MuseumException {
-        if (loanRepository.findById(id).isPresent()) {
-            Loan loan = loanRepository.findById(id).get();
+        Optional<Loan> loan1 = loanRepository.findById(id);
+        if (loan1.isPresent()) {
+            Loan loan = loan1.get();
             if (loan.getLoanStatus().equals(Loan.LoanStatus.InReview)) {
                 throw new MuseumException("Loan with id: " + id + " is still in review.");
             } else if (loan.getLoanStatus().equals(Loan.LoanStatus.Rejected)) {
@@ -154,21 +154,11 @@ public class LoanService {
             } else if (loan.getLoanStatus().equals(Loan.LoanStatus.Available)) {
                 throw new MuseumException("Loan with id: "+id+" has already been returned and is available.");
             } else {
-                //set status to available the loan
-                System.out.println("here1");
-                loan.setLoanStatus(Loan.LoanStatus.Available);
-                //remove loan from loanee
-                System.out.println("here2");
-                loan.getLoanee().removeLoan(loanRepository.findById(id).get());
-                //remove loan from artifact
-                if (loan.getArtifact().setLoan(null)){
-                    System.out.println("here3");
-                }
-                loanRepository.save(loan);
+                loanRepository.deleteById(loan.getLoanId());
             }
         } else {
             throw new MuseumException("Loan with id: "+id+" does not exist.");
         }
-        return loanRepository.findById(id).get();
+        return loan1.get();
     }
 }
