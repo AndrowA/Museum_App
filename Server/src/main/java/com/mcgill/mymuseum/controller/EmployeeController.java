@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -105,6 +106,37 @@ public class EmployeeController {
             dto.hourlyWage = employee.getHourlyWage();
             dto.overTimeHourlyWage = employee.getOverTimeHourlyWage();
             return new ResponseEntity<>(dto,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
+     * Getter method to get the schedule of an employee
+     * @param rid of the requester in question
+     * @return ResponseEntity of Employees and HTTP status
+     * @throws Exception
+     */
+    @GetMapping("/getEmployees/{rid}")
+    public ResponseEntity getEmployees(@PathVariable long rid) throws Exception {
+        if (accountService.authenticate(rid, rid, AccountService.Action.INFO)) {
+            //get employee by ID
+            try {
+                List<AccountDTO> employeesDTO = new ArrayList<AccountDTO>();
+                Iterable<Employee> loopingList = employeeService.retrieveAllEmployees();
+                for (Employee employee : loopingList) {
+                    String email = employee.getEmail();
+                    String password = employee.getPassword();
+                    String accountType = "EMPLOYEE";
+                    AccountDTO employeeDTO = new AccountDTO(email,password,accountType);
+                    employeeDTO.setHourlyWage(25.0);
+                    employeeDTO.setOverTimeHourlyWage(50.0);
+                    employeesDTO.add(employeeDTO);
+                }
+                return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
+            } catch(Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
