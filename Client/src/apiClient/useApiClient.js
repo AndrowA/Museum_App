@@ -75,7 +75,7 @@ export const useApiClient = () => {
   }, []);
 
   const fillArtifactList = useCallback(async (count, page) => {
-    await axios
+     await axios
       .get(`${url}/artifact/all/${page}/${count}`)
       .then((response) => {
         dispatch(setArtifactList(response.data));
