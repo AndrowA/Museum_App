@@ -7,6 +7,7 @@ public class AccountDTO {
     private String password=null;
     private String accountType=null;
     private Double hourlyWage=null;
+    private Long id=null;
     private Double overTimeHourlyWage=null;
     public AccountDTO(){}
 
@@ -25,8 +26,16 @@ public class AccountDTO {
         return this.password;
     }
 
+    public Long getId(){
+        return this.id;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() { return this.email; }

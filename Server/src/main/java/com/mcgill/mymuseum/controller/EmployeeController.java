@@ -125,12 +125,14 @@ public class EmployeeController {
                 List<AccountDTO> employeesDTO = new ArrayList<AccountDTO>();
                 Iterable<Employee> loopingList = employeeService.retrieveAllEmployees();
                 for (Employee employee : loopingList) {
+                    Long id = employee.getAccountId();
                     String email = employee.getEmail();
                     String password = employee.getPassword();
                     String accountType = "EMPLOYEE";
                     AccountDTO employeeDTO = new AccountDTO(email,password,accountType);
                     employeeDTO.setHourlyWage(25.0);
                     employeeDTO.setOverTimeHourlyWage(50.0);
+                    employeeDTO.setId(employee.getAccountId());
                     employeesDTO.add(employeeDTO);
                 }
                 return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
