@@ -45,7 +45,7 @@ public class EmployeeControllerTest {
     @Autowired
     WorkDayRepository workDayRepository;
 
-  //  @AfterEach
+    @AfterEach
     public void clearDatabase() {
         workDayRepository.deleteAll();
         accountRepository.deleteAll();
