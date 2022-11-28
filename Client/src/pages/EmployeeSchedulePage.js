@@ -76,10 +76,10 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  const { getEmployeeSchedule, addWorkDayForEmployee, removeWorkDayForEmployee, modifyWorkDayForEmployee } =
+    useApiClient();
 
-  const {getEmployeeSchedule, addWorkDayForEmployee, removeWorkDayForEmployee, modifyWorkDayForEmployee} = useApiClient();
-
-  const userId = useSelector(state=>state.user?.uid);
+  const userId = useSelector((state) => state.user?.uid);
 
   const [workDayList, setWorkDayList] = useState([{}]);
 
@@ -100,16 +100,15 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempWorkDayList = await getEmployeeSchedule(439, 443);
-    setWorkDayList(tempWorkDayList)
-    console.log(tempWorkDayList)
-    }) ()
-  }, [getEmployeeSchedule, userId])
-  
+    (async () => {
+      const tempWorkDayList = await getEmployeeSchedule(userId, userId);
+      setWorkDayList(tempWorkDayList);
+      console.log(tempWorkDayList);
+    })();
+  }, [getEmployeeSchedule, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -202,9 +201,9 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {workDayList?.map((row) => {
-                    console.log("this is the workDay List", workDayList)
-                    const { startTime, endTime, day} = row;
+                  {workDayList?.map?.((row) => {
+                    console.log('this is the workDay List', workDayList);
+                    const { startTime, endTime, day } = row;
                     const selectedUser = selected.indexOf(day) !== -1;
 
                     return (
@@ -233,7 +232,14 @@ export default function UserPage() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentDay(day)}}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(e) => {
+                              handleOpenMenu(e);
+                              setCurrentDay(day);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -309,12 +315,15 @@ export default function UserPage() {
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-          console.log(currentDay)
-          await removeWorkDayForEmployee(439, 443, currentDay)
-          const temp = await getEmployeeSchedule(439, 443)
-          setWorkDayList(temp)
-        }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          onClick={async () => {
+            await removeWorkDayForEmployee(userId, userId, currentDay);
+            const temp = await getEmployeeSchedule(userId, userId);
+            setWorkDayList(temp);
+            handleCloseMenu();
+          }}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
