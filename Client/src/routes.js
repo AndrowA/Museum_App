@@ -12,6 +12,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import EmployeeSchedulePage from './pages/EmployeeSchedulePage';
+import EmployeePage from './pages/EmployeePage';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ export default function Router() {
             { path: '/dashboard/loans', element: <UserPage /> },
             { path: '/dashboard/app', element: <DashboardAppPage /> },
             { path: '/dashboard/user', element: <UserPage /> },
+            { path: '/dashboard/employees', element: <EmployeePage /> },
             { path: '/dashboard/products', element: <ProductsPage /> },
             { path: '/dashboard/blog', element: <BlogPage /> },
             { path: '*', element: <Navigate to={<Page404 />} /> },
