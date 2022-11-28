@@ -5,10 +5,14 @@ import com.mcgill.mymuseum.model.Employee;
 import com.mcgill.mymuseum.model.President;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.service.AccountService;
+import com.mcgill.mymuseum.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -18,6 +22,9 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    VisitorService visitorService;
 
     /**
      * Controller method to register an account
@@ -100,6 +107,36 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
+    }
+
+    /**
+     * Getter method to get all the visitors
+     * @param rid of the requester in question
+     * @return ResponseEntity of Visitors and HTTP status
+     * @throws Exception
+     */
+    @GetMapping("/getEmployees/{rid}")
+    public ResponseEntity getEmployees(@PathVariable long rid) throws Exception {
+        if (accountService.authenticate(rid, rid, AccountService.Action.INFO)) {
+            //get employee by ID
+            try {
+                List<AccountDTO> visitorsDTO = new ArrayList<AccountDTO>();
+                Iterable<Account> loopingList = visitorService.retrieveAllVisitors();
+                for (Account visitor : loopingList) {
+                    String email = visitor.getEmail();
+                    String password = visitor.getPassword();
+                    String accountType = "VISITOR";
+                    AccountDTO visitorDTO = new AccountDTO(email,password,accountType);
+                    visitorDTO.setId(visitor.getAccountId());
+                    visitorsDTO.add(visitorDTO);
+                }
+                return new ResponseEntity<>(visitorsDTO, HttpStatus.OK);
+            } catch(Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
 }

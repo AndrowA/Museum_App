@@ -1,6 +1,7 @@
 package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.Account;
+import com.mcgill.mymuseum.model.Employee;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class VisitorService {
             return null;
         }
     }
+
+    /**
+     * Service to retreive all employees
+     * @return a list of Employees
+     */
+
+    @Transactional
+    public Iterable<Account> retrieveAllVisitors() {return visitorRepository.findAll();}
 
 
 }

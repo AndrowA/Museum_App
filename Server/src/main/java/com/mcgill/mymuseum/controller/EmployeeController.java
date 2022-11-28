@@ -112,7 +112,7 @@ public class EmployeeController {
     }
 
     /**
-     * Getter method to get the schedule of an employee
+     * Getter method to get all the employees
      * @param rid of the requester in question
      * @return ResponseEntity of Employees and HTTP status
      * @throws Exception
