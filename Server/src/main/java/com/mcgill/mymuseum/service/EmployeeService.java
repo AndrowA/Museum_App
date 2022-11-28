@@ -87,8 +87,8 @@ public class EmployeeService {
     }
 
     /**
-     * Service to retreive employee
-     * @return Employee
+     * Service to retreive all employees
+     * @return a list of Employees
      */
 
     @Transactional

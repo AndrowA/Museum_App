@@ -112,7 +112,7 @@ public class EmployeeController {
     }
 
     /**
-     * Getter method to get the schedule of an employee
+     * Getter method to get all the employees
      * @param rid of the requester in question
      * @return ResponseEntity of Employees and HTTP status
      * @throws Exception
@@ -131,6 +131,7 @@ public class EmployeeController {
                     AccountDTO employeeDTO = new AccountDTO(email,password,accountType);
                     employeeDTO.setHourlyWage(25.0);
                     employeeDTO.setOverTimeHourlyWage(50.0);
+                    employeeDTO.setId(employee.getAccountId());
                     employeesDTO.add(employeeDTO);
                 }
                 return new ResponseEntity<>(employeesDTO, HttpStatus.OK);

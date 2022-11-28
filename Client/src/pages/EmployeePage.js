@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
+
 // @mui
 
 import {
@@ -27,6 +28,7 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
+import { useNavigate } from 'react-router';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -35,12 +37,13 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'day', label: 'day', alignRight: false },
-  { id: 'startTime', label: 'startTime', alignRight: false },
-  { id: 'endTime', label: 'endTime', alignRight: false },
+  { id: 'id', label: 'id', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'hourly wage', label: 'hourly wage', alignRight: false },
   { id: '' },
 ];
 
@@ -75,17 +78,19 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function EmployeePage() {
 
-  const {getEmployeeSchedule, addWorkDayForEmployee, removeWorkDayForEmployee, modifyWorkDayForEmployee} = useApiClient();
+  const {getEmployees,removeEmployee} = useApiClient();
 
   const userId = useSelector(state=>state.user?.uid);
 
-  const [workDayList, setWorkDayList] = useState([{}]);
+  const navigate = useNavigate();
+
+  const [employeesList, setEmployeeList] = useState([{}]);
 
   const [open, setOpen] = useState();
 
-  const [currentDay, setCurrentDay] = useState();
+  const [currentEmployee, setCurrentEmployee] = useState();
 
   const [page, setPage] = useState(0);
 
@@ -101,11 +106,11 @@ export default function UserPage() {
 
   useEffect(() => {
     (async()=>{
-    const tempWorkDayList = await getEmployeeSchedule(439, 443);
-    setWorkDayList(tempWorkDayList)
-    console.log(tempWorkDayList)
+    const employeesList = await getEmployees(userId);
+    setEmployeeList(employeesList)
+    console.log(employeesList)
     }) ()
-  }, [getEmployeeSchedule, userId])
+  }, [getEmployees, userId])
   
 
   const handleOpenMenu = (event) => {
@@ -179,7 +184,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Employees
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
@@ -202,15 +207,15 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {workDayList?.map((row) => {
-                    console.log("this is the workDay List", workDayList)
-                    const { startTime, endTime, day} = row;
-                    const selectedUser = selected.indexOf(day) !== -1;
+                  {employeesList?.map?.((row) => {
+                    console.log("This is a list of employees", employeesList)
+                    const { id, email, hourlyWage } = row;
+                    const selectedUser = selected.indexOf(email) !== -1;
 
                     return (
-                      <TableRow hover key={day} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={email} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, day)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
 
                         {/* <TableCell component="th" scope="row" padding="none">
@@ -222,18 +227,18 @@ export default function UserPage() {
                           </Stack>
                         </TableCell> */}
 
-                        <TableCell align="left">{day}</TableCell>
+                        <TableCell align="left">{id}</TableCell>
 
-                        <TableCell align="left">{startTime}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
 
-                        <TableCell align="left">{endTime}</TableCell>
+                        <TableCell align="left">{hourlyWage}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentDay(day)}}>
+                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentEmployee(id)}}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -304,16 +309,18 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
+        <MenuItem onClick={ () => {
+            navigate(`/dashboard/employeeSchedulePage/${currentEmployee}`)
+          }}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
+          Schedule
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-          console.log(currentDay)
-          await removeWorkDayForEmployee(439, 443, currentDay)
-          const temp = await getEmployeeSchedule(439, 443)
-          setWorkDayList(temp)
+           await removeEmployee(userId, currentEmployee)
+           const employeesList = await getEmployees(userId);
+           setEmployeeList(employeesList)
+           
         }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
@@ -321,4 +328,4 @@ export default function UserPage() {
       </Popover>
     </>
   );
-}
+      }
