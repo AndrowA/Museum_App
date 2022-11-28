@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect, useId } from 'react';
+
 // @mui
 
 import {
@@ -27,6 +28,7 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
+import { useNavigate } from 'react-router';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -81,6 +83,8 @@ export default function EmployeePage() {
   const {getEmployees,removeEmployee} = useApiClient();
 
   const userId = useSelector(state=>state.user?.uid);
+
+  const navigate = useNavigate();
 
   const [employeesList, setEmployeeList] = useState([{}]);
 
@@ -180,7 +184,7 @@ export default function EmployeePage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Employees
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
@@ -305,8 +309,10 @@ export default function EmployeePage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+        <MenuItem onClick={ () => {
+            navigate(`/dashboard/employeeSchedulePage/${currentEmployee}`)
+          }}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
           Schedule
         </MenuItem>
 

@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
+import { useParams } from 'react-router';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -81,6 +82,8 @@ export default function UserPage() {
 
   const userId = useSelector(state=>state.user?.uid);
 
+  const {id:employeeId} = useParams();
+
   const [workDayList, setWorkDayList] = useState([{}]);
 
   const [open, setOpen] = useState();
@@ -101,7 +104,7 @@ export default function UserPage() {
 
   useEffect(() => {
     (async()=>{
-    const tempWorkDayList = await getEmployeeSchedule(439, 443);
+    const tempWorkDayList = await getEmployeeSchedule(userId, employeeId);
     setWorkDayList(tempWorkDayList)
     console.log(tempWorkDayList)
     }) ()
@@ -311,8 +314,8 @@ export default function UserPage() {
 
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
           console.log(currentDay)
-          await removeWorkDayForEmployee(439, 443, currentDay)
-          const temp = await getEmployeeSchedule(439, 443)
+          await removeWorkDayForEmployee(userId, employeeId, currentDay)
+          const temp = await getEmployeeSchedule(userId, employeeId)
           setWorkDayList(temp)
         }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
