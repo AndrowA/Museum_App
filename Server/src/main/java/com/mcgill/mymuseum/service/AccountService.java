@@ -181,7 +181,13 @@ public class AccountService {
                 newVisitor.setPassword(password);
                 newVisitor = accountRepository.save(newVisitor);
                 return newVisitor.getAccountId();
-            } else if (accountType.equals(AccountType.EMPLOYEE)){
+            } else if (accountType.equals(AccountType.PRESIDENT)){
+                Employee newPresident = new President();
+                newPresident.setEmail(email);
+                newPresident.setPassword(password);
+                newPresident = accountRepository.save(newPresident);
+                return newPresident.getAccountId();
+            }else if (accountType.equals(AccountType.EMPLOYEE)){
                 Employee newEmployee = new Employee();
                 newEmployee.setEmail(email);
                 newEmployee.setPassword(password);
