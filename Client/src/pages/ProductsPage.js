@@ -1,15 +1,26 @@
+/* eslint-disable import/no-unresolved */
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
+import { useApiClient } from 'apiClient/useApiClient';
 // components
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
 import PRODUCTS from '../_mock/products';
 
+
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
+
+  const {fillArtifactList} = useApiClient();
+
+  const userId = useSelector(state=>state.user?.uid);
+
+  const artifactList = useSelector(state=>state.artifact?.artifactList);
+
   const [openFilter, setOpenFilter] = useState(false);
 
   const handleOpenFilter = () => {
@@ -19,6 +30,13 @@ export default function ProductsPage() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+
+  useEffect(() => {
+    (async()=>{
+    await fillArtifactList(100, 1);
+    console.log(artifactList)
+    }) ()
+  }, [fillArtifactList])
 
   return (
     <>
@@ -41,8 +59,7 @@ export default function ProductsPage() {
             <ProductSort />
           </Stack>
         </Stack> */}
-
-        <ProductList products={PRODUCTS} />
+        <ProductList products={artifactList} />
         {/* <ProductCartWidget /> */}
       </Container>
     </>

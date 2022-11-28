@@ -14,6 +14,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import EmployeeSchedulePage from './pages/EmployeeSchedulePage';
 import EmployeePage from './pages/EmployeePage';
 
+import VisitorPage from './pages/VisitorPage';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +43,9 @@ export default function Router() {
             { path: '/dashboard/employeeSchedulePage/:id', element: <EmployeeSchedulePage /> },
             { path: '/dashboard/products', element: <ProductsPage /> },
             { path: '/dashboard/blog', element: <BlogPage /> },
+            { path: '/dashboard/VisitorPage', element: <VisitorPage /> },
             { path: '*', element: <Navigate to={<Page404 />} /> },
+
           ],
         }
       : {
