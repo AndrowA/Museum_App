@@ -27,7 +27,8 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
-import Label from '../components/label';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -77,15 +78,19 @@ function applySortFilter(array, comparator, query) {
 
 export default function VisitorPage() {
 
-  const {getEmployeeSchedule, addWorkDayForEmployee, removeWorkDayForEmployee, modifyWorkDayForEmployee} = useApiClient();
+  const {getVisitors, removeAccount} = useApiClient();
 
   const userId = useSelector(state=>state.user?.uid);
 
-  const [workDayList, setWorkDayList] = useState([{}]);
+  const {id:employeeId} = useParams();
+
+  const navigate = useNavigate();
+
+  const [visitorList, setVisitorList] = useState([{}]);
 
   const [open, setOpen] = useState();
 
-  const [currentDay, setCurrentDay] = useState();
+  const [currentId, setcurrentId] = useState();
 
   const [page, setPage] = useState(0);
 
@@ -101,11 +106,11 @@ export default function VisitorPage() {
 
   useEffect(() => {
     (async()=>{
-    const tempWorkDayList = await getEmployeeSchedule(439, 443);
-    setWorkDayList(tempWorkDayList)
-    console.log(tempWorkDayList)
+    const tempVisitorList = await getVisitors(userId);
+    setVisitorList(tempVisitorList)
+    console.log(tempVisitorList)
     }) ()
-  }, [getEmployeeSchedule, userId])
+  }, [getVisitors, userId])
   
 
   const handleOpenMenu = (event) => {
@@ -181,7 +186,7 @@ export default function VisitorPage() {
           <Typography variant="h4" gutterBottom>
             Employee: dayOfEmployee
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
           </Button>
         </Stack>
@@ -202,15 +207,15 @@ export default function VisitorPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {workDayList?.map?.((row) => {
-                    console.log("this is the workDay List", workDayList)
-                    const { startTime, endTime, day} = row;
-                    const selectedUser = selected.indexOf(day) !== -1;
+                  {visitorList?.map?.((row) => {
+                    console.log("this is the workDay List", visitorList)
+                    const { id, email, accountType} = row;
+                    const selectedUser = selected.indexOf(id) !== -1;
 
                     return (
-                      <TableRow hover key={day} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, day)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
 
                         {/* <TableCell component="th" scope="row" padding="none">
@@ -222,18 +227,18 @@ export default function VisitorPage() {
                           </Stack>
                         </TableCell> */}
 
-                        <TableCell align="left">{day}</TableCell>
+                        <TableCell align="left">{id}</TableCell>
 
-                        <TableCell align="left">{startTime}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
 
-                        <TableCell align="left">{endTime}</TableCell>
+                        <TableCell align="left">{accountType}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentDay(day)}}>
+                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(id)}}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -310,13 +315,14 @@ export default function VisitorPage() {
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-          console.log(currentDay)
-          await removeWorkDayForEmployee(439, 443, currentDay)
-          const temp = await getEmployeeSchedule(439, 443)
-          setWorkDayList(temp)
+
+           await removeAccount(userId, currentId)
+           const temp = await getVisitors(userId)
+           setVisitorList(temp)
+
         }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          Ban
         </MenuItem>
       </Popover>
     </>

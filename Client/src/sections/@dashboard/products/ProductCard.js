@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+
+import { useNavigate, useParams } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 // @mui
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
@@ -7,6 +11,8 @@ import { fCurrency } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
 import { ColorPreview } from '../../../components/color-utils';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -23,10 +29,10 @@ const StyledProductImg = styled('img')({
 ShopProductCard.propTypes = {
   product: PropTypes.object,
 };
-
 export default function ShopProductCard({ product }) {
+  const navigate = useNavigate();
   const { id, name, description, url, roomId } = product;
-
+  
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
@@ -53,6 +59,9 @@ export default function ShopProductCard({ product }) {
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>
+          <button onClick={()=> navigate(`/dashboard/LoanRequestForm/${id}`)} >
+            request Loan
+          </button>
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">

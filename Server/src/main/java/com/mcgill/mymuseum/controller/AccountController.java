@@ -74,7 +74,7 @@ public class AccountController {
     public ResponseEntity removeUser(@PathVariable(name="id") Long id, @PathVariable(name = "rid") Long requesterId){
         if (accountService.authenticate(requesterId,id, AccountService.Action.REMOVE)) {
             try {
-                boolean out = accountService.removeAccount(requesterId);
+                boolean out = accountService.removeAccount(id);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
@@ -116,19 +116,23 @@ public class AccountController {
      * @throws Exception
      */
     @GetMapping("/getVisitors/{rid}")
-    public ResponseEntity getEmployees(@PathVariable long rid) throws Exception {
+    public ResponseEntity getVisitors(@PathVariable long rid) throws Exception {
+        System.out.println("got here");
         if (accountService.authenticate(rid, rid, AccountService.Action.INFO)) {
+
             //get employee by ID
             try {
                 List<AccountDTO> visitorsDTO = new ArrayList<AccountDTO>();
                 Iterable<Account> loopingList = visitorService.retrieveAllVisitors();
                 for (Account visitor : loopingList) {
-                    String email = visitor.getEmail();
-                    String password = visitor.getPassword();
-                    String accountType = "VISITOR";
-                    AccountDTO visitorDTO = new AccountDTO(email,password,accountType);
-                    visitorDTO.setId(visitor.getAccountId());
-                    visitorsDTO.add(visitorDTO);
+                    if(accountService.findTargetType(visitor.getAccountId()).equals(AccountService.TargetType.VISITOR)) {
+                        String email = visitor.getEmail();
+                        String password = visitor.getPassword();
+                        String accountType = "VISITOR";
+                        AccountDTO visitorDTO = new AccountDTO(email,password,accountType);
+                        visitorDTO.setId(visitor.getAccountId());
+                        visitorsDTO.add(visitorDTO);
+                    }
                 }
                 return new ResponseEntity<>(visitorsDTO, HttpStatus.OK);
             } catch(Exception e) {

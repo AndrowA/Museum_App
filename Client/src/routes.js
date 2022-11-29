@@ -3,6 +3,8 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import { useSelector } from 'react-redux';
+
+
 import DashboardLayout from './layouts/dashboard';
 // import SimpleLayout from './layouts/simple';
 //
@@ -17,7 +19,9 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import EmployeeSchedulePage from './pages/EmployeeSchedulePage';
 import EmployeePage from './pages/EmployeePage';
 import AddEmployeeForm from './pages/AddEmployeeForm';
+import LoanRequestForm from './pages/LoanRequestForm';
 import AddEmployeeScheduleForm from './pages/AddEmployeeScheduleForm';
+
 
 import VisitorPage from './pages/VisitorPage';
 
@@ -47,6 +51,7 @@ export default function Router() {
             { path: '/dashboard/employees', element: <EmployeePage /> },
             { path: '/dashboard/employeeSchedulePage/:id', element: <EmployeeSchedulePage /> },
             { path: '/dashboard/employeeForm', element: <AddEmployeeForm /> },
+            { path: '/dashboard/LoanRequestForm/:id', element: <LoanRequestForm /> },
             { path: '/dashboard/employeeScheduleForm/:id', element: <AddEmployeeScheduleForm/> },
             { path: '/dashboard/products', element: <ProductsPage /> },
             { path: '/dashboard/blog', element: <BlogPage /> },

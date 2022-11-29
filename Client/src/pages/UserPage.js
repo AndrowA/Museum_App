@@ -1,8 +1,11 @@
+/* eslint-disable import/no-unresolved */
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
+
 import {
   Card,
   Table,
@@ -22,8 +25,10 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import { useApiClient } from 'apiClient/useApiClient';
 // components
-import Label from '../components/label';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -34,11 +39,12 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'loanId', label: 'loanId', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'startDate', label: 'startDate', alignRight: false },
+  { id: 'endDate', label: 'endDate', alignRight: false },
+  { id: 'loanStatus', label: 'loanStatus', alignRight: false },
+  { id: 'artifactName', label: 'artifactName', alignRight: false },
   { id: '' },
 ];
 
@@ -68,13 +74,26 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.day.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
+export default function VisitorPage() {
+
+  const {getAllLoans, returnLoan, approveLoan, rejectLoan} = useApiClient();
+
+  const userId = useSelector(state=>state.user?.uid);
+
+  const {id:employeeId} = useParams();
+
+  const navigate = useNavigate();
+
+  const [loanList, setLoanList] = useState([{}]);
+
+  const [open, setOpen] = useState();
+
+  const [currentId, setcurrentId] = useState();
 
   const [page, setPage] = useState(0);
 
@@ -82,13 +101,23 @@ export default function UserPage() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('day');
 
-  const [filterName, setFilterName] = useState('');
+  const [filterday, setFilterday] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  useEffect(() => {
+    (async()=>{
+    const tempLoanList = await getAllLoans();
+    setLoanList(tempLoanList)
+    console.log(tempLoanList)
+    }) ()
+  }, [getAllLoans])
+  
+
   const handleOpenMenu = (event) => {
+    console.log(event)
     setOpen(event.currentTarget);
   };
 
@@ -104,18 +133,19 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.day);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  // to do
+  const handleClick = (event, day) => {
+    const selectedIndex = selected.indexOf(day);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, day);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -135,16 +165,18 @@ export default function UserPage() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleFilterByName = (event) => {
+  const handleFilterByday = (event) => {
     setPage(0);
-    setFilterName(event.target.value);
+    setFilterday(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterday);
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  // const filteredWorkDays = applySortFilter(workDayList, getComparator(order, orderBy), filterday);
+
+  const isNotFound = !filteredUsers.length && !!filterday;
 
   return (
     <>
@@ -155,15 +187,15 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Employee: dayOfEmployee
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button onClick={()=> navigate(`/dashboard/LoanRequestForm/`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
           </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -178,37 +210,47 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {loanList?.map?.((row) => {
+                    console.log("this is the workDay List", loanList)
+                    const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName} = row;
+                    const selectedUser = selected.indexOf(loanId) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={loanId} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, loanId)} />
                         </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
+                        {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={day} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {day}
                             </Typography>
                           </Stack>
-                        </TableCell>
+                        </TableCell> */}
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{loanId}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{aLoaneeName}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{aStartDate}</TableCell>
 
-                        <TableCell align="left">
+                        <TableCell align="left">{aEndDate}</TableCell>
+                        
+                        <TableCell align="left">{aLoanStatus}</TableCell>
+
+                        <TableCell align="left">{aArtifactName}</TableCell>
+
+                        
+                        
+
+                        {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(loanId)}}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -237,7 +279,7 @@ export default function UserPage() {
 
                           <Typography variant="body2">
                             No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
+                            <strong>&quot;{filterday}&quot;</strong>.
                             <br /> Try checking for typos or using complete words.
                           </Typography>
                         </Paper>
@@ -280,13 +322,42 @@ export default function UserPage() {
         }}
       >
         <MenuItem>
+
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
+        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
+
+           await returnLoan(currentId)
+           const temp = await getAllLoans()
+           setLoanList(temp)
+
+        }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          Return
+        </MenuItem>
+
+        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
+
+           await approveLoan(currentId, userId)
+           const temp = await getAllLoans()
+           setLoanList(temp)
+
+        }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Approve
+        </MenuItem>
+
+        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
+
+           await rejectLoan(currentId, userId)
+           const temp = await getAllLoans()
+           setLoanList(temp)
+
+        }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          reject
         </MenuItem>
       </Popover>
     </>
