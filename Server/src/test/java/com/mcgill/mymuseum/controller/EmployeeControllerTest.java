@@ -133,13 +133,15 @@ public class EmployeeControllerTest {
         employeeDTO.setEmail(email);
         employeeDTO.setPassword(password);
         employeeDTO.setAccountType(type);
+        employeeDTO.setHourlyWage(hourlyWage);
+        employeeDTO.setOverTimeHourlyWage(overTimeHourlyWage);
 
         //President DTO
         President president = new President();
         president = employeeRepository.save(president);
 
         ResponseEntity<Long> out1 = employeeController.registerEmployee(employeeDTO);
-        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), president.getAccountId(), hourlyWage, overTimeHourlyWage);
+        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), president.getAccountId(),employeeDTO);
 
         assertTrue(out2.getStatusCode().equals(HttpStatus.OK));
         assertEquals(hourlyWage, employeeService.retrieveEmployee(out1.getBody()).getHourlyWage());
@@ -157,9 +159,11 @@ public class EmployeeControllerTest {
         employeeDTO.setEmail(email);
         employeeDTO.setPassword(password);
         employeeDTO.setAccountType(type);
+        employeeDTO.setHourlyWage(hourlyWage);
+        employeeDTO.setOverTimeHourlyWage(overTimeHourlyWage);
 
         ResponseEntity<Long> out1 = employeeController.registerEmployee(employeeDTO);
-        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), out1.getBody(), hourlyWage, overTimeHourlyWage);
+        ResponseEntity out2 = employeeController.setEmployeeSalary(out1.getBody(), out1.getBody(), employeeDTO);
 
         assertEquals(out2.getStatusCode(), HttpStatus.FORBIDDEN);
     }

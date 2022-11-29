@@ -73,15 +73,14 @@ public class EmployeeController {
      * Post method for Setting the salary of an employee
      * @param id of the employee to remove
      * @param requesterId of the person trying to remove the employee
-     * @param hourlyWage of the employee
-     * @param overTimeHourlyWage of the employee
+     * @param accountDTO of the employee
      * @return ResponseEntity of the hourlyWage of the employee and HTTP status
      */
     @PostMapping("/salary/{rid}/{id}")
-    public ResponseEntity setEmployeeSalary(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId, Double hourlyWage, Double overTimeHourlyWage) {
+    public ResponseEntity setEmployeeSalary(@PathVariable(name = "id") Long id, @PathVariable(name = "rid") Long requesterId, @RequestBody AccountDTO accountDTO) {
         if (accountService.authenticate(requesterId, id, AccountService.Action.REMOVE)) {
             try {
-                Double out = employeeService.setEmployeeSalary(hourlyWage, overTimeHourlyWage, id);
+                Double out = employeeService.setEmployeeSalary(accountDTO.getHourlyWage(), accountDTO.getOverTimeHourlyWage(), id);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
@@ -129,8 +128,8 @@ public class EmployeeController {
                     String password = employee.getPassword();
                     String accountType = "EMPLOYEE";
                     AccountDTO employeeDTO = new AccountDTO(email,password,accountType);
-                    employeeDTO.setHourlyWage(25.0);
-                    employeeDTO.setOverTimeHourlyWage(50.0);
+                    employeeDTO.setHourlyWage(employee.getHourlyWage());
+                    employeeDTO.setOverTimeHourlyWage(employee.getOverTimeHourlyWage());
                     employeeDTO.setId(employee.getAccountId());
                     employeesDTO.add(employeeDTO);
                 }
