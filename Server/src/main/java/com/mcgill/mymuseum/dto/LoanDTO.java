@@ -1,12 +1,12 @@
 package com.mcgill.mymuseum.dto;
 
 import com.mcgill.mymuseum.model.Loan;
-
 import java.sql.Date;
 /**
     Data Transfer Object for the Loan class.
  */
 public class LoanDTO {
+    private Long loanId;
     private Date aStartDate;
     private Date aEndDate;
     private Loan.LoanStatus aLoanStatus;
@@ -15,7 +15,8 @@ public class LoanDTO {
     private Long aArtifactId;
     private String aMyMuseumName;
 
-    public LoanDTO(Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, Long aArtifactId, String aMyMuseumName) {
+    public LoanDTO(Long loanId, Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, Long aArtifactId, String aMyMuseumName) {
+        this.loanId = loanId;
         this.aStartDate = aStartDate;
         this.aEndDate = aEndDate;
         this.aLoaneeName = aLoaneeName;
