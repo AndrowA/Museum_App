@@ -27,8 +27,8 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
-import { useParams } from 'react-router';
-import Label from '../components/label';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -83,6 +83,8 @@ export default function UserPage() {
   const userId = useSelector(state=>state.user?.uid);
 
   const {id:employeeId} = useParams();
+
+  const navigate = useNavigate();
 
   const [workDayList, setWorkDayList] = useState([{}]);
 
@@ -184,7 +186,7 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Employee: dayOfEmployee
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
           </Button>
         </Stack>
@@ -313,7 +315,6 @@ export default function UserPage() {
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-          console.log(currentDay)
           await removeWorkDayForEmployee(userId, employeeId, currentDay)
           const temp = await getEmployeeSchedule(userId, employeeId)
           setWorkDayList(temp)
