@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 // components
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -186,8 +186,8 @@ export default function EmployeePage() {
           <Typography variant="h4" gutterBottom>
             Employees
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+          <Button onClick={()=>navigate("/dashboard/employeeForm")} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New Employee
           </Button>
         </Stack>
 
@@ -280,7 +280,7 @@ export default function EmployeePage() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 10, 20]}
             component="div"
             count={USERLIST.length}
             rowsPerPage={rowsPerPage}
@@ -319,11 +319,10 @@ export default function EmployeePage() {
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
            await removeEmployee(userId, currentEmployee)
            const employeesList = await getEmployees(userId);
-           setEmployeeList(employeesList)
-           
+          setEmployeeList(employeesList)
         }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          Fire
         </MenuItem>
       </Popover>
     </>
