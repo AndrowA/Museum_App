@@ -35,7 +35,7 @@ public class LoanController {
             ArrayList<Loan> loanArrayList = (ArrayList<Loan>) loanService.getLoans();
             ArrayList<LoanDTO> dtos = new ArrayList<>();
             for(Loan loan : loanArrayList ){
-                dtos.add(new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null));
+                dtos.add(new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null));
             }
             return new ResponseEntity<>(dtos, HttpStatus.OK);
         } catch (Exception e){
@@ -55,7 +55,7 @@ public class LoanController {
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
         try {
             Loan loan = loanService.retrieveLoanById(id);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -82,7 +82,7 @@ public class LoanController {
             }
             //call the service
             loan = loanService.createLoan(loan, visitorId, artifactId);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class LoanController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             Loan loan = loanService.acceptLoan(loanId);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), loan.getLoanStatus(), loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -121,7 +121,7 @@ public class LoanController {
     public ResponseEntity returnLoan(@PathVariable(name="id") Long id) throws MuseumException {
         try {
             Loan loan = loanService.returnLoan(id);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Available, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Available, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -142,7 +142,7 @@ public class LoanController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             Loan loan = loanService.rejectLoan(loanId);
-            LoanDTO loanDTO = new LoanDTO(loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Rejected, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Rejected, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
