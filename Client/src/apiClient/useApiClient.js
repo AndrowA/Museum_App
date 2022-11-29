@@ -193,7 +193,7 @@ export const useApiClient = () => {
 
   const getVisitors = useCallback(async (requesterId) => {
     const output = await axios
-      .get(`${url}/employee/getVisitors/{rid}`)
+      .get(`${url}/account/getVisitors/${requesterId}`)
       .then((response) => response.data)
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
     return output;
@@ -257,6 +257,15 @@ export const useApiClient = () => {
   }, []);
   
   // Loan endpoints
+
+  const getAllLoans = useCallback(async () => {
+    const output = await axios
+        .get(`${url}/loan/getLoans`)
+        .then((res)=>res.data)
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+    return output;
+  }, []);
+
   const getLoan = useCallback(async (loanId) => {
     const output = await axios
         .get(`${url}/loan/get/${loanId}`)
@@ -265,9 +274,9 @@ export const useApiClient = () => {
     return output;
   }, []);
 
-  const requestLoan = useCallback(async (visitorId, artifactId) => {
+  const requestLoan = useCallback(async (visitorId, artifactId, startDate, endDate) => {
     await axios
-        .post(`${url}/loan/createLoanRequest/${visitorId}/${artifactId}`)
+        .post(`${url}/loan/createLoanRequest/${visitorId}/${artifactId}`, {startDate, endDate})
         .then(() => {
           dispatch( sendMessage({ open: true, message: "Loan successfully requested", severity: 'success' }));
         })
@@ -350,5 +359,6 @@ export const useApiClient = () => {
     rejectLoan,
     buyPass,
     getPass,
+    getAllLoans
   };
 };

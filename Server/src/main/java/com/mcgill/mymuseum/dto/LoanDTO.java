@@ -15,6 +15,10 @@ public class LoanDTO {
     private Long aArtifactId;
     private String aMyMuseumName;
 
+    public Long getLoanId() {
+        return loanId;
+    }
+
     public LoanDTO(Long loanId, Date aStartDate, Date aEndDate, Loan.LoanStatus aLoanStatus, String aLoaneeName, String aArtifactName, Long aArtifactId, String aMyMuseumName) {
         this.loanId = loanId;
         this.aStartDate = aStartDate;
