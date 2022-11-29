@@ -130,18 +130,23 @@ export const useApiClient = () => {
 
   // Employee endpoint
   const registerEmployeeWithEmailAndPassword = useCallback(async (email, password) => {
+    
+    let output;
+    
     await axios
       .post(`${url}/employee/register`, {
         email,
         password,
         accountType: 'EMPLOYEE',
       })
-      .then(() => {
+      .then((response) => {
+        output = response.data;
         dispatch(sendMessage({ open: true, message: `registered new employee`, severity: 'success' }));
       })
       .catch((err) => {
         dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
       });
+      return output; 
   }, []);
 
   const removeEmployee = useCallback(async (requesterId, employeeId) => {
@@ -158,7 +163,7 @@ export const useApiClient = () => {
   // TOOD: verify format
   const setEmployeeSalary = useCallback(async (requesterId, employeeId, hourlyWage, overTimeHourlyWage) => {
     axios
-      .post(`${url}/employee/${requesterId}/${employeeId}`, {
+      .post(`${url}/employee/salary/${requesterId}/${employeeId}`, {
         hourlyWage,
         overTimeHourlyWage,
       })

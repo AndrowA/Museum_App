@@ -13,6 +13,7 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import EmployeeSchedulePage from './pages/EmployeeSchedulePage';
 import EmployeePage from './pages/EmployeePage';
+import AddEmployeeForm from './pages/AddEmployeeForm';
 
 
 // ----------------------------------------------------------------------
@@ -40,6 +41,7 @@ export default function Router() {
             { path: '/dashboard/user', element: <UserPage /> },
             { path: '/dashboard/employees', element: <EmployeePage /> },
             { path: '/dashboard/employeeSchedulePage/:id', element: <EmployeeSchedulePage /> },
+            { path: '/dashboard/employeeForm', element: <AddEmployeeForm /> },
             { path: '/dashboard/products', element: <ProductsPage /> },
             { path: '/dashboard/blog', element: <BlogPage /> },
             { path: '*', element: <Navigate to={<Page404 />} /> },
