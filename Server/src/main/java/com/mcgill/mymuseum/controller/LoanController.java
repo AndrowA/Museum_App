@@ -34,7 +34,7 @@ public class LoanController {
         try{
             ArrayList<Loan> loanArrayList = (ArrayList<Loan>) loanService.getLoans();
             ArrayList<LoanDTO> dtos = new ArrayList<>();
-            for(Loan loan : loanArrayList ){
+            for(Loan loan : loanArrayList ) {
                 dtos.add(new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null));
             }
             return new ResponseEntity<>(dtos, HttpStatus.OK);
@@ -113,14 +113,17 @@ public class LoanController {
 
     /**
      * Post method for returning a loan request
-     * @param id of loan
+     * @param loanId of loan
      * @return ResponseEntity of DTO and HTTP status
      * @throws MuseumException if fails to return a loan
      */
-      @PostMapping("/returnLoan/{id}") // checked
-    public ResponseEntity returnLoan(@PathVariable(name="id") Long id) throws MuseumException {
+      @PostMapping("/returnLoan/{loanId}/{rid}") // checked
+    public ResponseEntity returnLoan(@PathVariable(name="loanId") Long loanId, @PathVariable(name="rid") Long rId) throws MuseumException {
         try {
-            Loan loan = loanService.returnLoan(id);
+            if (!accountService.authenticate(rId,loanId, AccountService.Action.APPROVE)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            Loan loan = loanService.returnLoan(loanId);
             LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Available, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (MuseumException e) {
