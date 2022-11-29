@@ -45,6 +45,16 @@ public class LoanService {
         }
     }
 
+    @Transactional
+    public Iterable<Loan> retrieveLoanByVisitorId(long id) throws MuseumException {
+        Iterable<Loan> loans = loanRepository.findByLoaneeAccountId(id);
+        if (loanRepository.findByLoaneeAccountId(id) != null) {
+            return loans;
+        } else {
+            throw new MuseumException("Could not find the loan");
+        }
+    }
+
     /**
      * Service for saving a loan
      * @param loan

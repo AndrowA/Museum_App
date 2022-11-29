@@ -57,9 +57,26 @@ public class LoanController {
             Loan loan = loanService.retrieveLoanById(id);
             LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
-        } catch (MuseumException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            e.printStackTrace();
         }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Transactional
+    @GetMapping("/getLoaneeLoans/{id}")
+    public ResponseEntity getLoaneeLoans(@PathVariable long id) throws MuseumException {
+        try {
+            ArrayList<Loan> loanArrayList = (ArrayList<Loan>) loanService.retrieveLoanByVisitorId(id);
+            ArrayList<LoanDTO> dtos = new ArrayList<>();
+            for(Loan loan : loanArrayList ) {
+                dtos.add(new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null));
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
