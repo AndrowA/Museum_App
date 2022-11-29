@@ -134,12 +134,9 @@ public class LoanController {
      * @return ResponseEntity of DTO and HTTP status
      * @throws MuseumException if fails to return a loan
      */
-      @PostMapping("/returnLoan/{loanId}/{rid}") // checked
-    public ResponseEntity returnLoan(@PathVariable(name="loanId") Long loanId, @PathVariable(name="rid") Long rId) throws MuseumException {
+      @PostMapping("/returnLoan/{loanId}") // checked
+    public ResponseEntity returnLoan(@PathVariable(name="loanId") Long loanId) throws MuseumException {
         try {
-            if (!accountService.authenticate(rId,loanId, AccountService.Action.APPROVE)) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
             Loan loan = loanService.returnLoan(loanId);
             LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(), loan.getEndDate(), Loan.LoanStatus.Available, loan.getLoanee().getEmail(), loan.getArtifact().getName(), loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
