@@ -84,16 +84,19 @@ export const useApiClient = () => {
   }, []);
 
   const addArtifact = useCallback(async (requesterId, imageURL, name, description) => {
+    let output;
     await axios
       .post(`${url}/artifact/add?token=${requesterId}`, {
         url: imageURL,
         name,
         description,
       })
-      .then(() => {
+      .then((response) => {
+        output = response.data;
         dispatch(sendMessage({ open: true, message: `artifact ${name} successfully added`, severity: 'success' }));
       })
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      return output;
   }, []);
 
   const modifyArtifact = useCallback(async (requesterId, artifactId, imageURL, name, description) => {

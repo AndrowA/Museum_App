@@ -7,11 +7,7 @@ import PropTypes from 'prop-types';
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
-import { fCurrency } from '../../../utils/formatNumber';
-// components
-import Label from '../../../components/label';
-import { ColorPreview } from '../../../components/color-utils';
-
+import { useSelector } from 'react-redux';
 
 
 // ----------------------------------------------------------------------
@@ -26,15 +22,21 @@ const StyledProductImg = styled('img')({
 
 // ----------------------------------------------------------------------
 
-ShopProductCard.propTypes = {
+AritfactCard.propTypes = {
   product: PropTypes.object,
 };
-export default function ShopProductCard({ product }) {
+export default function AritfactCard({ product }) {
   const navigate = useNavigate();
-  const { id, name, description, url, roomId } = product;
-  
+  const accountType = useSelector((state)=> state?.user?.type)
+  const { id, name, url, roomId } = product;
+
   return (
-    <Card>
+    <Card
+      onClick={() => accountType==="VISITOR"? navigate(`/dashboard/LoanRequestForm/${id}`): accountType==="PRESIDENT" && navigate(`/dashboard/ModifyArtifactForm/${id}`)}
+      sx={{
+        cursor: 'pointer',
+      }}
+    >
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {/* {status && (
           <Label
@@ -59,9 +61,9 @@ export default function ShopProductCard({ product }) {
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>
-          <button onClick={()=> navigate(`/dashboard/LoanRequestForm/${id}`)} >
+          {/* <button onClick={()=> navigate(`/dashboard/LoanRequestForm/${id}`)} >
             request Loan
-          </button>
+          </button> */}
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -77,8 +79,9 @@ export default function ShopProductCard({ product }) {
             >
               {/* {priceSale && fCurrency(priceSale)} */}
             </Typography>
-            &nbsp;
-            {fCurrency(roomId)}
+            {/* &nbsp;
+            {fCurrency(roomId)} */}
+            {roomId}
           </Typography>
         </Stack>
       </Stack>

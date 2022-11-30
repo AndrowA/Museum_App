@@ -187,7 +187,7 @@ export default function UserPage() {
             Employee: dayOfEmployee
           </Typography>
           <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+            New Workday
           </Button>
         </Stack>
 

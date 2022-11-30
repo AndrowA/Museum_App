@@ -79,7 +79,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function VisitorPage() {
+export default function LoanPage() {
 
   const {getAllLoans, returnLoan, approveLoan, rejectLoan} = useApiClient();
 
@@ -187,11 +187,8 @@ export default function VisitorPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Loans
           </Typography>
-          <Button onClick={()=> navigate(`/dashboard/LoanRequestForm/`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
         </Stack>
 
         <Card>
