@@ -102,7 +102,7 @@ export const useApiClient = () => {
 
   const modifyArtifact = useCallback(async (requesterId, artifactId, imageURL, name, description) => {
     await axios
-      .post(`${url}/artifact/${requesterId}?token=${artifactId}`, {
+      .post(`${url}/artifact/modify/${artifactId}?token=${requesterId}`, {
         url: imageURL,
         name,
         description,
