@@ -297,6 +297,8 @@ public class EmployeeController {
             try {
                 WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
                 Date date = newWorkDay.getDay();
+                System.out.println("i am him, him and only him");
+                System.out.println(date);
                 Integer workDay = employeeService.deleteWorkDay(date, employeeId);
                 System.out.println(workDay);
                 if(workDay != null) {
