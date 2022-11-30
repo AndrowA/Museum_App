@@ -184,11 +184,8 @@ export default function VisitorPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Visitors
           </Typography>
-          <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
         </Stack>
 
         <Card>

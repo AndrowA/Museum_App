@@ -77,16 +77,19 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  const { getEmployeeSchedule, removeWorkDayForEmployee, getEmployee } = useApiClient();
 
-  const {getEmployeeSchedule, addWorkDayForEmployee, removeWorkDayForEmployee, modifyWorkDayForEmployee} = useApiClient();
+  const userId = useSelector((state) => state.user?.uid);
 
-  const userId = useSelector(state=>state.user?.uid);
+  const accountType = useSelector((state) => state.user?.type);
 
-  const {id:employeeId} = useParams();
+  const { id: employeeId } = useParams();
 
   const navigate = useNavigate();
 
-  const [workDayList, setWorkDayList] = useState([{}]);
+  const [employeeEmail, setEmployeeEmail] = useState();
+
+  const [workDayList, setWorkDayList] = useState([]);
 
   const [open, setOpen] = useState();
 
@@ -105,16 +108,16 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempWorkDayList = await getEmployeeSchedule(userId, employeeId);
-    setWorkDayList(tempWorkDayList)
-    console.log(tempWorkDayList)
-    }) ()
-  }, [getEmployeeSchedule, userId])
-  
+    (async () => {
+      const { email } = await getEmployee(userId, employeeId);
+      setEmployeeEmail(email);
+      const tempWorkDayList = await getEmployeeSchedule(userId, employeeId);
+      setWorkDayList(tempWorkDayList);
+    })();
+  }, [employeeId, getEmployeeSchedule, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -184,11 +187,17 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Employee Email: <span style={{color:'grey'}}>{employeeEmail}</span>
           </Typography>
-          <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
+          {accountType !== 'EMPLOYEE' && (
+            <Button
+              onClick={() => navigate(`/dashboard/employeeScheduleForm/${employeeId}`)}
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New Workday
+            </Button>
+          )}
         </Stack>
 
         <Card>
@@ -208,8 +217,8 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {workDayList?.map?.((row) => {
-                    console.log("this is the workDay List", workDayList)
-                    const { startTime, endTime, day} = row;
+                    console.log('this is the workDay List', workDayList);
+                    const { startTime, endTime, day } = row;
                     const selectedUser = selected.indexOf(day) !== -1;
 
                     return (
@@ -238,7 +247,14 @@ export default function UserPage() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentDay(day)}}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(e) => {
+                              handleOpenMenu(e);
+                              setCurrentDay(day);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -314,11 +330,14 @@ export default function UserPage() {
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-          await removeWorkDayForEmployee(userId, employeeId, currentDay)
-          const temp = await getEmployeeSchedule(userId, employeeId)
-          setWorkDayList(temp)
-        }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          onClick={async () => {
+            await removeWorkDayForEmployee(userId, employeeId, currentDay);
+            const temp = await getEmployeeSchedule(userId, employeeId);
+            setWorkDayList(temp);
+          }}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>

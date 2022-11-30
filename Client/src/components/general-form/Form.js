@@ -41,6 +41,7 @@ const Form = (props) => {
               rows={4}
               placeholder={field.placeholder}
               value={field?.value}
+              focused={field?.value}
               onChange={field?.onChange}
               type={field?.number && 'number'}
             />

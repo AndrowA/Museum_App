@@ -4,7 +4,7 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUid, setType } from 'redux/userSlice';
+import { setUid, setType, setEmail } from 'redux/userSlice';
 import { logIn } from 'redux/loginSlice';
 import { sendMessage } from 'redux/alertSlice';
 import { setArtifactList } from 'redux/artifactSlice';
@@ -19,6 +19,7 @@ export const useApiClient = () => {
       .get(`${url}/account/info/${requesterId}/${requesterId}`)
       .then((response) => {
         dispatch(setType(response.data?.accountType));
+        dispatch(setEmail(response.data?.email));
       })
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
   }, []);
@@ -84,21 +85,24 @@ export const useApiClient = () => {
   }, []);
 
   const addArtifact = useCallback(async (requesterId, imageURL, name, description) => {
+    let output;
     await axios
       .post(`${url}/artifact/add?token=${requesterId}`, {
         url: imageURL,
         name,
         description,
       })
-      .then(() => {
+      .then((response) => {
+        output = response.data;
         dispatch(sendMessage({ open: true, message: `artifact ${name} successfully added`, severity: 'success' }));
       })
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      return output;
   }, []);
 
   const modifyArtifact = useCallback(async (requesterId, artifactId, imageURL, name, description) => {
     await axios
-      .post(`${url}/artifact/${requesterId}?token=${artifactId}`, {
+      .post(`${url}/artifact/modify/${artifactId}?token=${requesterId}`, {
         url: imageURL,
         name,
         description,

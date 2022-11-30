@@ -7,6 +7,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 import { logOut } from 'redux/loginSlice';
 import { useDispatch } from 'react-redux';
 import { sendMessage } from 'redux/alertSlice';
+import { useNavigate } from 'react-router-dom';
 import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
@@ -16,14 +17,6 @@ const MENU_OPTIONS = [
     label: 'Home',
     icon: 'eva:home-fill',
   },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
 ];
 
 // ----------------------------------------------------------------------
@@ -31,12 +24,14 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
+    navigate('/artifacts');
     setOpen(null);
   };
 
