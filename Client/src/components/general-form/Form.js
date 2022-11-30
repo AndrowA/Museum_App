@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-key */
-
+/* eslint import/no-unresolved: 2 */
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';

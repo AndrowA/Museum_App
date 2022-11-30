@@ -313,7 +313,7 @@ export const useApiClient = () => {
 // pass endpoints
   const buyPass = useCallback(async (visitorId, passDate) => {
     await axios
-        .post(`${url}/museumPass/${visitorId}/buy}`,{
+        .post(`${url}/museumPass/${visitorId}/buy`,{
           passDate,
         })
         .then((res) => {
@@ -324,7 +324,7 @@ export const useApiClient = () => {
 
   const getPass = useCallback(async (visitorId, passDate) => {
     const output = await axios
-        .get(`${url}/museumPass/${visitorId}/info}`)
+        .get(`${url}/museumPass/${visitorId}/info`)
         .then((res) => res.data)
         .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
     return output;
