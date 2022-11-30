@@ -21,6 +21,7 @@ import EmployeePage from './pages/EmployeePage';
 import AddEmployeeForm from './pages/AddEmployeeForm';
 import LoanRequestForm from './pages/LoanRequestForm';
 import AddEmployeeScheduleForm from './pages/AddEmployeeScheduleForm';
+import MuseumPassPage from './pages/MuseumPassPage'
 import PurchasePassForm from './pages/PurchasePassForm';
 
 
@@ -57,6 +58,7 @@ export default function Router() {
             { path: '/dashboard/products', element: <ProductsPage /> },
             { path: '/dashboard/blog', element: <BlogPage /> },
             { path: '/dashboard/VisitorPage', element: <VisitorPage /> },
+            { path: '/dashboard/MuseumPassPage', element: <MuseumPassPage /> },
             { path: '/dashboard/PurchasePassForm', element: <PurchasePassForm /> },
             { path: '*', element: <Navigate to={<Page404 />} /> },
 
