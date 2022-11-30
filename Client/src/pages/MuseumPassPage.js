@@ -39,9 +39,9 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'day', label: 'day', alignRight: false },
-  { id: 'startTime', label: 'startTime', alignRight: false },
-  { id: 'endTime', label: 'endTime', alignRight: false },
+  { id: 'passId', label: 'passId', alignRight: false },
+  { id: 'aPassDate', label: 'aPassDate', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
   { id: '' },
 ];
 
@@ -186,9 +186,7 @@ export default function MuseumPassPage() {
           <Typography variant="h4" gutterBottom>
             Employee: dayOfEmployee
           </Typography>
-          <Button onClick={()=> navigate(`/dashboard/employeeScheduleForm/${employeeId}`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
+          
         </Stack>
 
         <Card>
@@ -209,13 +207,13 @@ export default function MuseumPassPage() {
                 <TableBody>
                   {listOfMuseumPasses?.map?.((row) => {
                     console.log("this is the workDay List", listOfMuseumPasses)
-                    const { id, email, accountType} = row;
-                    const selectedUser = selected.indexOf(id) !== -1;
+                    const { passId, aPassDate, visitorEmail} = row;
+                    const selectedUser = selected.indexOf(passId) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={passId} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, passId)} />
                         </TableCell>
 
                         {/* <TableCell component="th" scope="row" padding="none">
@@ -227,18 +225,18 @@ export default function MuseumPassPage() {
                           </Stack>
                         </TableCell> */}
 
-                        <TableCell align="left">{id}</TableCell>
+                        <TableCell align="left">{passId}</TableCell>
 
-                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{aPassDate}</TableCell>
 
-                        <TableCell align="left">{accountType}</TableCell>
+                        <TableCell align="left">{visitorEmail}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(id)}}>
+                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(passId)}}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -291,36 +289,7 @@ export default function MuseumPassPage() {
         </Card>
       </Container>
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Ban
-        </MenuItem>
-      </Popover>
+      
     </>
   );
 }

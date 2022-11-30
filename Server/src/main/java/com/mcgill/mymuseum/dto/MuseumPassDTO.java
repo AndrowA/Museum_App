@@ -12,28 +12,31 @@ public class MuseumPassDTO {
     }
 
     private Date aPassDate;
-    private Visitor aOwner;
+
+    private String email;
     private MyMuseum aMyMuseum;
     private Long passId;
     private Integer passCost;
 
+
+
+    private String visitorEmail;
+
     public void setVisitorEmail(String visitorEmail) {
         this.visitorEmail = visitorEmail;
     }
-
-    private String visitorEmail;
 
     /**
      * Constructor of museum pass DTO
      * @param passId
      * @param passCost
      * @param aPassDate
-     * @param aOwner
+     * @param email
      * @param aMyMuseum
      */
-    public MuseumPassDTO(Long passId, Integer passCost, Date aPassDate, Visitor aOwner, MyMuseum aMyMuseum) {
+    public MuseumPassDTO(Long passId, Integer passCost, Date aPassDate, String email, MyMuseum aMyMuseum) {
         this.aPassDate = aPassDate;
-        this.aOwner = aOwner;
+        this.email = email;
         this.aMyMuseum = aMyMuseum;
         this.passId = passId;
         this.passCost = passCost;
@@ -44,15 +47,15 @@ public class MuseumPassDTO {
     public Date getaPassDate() {
         return aPassDate;
     }
-    public Integer getPassCost() {
-        return passCost;
-    }
-    public String getEmail() {return aOwner.getEmail();}
+    public String getEmail() {return email;}
     public Long getPassId() {return passId;}
 
-    public Integer setPassCost(Integer passCost) {
-        return passCost;
+    public String getVisitorEmail() {return this.visitorEmail;}
+    public void setPassCost(Integer passCost) {
+        this.passCost = passCost;
     }
-    public String setEmail(String email) {return aOwner.getEmail();}
-    public Long setPassId(Long passId) {return passId;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPassId(Long passId) { this.passId = passId;}
 }

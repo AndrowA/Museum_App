@@ -332,7 +332,7 @@ export const useApiClient = () => {
 
   const getAllMuseumPasses = useCallback(async () => {
     const output = await axios
-        .get(`${url}/museumPass/69/getAllMuseumPasses`)
+        .get(`${url}/museumPass/69/getAllPasses`)
         .then((res) => res.data)
         .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
     return output;
