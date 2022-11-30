@@ -4,7 +4,7 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUid, setType } from 'redux/userSlice';
+import { setUid, setType, setEmail } from 'redux/userSlice';
 import { logIn } from 'redux/loginSlice';
 import { sendMessage } from 'redux/alertSlice';
 import { setArtifactList } from 'redux/artifactSlice';
@@ -19,6 +19,7 @@ export const useApiClient = () => {
       .get(`${url}/account/info/${requesterId}/${requesterId}`)
       .then((response) => {
         dispatch(setType(response.data?.accountType));
+        dispatch(setEmail(response.data?.email));
       })
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
   }, []);

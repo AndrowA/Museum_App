@@ -50,7 +50,7 @@ export default function ProductsPage() {
           <Typography variant="h4" sx={{ mb: 5 }}>
             Museum's Artifacts
           </Typography>
-          {!(accountType === 'VISITOR') && (
+          {!(accountType === 'EMPLOYEE') && (
             <Button
               onClick={() =>
                 accountType === 'PRESIDENT'

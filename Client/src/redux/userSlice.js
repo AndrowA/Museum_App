@@ -5,6 +5,7 @@ const userSlice = createSlice({
   initialState: {
     uid: undefined,
     type: undefined,
+    email: undefined,
   },
   reducers: {
     setUid: (state, action) => {
@@ -13,8 +14,11 @@ const userSlice = createSlice({
     setType: (state, action) => {
       state.type = action.payload;
     },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    }
   },
 });
 
-export const { setUid, setType } = userSlice.actions;
+export const { setUid, setType , setEmail} = userSlice.actions;
 export default userSlice;

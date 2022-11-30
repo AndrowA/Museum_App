@@ -42,7 +42,7 @@ export default function Router() {
           element: <DashboardLayout />,
           children: [
             { element: <Navigate to="artifacts" />, index: true },
-            accountType === 'PRESIDENT' && { path: '/artifacts', element: <ArtifactPage /> },
+            { path: '/artifacts', element: <ArtifactPage /> },
             (accountType === 'PRESIDENT' || accountType === 'EMPLOYEE') && {
               path: '/dashboard/loans',
               element: <LoanPage />,
