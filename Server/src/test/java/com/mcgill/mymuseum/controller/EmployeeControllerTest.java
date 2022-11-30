@@ -5,6 +5,7 @@ import com.mcgill.mymuseum.dto.WorkDayDTO;
 import com.mcgill.mymuseum.model.*;
 import com.mcgill.mymuseum.repository.AccountRepository;
 import com.mcgill.mymuseum.repository.EmployeeRepository;
+import com.mcgill.mymuseum.repository.MuseumPassRepository;
 import com.mcgill.mymuseum.repository.WorkDayRepository;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.EmployeeService;
@@ -45,8 +46,12 @@ public class EmployeeControllerTest {
     @Autowired
     WorkDayRepository workDayRepository;
 
+    @Autowired
+    MuseumPassRepository museumPassRepository;
+
     @AfterEach
     public void clearDatabase() {
+        museumPassRepository.deleteAll();
         workDayRepository.deleteAll();
         accountRepository.deleteAll();
     }
@@ -553,7 +558,7 @@ public class EmployeeControllerTest {
 
 
         //check if response and body is correct
-        String body = "2013-09-04";
+        String body = "{\"day\": \"2013-09-04\"}";
         try {
             ResponseEntity response = employeeController.deleteWorkDay(body, employee.getAccountId(), president.getAccountId());
             assertEquals(response.getStatusCode(), HttpStatus.OK);
