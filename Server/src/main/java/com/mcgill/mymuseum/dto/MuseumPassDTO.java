@@ -7,11 +7,21 @@ import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MuseumPassDTO {
+    public void setaPassDate(Date aPassDate) {
+        this.aPassDate = aPassDate;
+    }
+
     private Date aPassDate;
     private Visitor aOwner;
     private MyMuseum aMyMuseum;
     private Long passId;
     private Integer passCost;
+
+    public void setVisitorEmail(String visitorEmail) {
+        this.visitorEmail = visitorEmail;
+    }
+
+    private String visitorEmail;
 
     /**
      * Constructor of museum pass DTO
@@ -39,9 +49,7 @@ public class MuseumPassDTO {
     }
     public String getEmail() {return aOwner.getEmail();}
     public Long getPassId() {return passId;}
-    public Date setaPassDate(Date aPassDate) {
-        return aPassDate;
-    }
+
     public Integer setPassCost(Integer passCost) {
         return passCost;
     }

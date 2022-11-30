@@ -330,6 +330,14 @@ export const useApiClient = () => {
     return output;
   }, []);
 
+  const getAllMuseumPasses = useCallback(async () => {
+    const output = await axios
+        .get(`${url}/museumPass/69/getAllMuseumPasses`)
+        .then((res) => res.data)
+        .catch((err)=> dispatch(sendMessage({open: true, message: err.message, severity: 'error'})));
+    return output;
+  }, []);
+
   return {
     registerWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -359,6 +367,7 @@ export const useApiClient = () => {
     rejectLoan,
     buyPass,
     getPass,
-    getAllLoans
+    getAllLoans,
+    getAllMuseumPasses
   };
 };
