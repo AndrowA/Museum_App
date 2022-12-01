@@ -40,9 +40,13 @@ Nav.propTypes = {
 export default function Nav({ openNav, onCloseNav }) {
   const userId = useSelector((state) => state?.user?.uid);
   const accountType = useSelector((state) => state?.user?.type);
+  const firstName = useSelector((state) => state.user?.firstName);
+  const lastName = useSelector((state) => state.user?.lastName);
   const { pathname } = useLocation();
   const isDesktop = useResponsive('up', 'lg');
 
+  console.log(firstName);
+  console.log(lastName);
   // const userType = useSelector((state) => state?.user?.accountType);
   // const uid = useSelector((state) => state?.user?.uid);
 
@@ -71,7 +75,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {firstName} {lastName}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

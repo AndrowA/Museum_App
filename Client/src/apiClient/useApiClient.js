@@ -4,7 +4,7 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUid, setType, setEmail } from 'redux/userSlice';
+import { setUid, setType, setEmail, setName } from 'redux/userSlice';
 import { logIn } from 'redux/loginSlice';
 import { sendMessage } from 'redux/alertSlice';
 import { setArtifactList } from 'redux/artifactSlice';
@@ -20,20 +20,39 @@ export const useApiClient = () => {
       .then((response) => {
         dispatch(setType(response.data?.accountType));
         dispatch(setEmail(response.data?.email));
+        dispatch(setName({ firstName: response.data?.firstName, lastName: response.data?.lastName }));
       })
       .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
   }, []);
 
-  const registerWithEmailAndPassword = useCallback(async (email, password) => {
+  const setAccountNames = useCallback(async (id, firstName, lastName) => {
+    console.log(id, firstName, lastName);
+    await axios
+      .post(`${url}/account/setName`, {
+        id,
+        firstName,
+        lastName,
+      })
+      .then(() => {
+        dispatch(setName({ firstName, lastName }));
+      })
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+      });
+  }, []);
+
+  const registerWithEmailAndPassword = useCallback(async (firstName, lastName, email, password) => {
+    console.log('pass 2');
     await axios
       .post(`${url}/account/register`, {
         email,
         password,
         accountType: 'VISITOR',
       })
-      .then((response) => {
+      .then(async (response) => {
         dispatch(setUid(response.data));
-        getLoggedInAccount(response.data);
+        await setAccountNames(response.data, firstName, lastName);
+        await getLoggedInAccount(response.data);
         dispatch(logIn());
       })
       .catch((err) => {
@@ -359,6 +378,7 @@ export const useApiClient = () => {
 
   return {
     registerWithEmailAndPassword,
+    setAccountNames,
     signInWithEmailAndPassword,
     getLoggedInAccount,
     removeAccount,
