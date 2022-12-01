@@ -48,18 +48,24 @@ const LoanRequestForm = () => {
 
   return (
     <Stack>
-      <img src={artifactURL} alt={artifactTitle} height={200} width="100%" style={{ margin: 'none' , objectFit:"contain"}} />
+      <img
+        src={artifactURL}
+        alt={artifactTitle}
+        height={200}
+        width="100%"
+        style={{ margin: 'none', objectFit: 'contain' }}
+      />
       <Typography variant="h4" sx={{ mb: 5 }}>
         {artifactTitle}
       </Typography>
-      <Typography variant="p" sx={{ mb: 5}}>
+      <Typography variant="p" sx={{ mb: 5 }}>
         {artifactDescription}
       </Typography>
       <Form
         fields={[]}
         datePickers={[
-          { title: 'Date of Beginning of loan', onChange: onBeginChange },
-          { title: 'Date of end of loan', onChange: onEndChange },
+          { title: 'Date of Beginning of loan', onChange: onBeginChange, dateOnly: true },
+          { title: 'Date of end of loan', onChange: onEndChange, dateOnly: true },
         ]}
         buttons={[{ title: 'Request', onClick }]}
       />
