@@ -39,7 +39,7 @@ public class EmployeeController {
     public ResponseEntity registerEmployee(@RequestBody AccountDTO employee) {
         if (employee.getAccountType().equals("EMPLOYEE")){
             try {
-                Long out = accountService.createAccount(employee.email, employee.getPassword(), AccountService.AccountType.EMPLOYEE);
+                Long out = accountService.createAccount(employee.getEmail(), employee.getPassword(), AccountService.AccountType.EMPLOYEE);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

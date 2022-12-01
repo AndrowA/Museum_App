@@ -210,6 +210,23 @@ public class AccountService {
     }
 
     @Transactional
+    public boolean setAccountName(Long accountId, String firstName, String lastName){
+        try {
+            System.out.println(accountId);
+            System.out.println(firstName);
+            System.out.println(lastName);
+            Account account = accountRepository.findById(accountId).get();
+            account.setFirstName(firstName);
+            account.setLastName(lastName);
+            accountRepository.save(account);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+    @Transactional
     public boolean removeAccount(long id){
 
         if (findAccountByID(id) != null){
