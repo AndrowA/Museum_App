@@ -155,7 +155,7 @@ public class LoanController {
     @PostMapping("/rejectLoan/{loanId}/{userId}")
     public ResponseEntity rejectLoan(@PathVariable(name="loanId") Long loanId,@PathVariable(name="userId") Long userId) throws MuseumException {
         try {
-            if (!accountService.authenticate(userId,loanId, AccountService.Action.APPROVE)) {
+            if (!accountService.authenticate(userId,loanId, AccountService.Action.REMOVE)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             Loan loan = loanService.rejectLoan(loanId);
