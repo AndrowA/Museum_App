@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.dto.MuseumPassDTO;
+import com.mcgill.mymuseum.exceptions.MuseumException;
+import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.model.MuseumPass;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.MuseumPassService;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -93,5 +96,25 @@ public class MuseumPassController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Transactional
+    @GetMapping("/getVisitorPasses")
+    public ResponseEntity getVisitorPasses(@PathVariable long id) throws MuseumException {
+        try{
+            ArrayList<MuseumPass> museumPassList = (ArrayList<MuseumPass>) museumPassService.retrievePassByVisitor(id);
+            ArrayList<MuseumPassDTO> dtos = new ArrayList<>();
+            for(MuseumPass museumPass : museumPassList) {
+                MuseumPassDTO newDto = new MuseumPassDTO();
+                newDto.setVisitorEmail(museumPass.getOwner().getEmail());
+                System.out.println(museumPass.getOwner().getEmail());
+                newDto.setPassId(museumPass.getPassId());
+                newDto.setaPassDate(museumPass.getPassDate());
+                dtos.add(newDto);
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
