@@ -94,14 +94,14 @@ public class AccountService {
         TargetType type = findTargetType(targetId);
 
         // list of permissions that employee has
-        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)))||
+        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)||action.equals((Action.REMOVE))))||
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)) ||
                 (type.equals(TargetType.WORKDAY) && workDayRepository.findById(targetId).get().getEmployee().getAccountId()==accountId && action.equals(Action.INFO))) ||
                 (targetId==accountId && !action.equals(Action.REMOVE));
 
         // list of permissions that visitor has
-        boolean visitorPermissions = (type.equals(TargetType.LOAN) && ((action.equals(Action.INFO)|| action.equals(Action.CANCEL) && loanRepository.findById(targetId).get().getLoanee().getAccountId()==accountId)||action.equals(Action.REQUEST))) ||
+        boolean visitorPermissions = (type.equals(TargetType.LOAN) && ((action.equals(Action.INFO)|| action.equals(Action.REMOVE) && loanRepository.findById(targetId).get().getLoanee().getAccountId()==accountId)||action.equals(Action.REQUEST))) ||
                 (type.equals(TargetType.MUSEUMPASS) && (action.equals(Action.BUY) || action.equals(Action.INFO))) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO))) ||
                 (targetId==accountId && !action.equals(Action.REMOVE));
