@@ -26,6 +26,14 @@ public class MuseumPassDTO {
         this.visitorEmail = visitorEmail;
     }
 
+    public MyMuseum getaMyMuseum() {
+        return aMyMuseum;
+    }
+
+    public Integer getPassCost() {
+        return passCost;
+    }
+
     /**
      * Constructor of museum pass DTO
      * @param passId

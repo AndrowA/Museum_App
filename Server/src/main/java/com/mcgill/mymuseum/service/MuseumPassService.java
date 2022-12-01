@@ -1,5 +1,7 @@
 package com.mcgill.mymuseum.service;
 
+import com.mcgill.mymuseum.exceptions.MuseumException;
+import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.model.MuseumPass;
 import com.mcgill.mymuseum.model.Visitor;
 import com.mcgill.mymuseum.repository.MuseumPassRepository;
@@ -59,6 +61,17 @@ public class MuseumPassService {
             visitor.addPass(museumPass);
             return museumPassRepository.save(museumPass);
 
+        }
+    }
+
+    @Transactional
+    public Iterable<MuseumPass> retrievePassByVisitor(long id) throws MuseumException {
+        Visitor visitor = visitorService.retrieveVisitor(id);
+        Iterable<MuseumPass> passes = museumPassRepository.findMuseumPassByOwner(visitor);
+        if (museumPassRepository.findMuseumPassByOwner(visitor) != null) {
+            return passes;
+        } else {
+            throw new MuseumException("Could not find the passes");
         }
     }
 }
