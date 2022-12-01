@@ -80,16 +80,13 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function LoanPage() {
+  const { getAllLoans, getVisitorLoans, returnLoan, approveLoan, rejectLoan } = useApiClient();
 
-  const {getAllLoans, returnLoan, approveLoan, rejectLoan} = useApiClient();
+  const userId = useSelector((state) => state.user?.uid);
 
-  const userId = useSelector(state=>state.user?.uid);
+  const accountType = useSelector((state) => state?.user?.type);
 
-  const {id:employeeId} = useParams();
-
-  const navigate = useNavigate();
-
-  const [loanList, setLoanList] = useState([{}]);
+  const [loanList, setLoanList] = useState([]);
 
   const [open, setOpen] = useState();
 
@@ -108,16 +105,19 @@ export default function LoanPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempLoanList = await getAllLoans();
-    setLoanList(tempLoanList)
-    console.log(tempLoanList)
-    }) ()
-  }, [getAllLoans])
-  
+    (async () => {
+      if (accountType === 'VISITOR') {
+        const tempLoanList = await getVisitorLoans(userId);
+        setLoanList(tempLoanList);
+      } else {
+        const tempLoanList = await getAllLoans();
+        setLoanList(tempLoanList);
+      }
+    })();
+  }, [getAllLoans]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -208,8 +208,8 @@ export default function LoanPage() {
                 />
                 <TableBody>
                   {loanList?.map?.((row) => {
-                    console.log("this is the workDay List", loanList)
-                    const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName} = row;
+                    console.log('this is the workDay List', loanList);
+                    const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName } = row;
                     const selectedUser = selected.indexOf(loanId) !== -1;
 
                     return (
@@ -234,20 +234,24 @@ export default function LoanPage() {
                         <TableCell align="left">{aStartDate}</TableCell>
 
                         <TableCell align="left">{aEndDate}</TableCell>
-                        
+
                         <TableCell align="left">{aLoanStatus}</TableCell>
 
                         <TableCell align="left">{aArtifactName}</TableCell>
-
-                        
-                        
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(loanId)}}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(e) => {
+                              handleOpenMenu(e);
+                              setcurrentId(loanId);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -318,43 +322,41 @@ export default function LoanPage() {
           },
         }}
       >
-        <MenuItem>
+        {!accountType === 'VISITOR' && (
+          <MenuItem
+            sx={{ color: 'success.main' }}
+            onClick={async () => {
+              await approveLoan(currentId, userId);
+              const temp = await getAllLoans();
+              setLoanList(temp);
+            }}
+          >
+            <Iconify icon={'zondicons:checkmark'} sx={{ mr: 2 }} />
+            Approve
+          </MenuItem>
+        )}
 
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
+        <MenuItem
+          onClick={async () => {
+            await returnLoan(currentId);
+            const temp = await getAllLoans();
+            setLoanList(temp);
+          }}
+        >
+          <Iconify icon={'ion:return-up-back'} sx={{ mr: 2 }} />
+          return
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await returnLoan(currentId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          onClick={async () => {
+            await rejectLoan(currentId, userId);
+            const temp = await getAllLoans();
+            setLoanList(temp);
+          }}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Return
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await approveLoan(currentId, userId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Approve
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await rejectLoan(currentId, userId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          reject
+          {accountType === 'VISITOR' ? 'Cancel' : 'reject'}
         </MenuItem>
       </Popover>
     </>

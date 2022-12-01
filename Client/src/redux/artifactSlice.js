@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const artifactSlice = createSlice({
   name: 'artifacts',
   initialState: {
-    artifactList: [{}],
+    artifactList: [],
   },
   reducers: {
     setArtifactList: (state, action) => {

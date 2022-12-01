@@ -43,7 +43,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="artifacts" />, index: true },
             { path: '/artifacts', element: <ArtifactPage /> },
-            (accountType === 'PRESIDENT' || accountType === 'EMPLOYEE') && {
+            {
               path: '/dashboard/loans',
               element: <LoanPage />,
             },
@@ -66,7 +66,7 @@ export default function Router() {
               path: '/dashboard/VisitorPage',
               element: <VisitorPage />,
             },
-            (accountType === 'PRESIDENT' || accountType === 'EMPLOYEE') && {
+            {
               path: '/dashboard/MuseumPassPage',
               element: <MuseumPassPage />,
             },

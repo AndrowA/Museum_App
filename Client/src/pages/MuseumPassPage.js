@@ -34,10 +34,9 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'passId', label: 'passId', alignRight: false },
-  { id: 'aPassDate', label: 'aPassDate', alignRight: false },
+  { id: 'passId', label: 'pass Id', alignRight: false },
+  { id: 'aPassDate', label: 'Pass Date', alignRight: false },
   { id: 'email', label: 'email', alignRight: false },
-  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -72,12 +71,13 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function MuseumPassPage() {
+  const { getAllMuseumPasses, getVisitorPasses } = useApiClient();
 
-  const {getAllMuseumPasses} = useApiClient();
+  const userId = useSelector((state) => state.user?.uid);
 
-  const userId = useSelector(state=>state.user?.uid);
+  const accountType = useSelector((state) => state.user?.type);
 
-  const {id:employeeId} = useParams();
+  const { id: employeeId } = useParams();
 
   const navigate = useNavigate();
 
@@ -100,16 +100,20 @@ export default function MuseumPassPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempListOfMuseumPasses = await getAllMuseumPasses();
-    setMuseumPassList(tempListOfMuseumPasses)
-    console.log(tempListOfMuseumPasses)
-    }) ()
-  }, [getAllMuseumPasses])
-  
+    (async () => {
+      console.log(accountType);
+      if (accountType === 'VISITOR') {
+        const tempListOfMuseumPasses = await getVisitorPasses(userId);
+        setMuseumPassList(tempListOfMuseumPasses);
+      } else {
+        const tempListOfMuseumPasses = await getAllMuseumPasses(userId);
+        setMuseumPassList(tempListOfMuseumPasses);
+      }
+    })();
+  }, [accountType, getAllMuseumPasses, getVisitorPasses, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -179,9 +183,8 @@ export default function MuseumPassPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-           Purchased Museum Passes
+            Purchased Museum Passes
           </Typography>
-          
         </Stack>
 
         <Card>
@@ -191,6 +194,7 @@ export default function MuseumPassPage() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
+                  noCheckBox
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -201,16 +205,12 @@ export default function MuseumPassPage() {
                 />
                 <TableBody>
                   {listOfMuseumPasses?.map?.((row) => {
-                    console.log("this is the workDay List", listOfMuseumPasses)
-                    const { passId, aPassDate, visitorEmail} = row;
+                    console.log('this is the workDay List', listOfMuseumPasses);
+                    const { passId, aPassDate, visitorEmail } = row;
                     const selectedUser = selected.indexOf(passId) !== -1;
 
                     return (
                       <TableRow hover key={passId} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, passId)} />
-                        </TableCell>
-
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={day} src={avatarUrl} />
@@ -219,6 +219,7 @@ export default function MuseumPassPage() {
                             </Typography>
                           </Stack>
                         </TableCell> */}
+                        <TableCell padding="checkbox" />
 
                         <TableCell align="left">{passId}</TableCell>
 
@@ -229,12 +230,6 @@ export default function MuseumPassPage() {
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(passId)}}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -283,8 +278,6 @@ export default function MuseumPassPage() {
           />
         </Card>
       </Container>
-
-      
     </>
   );
 }

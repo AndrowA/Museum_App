@@ -306,11 +306,6 @@ export default function VisitorPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
         <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
 
            await removeAccount(userId, currentId)

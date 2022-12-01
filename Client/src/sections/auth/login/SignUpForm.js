@@ -14,6 +14,8 @@ import Iconify from '../../../components/iconify';
 export default function LoginForm() {
   const { registerWithEmailAndPassword } = useApiClient();
   const dispatch = useDispatch();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(undefined);
   const [password1, setPassword1] = useState(undefined);
@@ -21,7 +23,8 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     if (password1 === password2) {
-      registerWithEmailAndPassword(email, password1);
+      console.log('pass 1');
+      registerWithEmailAndPassword(firstName, lastName, email, password1);
     } else {
       dispatch(sendMessage({ open: true, message: 'Passwords do not match', severity: 'error' }));
     }
@@ -30,6 +33,20 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
+        <TextField
+          name="firstName"
+          label="First Name"
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
+        />
+        <TextField
+          name="lastName"
+          label="Last Name"
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
+        />
         <TextField
           name="email"
           label="Email address"
@@ -58,7 +75,7 @@ export default function LoginForm() {
 
         <TextField
           name="password"
-          label="Password"
+          label="Confirm Password"
           type="password"
           onChange={(e) => {
             setPassword2(e.target.value);

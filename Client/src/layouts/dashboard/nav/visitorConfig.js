@@ -10,6 +10,16 @@ const visitorConfig = (vId) => [
     path: '/artifacts',
     icon: icon('ic_artifact'),
   },
+  {
+    title: 'My passes',
+    path: '/dashboard/MuseumPassPage',
+    icon: icon('ic_pass'),
+  },
+  {
+    title: 'My Loans',
+    path: '/dashboard/loans',
+    icon: icon('ic_loan'),
+  },
 ];
 
 export default visitorConfig;
