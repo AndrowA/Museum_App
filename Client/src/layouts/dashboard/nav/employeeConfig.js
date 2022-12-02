@@ -4,7 +4,7 @@ import SvgColor from '../../../components/svg-color';
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
-const navConfig = [
+const employeeConfig = (eId) => [
   {
     title: 'Artifacts',
     path: '/artifacts',
@@ -16,40 +16,20 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: icon('ic_analytics'),
-  },
-  {
-    title: 'user',
-    path: '/dashboard/user',
+    title: 'My Schedule',
+    path: `dashboard/employeeSchedulePage/${eId}`,
     icon: icon('ic_user'),
   },
   {
-    title: 'employee',
-    path: '/dashboard/employees',
+    title: 'Museum Passes',
+    path: '/dashboard/MuseumPassPage',
     icon: icon('ic_user'),
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'visitorsPage',
+    title: 'Visitors',
     path: '/dashboard/VisitorPage',
     icon: icon('ic_blog'),
   },
-  {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: icon('ic_disabled'),
-  // },
 ];
 
-export default navConfig;
+export default employeeConfig;

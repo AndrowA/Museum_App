@@ -5,8 +5,9 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import { logOut } from 'redux/loginSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage } from 'redux/alertSlice';
+import { useNavigate } from 'react-router-dom';
 import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
@@ -16,14 +17,6 @@ const MENU_OPTIONS = [
     label: 'Home',
     icon: 'eva:home-fill',
   },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
 ];
 
 // ----------------------------------------------------------------------
@@ -31,12 +24,17 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const email = useSelector((state) => state.user?.email);
+  const firstName = useSelector((state) => state.user?.firstName);
+  const lastName = useSelector((state) => state.user?.lastName);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
+    navigate('/artifacts');
     setOpen(null);
   };
 
@@ -83,10 +81,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {firstName} {lastName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 

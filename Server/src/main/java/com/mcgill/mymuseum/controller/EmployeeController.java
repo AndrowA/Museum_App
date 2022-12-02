@@ -39,7 +39,7 @@ public class EmployeeController {
     public ResponseEntity registerEmployee(@RequestBody AccountDTO employee) {
         if (employee.getAccountType().equals("EMPLOYEE")){
             try {
-                Long out = accountService.createAccount(employee.email, employee.getPassword(), AccountService.AccountType.EMPLOYEE);
+                Long out = accountService.createAccount(employee.getEmail(), employee.getPassword(), AccountService.AccountType.EMPLOYEE);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -297,6 +297,8 @@ public class EmployeeController {
             try {
                 WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
                 Date date = newWorkDay.getDay();
+                System.out.println("i am him, him and only him");
+                System.out.println(date);
                 Integer workDay = employeeService.deleteWorkDay(date, employeeId);
                 System.out.println(workDay);
                 if(workDay != null) {

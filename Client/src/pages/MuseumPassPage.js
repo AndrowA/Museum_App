@@ -2,7 +2,6 @@
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 // @mui
 
@@ -11,12 +10,8 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Button,
-  Popover,
   Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
@@ -39,13 +34,9 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'loanId', label: 'loanId', alignRight: false },
+  { id: 'passId', label: 'pass Id', alignRight: false },
+  { id: 'aPassDate', label: 'Pass Date', alignRight: false },
   { id: 'email', label: 'email', alignRight: false },
-  { id: 'startDate', label: 'startDate', alignRight: false },
-  { id: 'endDate', label: 'endDate', alignRight: false },
-  { id: 'loanStatus', label: 'loanStatus', alignRight: false },
-  { id: 'artifactName', label: 'artifactName', alignRight: false },
-  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -79,17 +70,18 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function VisitorPage() {
+export default function MuseumPassPage() {
+  const { getAllMuseumPasses, getVisitorPasses } = useApiClient();
 
-  const {getAllLoans, returnLoan, approveLoan, rejectLoan} = useApiClient();
+  const userId = useSelector((state) => state.user?.uid);
 
-  const userId = useSelector(state=>state.user?.uid);
+  const accountType = useSelector((state) => state.user?.type);
 
-  const {id:employeeId} = useParams();
+  const { id: employeeId } = useParams();
 
   const navigate = useNavigate();
 
-  const [loanList, setLoanList] = useState([{}]);
+  const [listOfMuseumPasses, setMuseumPassList] = useState([{}]);
 
   const [open, setOpen] = useState();
 
@@ -108,16 +100,20 @@ export default function VisitorPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempLoanList = await getAllLoans();
-    setLoanList(tempLoanList)
-    console.log(tempLoanList)
-    }) ()
-  }, [getAllLoans])
-  
+    (async () => {
+      console.log(accountType);
+      if (accountType === 'VISITOR') {
+        const tempListOfMuseumPasses = await getVisitorPasses(userId);
+        setMuseumPassList(tempListOfMuseumPasses);
+      } else {
+        const tempListOfMuseumPasses = await getAllMuseumPasses(userId);
+        setMuseumPassList(tempListOfMuseumPasses);
+      }
+    })();
+  }, [accountType, getAllMuseumPasses, getVisitorPasses, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -187,11 +183,8 @@ export default function VisitorPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee: dayOfEmployee
+            Purchased Museum Passes
           </Typography>
-          <Button onClick={()=> navigate(`/dashboard/LoanRequestForm/`)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
         </Stack>
 
         <Card>
@@ -201,6 +194,7 @@ export default function VisitorPage() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
+                  noCheckBox
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -210,17 +204,13 @@ export default function VisitorPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {loanList?.map?.((row) => {
-                    console.log("this is the workDay List", loanList)
-                    const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName} = row;
-                    const selectedUser = selected.indexOf(loanId) !== -1;
+                  {listOfMuseumPasses?.map?.((row) => {
+                    console.log('this is the workDay List', listOfMuseumPasses);
+                    const { passId, aPassDate, visitorEmail } = row;
+                    const selectedUser = selected.indexOf(passId) !== -1;
 
                     return (
-                      <TableRow hover key={loanId} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, loanId)} />
-                        </TableCell>
-
+                      <TableRow hover key={passId} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={day} src={avatarUrl} />
@@ -229,31 +219,17 @@ export default function VisitorPage() {
                             </Typography>
                           </Stack>
                         </TableCell> */}
+                        <TableCell padding="checkbox" />
 
-                        <TableCell align="left">{loanId}</TableCell>
+                        <TableCell align="left">{passId}</TableCell>
 
-                        <TableCell align="left">{aLoaneeName}</TableCell>
+                        <TableCell align="left">{aPassDate}</TableCell>
 
-                        <TableCell align="left">{aStartDate}</TableCell>
-
-                        <TableCell align="left">{aEndDate}</TableCell>
-                        
-                        <TableCell align="left">{aLoanStatus}</TableCell>
-
-                        <TableCell align="left">{aArtifactName}</TableCell>
-
-                        
-                        
+                        <TableCell align="left">{visitorEmail}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(loanId)}}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -302,64 +278,6 @@ export default function VisitorPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await returnLoan(currentId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Return
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await approveLoan(currentId, userId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Approve
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await rejectLoan(currentId, userId)
-           const temp = await getAllLoans()
-           setLoanList(temp)
-
-        }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          reject
-        </MenuItem>
-      </Popover>
     </>
   );
 }

@@ -2,7 +2,10 @@ package com.mcgill.mymuseum.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mcgill.mymuseum.dto.LoanDTO;
 import com.mcgill.mymuseum.dto.MuseumPassDTO;
+import com.mcgill.mymuseum.exceptions.MuseumException;
+import com.mcgill.mymuseum.model.Loan;
 import com.mcgill.mymuseum.model.MuseumPass;
 import com.mcgill.mymuseum.service.AccountService;
 import com.mcgill.mymuseum.service.MuseumPassService;
@@ -11,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -40,7 +45,7 @@ public class MuseumPassController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             MuseumPass museumPassObject = museumPassService.createPass(pass, visitorID);
-            MuseumPassDTO museumPassDTO = new MuseumPassDTO(museumPassObject.getPassId(), 10, museumPassObject.getPassDate(), museumPassObject.getOwner(), museumPassObject.getMyMuseum());
+            MuseumPassDTO museumPassDTO = new MuseumPassDTO(museumPassObject.getPassId(), 10, museumPassObject.getPassDate(), museumPassObject.getOwner().getEmail(), museumPassObject.getMyMuseum());
             return new ResponseEntity<>(museumPassDTO, HttpStatus.OK); //Create pass through DTO by associating to visitorID and return ResponseEntity OK if no errors
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -59,7 +64,7 @@ public class MuseumPassController {
     public ResponseEntity getMuseumPass(@PathVariable String id) {
         try {
            MuseumPass pass2 = museumPassService.retrieveMuseumPass(Long.parseLong(id)); //retrieve MuseumPass from visitor ID
-           MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner(), pass2.getMyMuseum());
+           MuseumPassDTO museumPassDTO = new MuseumPassDTO(pass2.getPassId(), 10, pass2.getPassDate(), pass2.getOwner().getEmail(), pass2.getMyMuseum());
            if (pass2 == null) {
                throw new NullPointerException();
            }
@@ -70,4 +75,46 @@ public class MuseumPassController {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getAllPasses")
+    public ResponseEntity getAllMuseumPasses(@PathVariable String id) {
+        try{
+            ArrayList<MuseumPass> museumPassList = (ArrayList<MuseumPass>) museumPassService.getAllMuseumPasses();
+            ArrayList<MuseumPassDTO> dtos = new ArrayList<>();
+            for(MuseumPass museumPass : museumPassList) {
+                MuseumPassDTO newDto = new MuseumPassDTO();
+                newDto.setVisitorEmail(museumPass.getOwner().getEmail());
+                System.out.println(museumPass.getOwner().getEmail());
+                newDto.setPassId(museumPass.getPassId());
+                newDto.setaPassDate(museumPass.getPassDate());
+                dtos.add(newDto);
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Transactional
+    @GetMapping("/getVisitorPasses")
+    public ResponseEntity getVisitorPasses(@PathVariable long id) throws MuseumException {
+        try{
+            ArrayList<MuseumPass> museumPassList = (ArrayList<MuseumPass>) museumPassService.retrievePassByVisitor(id);
+            ArrayList<MuseumPassDTO> dtos = new ArrayList<>();
+            for(MuseumPass museumPass : museumPassList) {
+                MuseumPassDTO newDto = new MuseumPassDTO();
+                newDto.setVisitorEmail(museumPass.getOwner().getEmail());
+                System.out.println(museumPass.getOwner().getEmail());
+                newDto.setPassId(museumPass.getPassId());
+                newDto.setaPassDate(museumPass.getPassDate());
+                dtos.add(newDto);
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

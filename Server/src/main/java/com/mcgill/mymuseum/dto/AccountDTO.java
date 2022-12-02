@@ -3,7 +3,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDTO {
-    public String email=null;
+    private String firstName =null;
+    private String lastName = null;
+    private String email=null;
     private String password=null;
     private String accountType=null;
     private Double hourlyWage=null;
@@ -22,6 +24,15 @@ public class AccountDTO {
         this.password = password;
         this.accountType = accountType;
     }
+
+    public String getFirstName() {return this.firstName;}
+
+    public String  getLastName() {return this.lastName;}
+
+    public void setFirstName(String firstName) {this.firstName = firstName;}
+
+    public void setLastName(String lastName) {this.lastName = lastName;}
+
     public String getPassword(){
         return this.password;
     }

@@ -44,7 +44,8 @@ const TABLE_HEAD = [
   { id: 'id', label: 'id', alignRight: false },
   { id: 'email', label: 'email', alignRight: false },
   { id: 'hourly wage', label: 'hourly wage', alignRight: false },
-  { id: '' },
+  { id: 'overtime hourly wage', label: 'overtime hourly wage', alignRight: false  },
+  { id:''}
 ];
 
 // ----------------------------------------------------------------------
@@ -111,7 +112,7 @@ export default function EmployeePage() {
     console.log(employeesList)
     }) ()
   }, [getEmployees, userId])
-  
+
 
   const handleOpenMenu = (event) => {
     console.log(event)
@@ -209,7 +210,7 @@ export default function EmployeePage() {
                 <TableBody>
                   {employeesList?.map?.((row) => {
                     console.log("This is a list of employees", employeesList)
-                    const { id, email, hourlyWage } = row;
+                    const { id, email, hourlyWage, overTimeHourlyWage } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
                     return (
@@ -232,6 +233,8 @@ export default function EmployeePage() {
                         <TableCell align="left">{email}</TableCell>
 
                         <TableCell align="left">{hourlyWage}</TableCell>
+
+                        <TableCell align="left">{overTimeHourlyWage}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>

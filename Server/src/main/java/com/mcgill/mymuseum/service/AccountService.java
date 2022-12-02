@@ -94,14 +94,14 @@ public class AccountService {
         TargetType type = findTargetType(targetId);
 
         // list of permissions that employee has
-        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)))||
+        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)||action.equals((Action.REMOVE))))||
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)) ||
                 (type.equals(TargetType.WORKDAY) && workDayRepository.findById(targetId).get().getEmployee().getAccountId()==accountId && action.equals(Action.INFO))) ||
                 (targetId==accountId && !action.equals(Action.REMOVE));
 
         // list of permissions that visitor has
-        boolean visitorPermissions = (type.equals(TargetType.LOAN) && ((action.equals(Action.INFO)|| action.equals(Action.CANCEL) && loanRepository.findById(targetId).get().getLoanee().getAccountId()==accountId)||action.equals(Action.REQUEST))) ||
+        boolean visitorPermissions = (type.equals(TargetType.LOAN) && ((action.equals(Action.INFO)|| action.equals(Action.REMOVE) && loanRepository.findById(targetId).get().getLoanee().getAccountId()==accountId)||action.equals(Action.REQUEST))) ||
                 (type.equals(TargetType.MUSEUMPASS) && (action.equals(Action.BUY) || action.equals(Action.INFO))) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO))) ||
                 (targetId==accountId && !action.equals(Action.REMOVE));
@@ -208,6 +208,23 @@ public class AccountService {
         }
         throw new Error("Incorrect Email or Password");
     }
+
+    @Transactional
+    public boolean setAccountName(Long accountId, String firstName, String lastName){
+        try {
+            System.out.println(accountId);
+            System.out.println(firstName);
+            System.out.println(lastName);
+            Account account = accountRepository.findById(accountId).get();
+            account.setFirstName(firstName);
+            account.setLastName(lastName);
+            accountRepository.save(account);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
     @Transactional
     public boolean removeAccount(long id){

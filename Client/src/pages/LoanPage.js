@@ -39,9 +39,12 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'day', label: 'day', alignRight: false },
-  { id: 'startTime', label: 'startTime', alignRight: false },
-  { id: 'endTime', label: 'endTime', alignRight: false },
+  { id: 'loanId', label: 'loanId', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'startDate', label: 'startDate', alignRight: false },
+  { id: 'endDate', label: 'endDate', alignRight: false },
+  { id: 'loanStatus', label: 'loanStatus', alignRight: false },
+  { id: 'artifactName', label: 'artifactName', alignRight: false },
   { id: '' },
 ];
 
@@ -76,24 +79,18 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const { getEmployeeSchedule, removeWorkDayForEmployee, getEmployee } = useApiClient();
+export default function LoanPage() {
+  const { getAllLoans, getVisitorLoans, returnLoan, approveLoan, rejectLoan } = useApiClient();
 
   const userId = useSelector((state) => state.user?.uid);
 
-  const accountType = useSelector((state) => state.user?.type);
+  const accountType = useSelector((state) => state?.user?.type);
 
-  const { id: employeeId } = useParams();
-
-  const navigate = useNavigate();
-
-  const [employeeEmail, setEmployeeEmail] = useState();
-
-  const [workDayList, setWorkDayList] = useState([]);
+  const [loanList, setLoanList] = useState([]);
 
   const [open, setOpen] = useState();
 
-  const [currentDay, setCurrentDay] = useState();
+  const [currentId, setcurrentId] = useState();
 
   const [page, setPage] = useState(0);
 
@@ -109,12 +106,15 @@ export default function UserPage() {
 
   useEffect(() => {
     (async () => {
-      const { email } = await getEmployee(userId, employeeId);
-      setEmployeeEmail(email);
-      const tempWorkDayList = await getEmployeeSchedule(userId, employeeId);
-      setWorkDayList(tempWorkDayList);
+      if (accountType === 'VISITOR') {
+        const tempLoanList = await getVisitorLoans(userId);
+        setLoanList(tempLoanList);
+      } else {
+        const tempLoanList = await getAllLoans();
+        setLoanList(tempLoanList);
+      }
     })();
-  }, [employeeId, getEmployeeSchedule, userId]);
+  }, [getAllLoans]);
 
   const handleOpenMenu = (event) => {
     console.log(event);
@@ -187,17 +187,8 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Employee Email: <span style={{color:'grey'}}>{employeeEmail}</span>
+            Loans
           </Typography>
-          {accountType !== 'EMPLOYEE' && (
-            <Button
-              onClick={() => navigate(`/dashboard/employeeScheduleForm/${employeeId}`)}
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              New Workday
-            </Button>
-          )}
         </Stack>
 
         <Card>
@@ -216,15 +207,15 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {workDayList?.map?.((row) => {
-                    console.log('this is the workDay List', workDayList);
-                    const { startTime, endTime, day } = row;
-                    const selectedUser = selected.indexOf(day) !== -1;
+                  {loanList?.map?.((row) => {
+                    console.log('this is the workDay List', loanList);
+                    const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName } = row;
+                    const selectedUser = selected.indexOf(loanId) !== -1;
 
                     return (
-                      <TableRow hover key={day} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={loanId} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, day)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, loanId)} />
                         </TableCell>
 
                         {/* <TableCell component="th" scope="row" padding="none">
@@ -236,11 +227,17 @@ export default function UserPage() {
                           </Stack>
                         </TableCell> */}
 
-                        <TableCell align="left">{day}</TableCell>
+                        <TableCell align="left">{loanId}</TableCell>
 
-                        <TableCell align="left">{startTime}</TableCell>
+                        <TableCell align="left">{aLoaneeName}</TableCell>
 
-                        <TableCell align="left">{endTime}</TableCell>
+                        <TableCell align="left">{aStartDate}</TableCell>
+
+                        <TableCell align="left">{aEndDate}</TableCell>
+
+                        <TableCell align="left">{aLoanStatus}</TableCell>
+
+                        <TableCell align="left">{aArtifactName}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
@@ -252,7 +249,7 @@ export default function UserPage() {
                             color="inherit"
                             onClick={(e) => {
                               handleOpenMenu(e);
-                              setCurrentDay(day);
+                              setcurrentId(loanId);
                             }}
                           >
                             <Iconify icon={'eva:more-vertical-fill'} />
@@ -325,21 +322,41 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
+        {!accountType === 'VISITOR' && (
+          <MenuItem
+            sx={{ color: 'success.main' }}
+            onClick={async () => {
+              await approveLoan(currentId, userId);
+              const temp = await getAllLoans();
+              setLoanList(temp);
+            }}
+          >
+            <Iconify icon={'zondicons:checkmark'} sx={{ mr: 2 }} />
+            Approve
+          </MenuItem>
+        )}
+
+        <MenuItem
+          onClick={async () => {
+            await returnLoan(currentId);
+            const temp = await getAllLoans();
+            setLoanList(temp);
+          }}
+        >
+          <Iconify icon={'ion:return-up-back'} sx={{ mr: 2 }} />
+          return
         </MenuItem>
 
         <MenuItem
           sx={{ color: 'error.main' }}
           onClick={async () => {
-            await removeWorkDayForEmployee(userId, employeeId, currentDay);
-            const temp = await getEmployeeSchedule(userId, employeeId);
-            setWorkDayList(temp);
+            await rejectLoan(currentId, userId);
+            const temp = await getAllLoans();
+            setLoanList(temp);
           }}
         >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          {accountType === 'VISITOR' ? 'Cancel' : 'reject'}
         </MenuItem>
       </Popover>
     </>

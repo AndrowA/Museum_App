@@ -40,12 +40,21 @@ public class AccountController {
             return new ResponseEntity<>("Invalid Data",HttpStatus.UNPROCESSABLE_ENTITY);
         }
         try {
-        Long out = accountService.createAccount(account.email, account.getPassword(), accountType);
+        Long out = accountService.createAccount(account.getEmail(), account.getPassword(), accountType);
         return new ResponseEntity<>(out,HttpStatus.OK);
         } catch (Error err) {
             return new ResponseEntity<>(err.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @PostMapping("/setName")
+    public ResponseEntity setName(@RequestBody AccountDTO account){
+        if (accountService.setAccountName(account.getId(),account.getFirstName(),account.getLastName())){
+            return new ResponseEntity<>("Name successfully updated",HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Colud not set names", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -56,7 +65,7 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity loginUser(@RequestBody AccountDTO account){
         try {
-            Long out = accountService.loginAccount(account.email, account.getPassword());
+            Long out = accountService.loginAccount(account.getEmail(), account.getPassword());
             return new ResponseEntity<>(out,HttpStatus.OK);
         } catch (Error err) {
             return new ResponseEntity<>(err.getMessage() ,HttpStatus.NOT_FOUND);
@@ -96,7 +105,9 @@ public class AccountController {
         if (accountService.authenticate(requesterId,id, AccountService.Action.INFO)){
             Account account = accountService.findAccountByID(id);
             AccountDTO dto = new AccountDTO();
-            dto.email = account.getEmail();
+            dto.setFirstName(account.getFirstName());
+            dto.setLastName(account.getLastName());
+            dto.setEmail(account.getEmail());
             dto.setAccountType(account instanceof President ? "PRESIDENT" : account instanceof  Employee ? "EMPLOYEE" : account instanceof Visitor ? "VISITOR" : null);
             if (dto.getAccountType()=="EMPLOYEE"){
                 dto.setHourlyWage(((Employee) account).getHourlyWage());
