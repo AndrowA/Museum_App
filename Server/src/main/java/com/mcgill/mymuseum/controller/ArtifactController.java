@@ -165,5 +165,23 @@ public class ArtifactController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/delete/{id}")
+    public ResponseEntity deleteArtifact(@RequestParam("token") long rid, @PathVariable(name="id") long id){
+        try {
+            if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            ArtifactDTO artifact = new ArtifactDTO(artifactService.retrieveArtifact(id));
+            if (artifactService.deleteArtifact(id)) {
+                return new ResponseEntity<>(artifact, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("artifact not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

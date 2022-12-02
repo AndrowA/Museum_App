@@ -2,6 +2,7 @@ package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.Artifact;
 import com.mcgill.mymuseum.repository.ArtifactRepository;
+import com.mcgill.mymuseum.repository.LoanRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class ArtifactService {
 
     @Autowired
     ArtifactRepository artifactRepository;
+    @Autowired
+    LoanRepository loanRepository;
 
     /**
      * Method that returns all artifacts
@@ -45,6 +48,19 @@ public class ArtifactService {
             }
             return listToReturn;
         }
+    }
+
+    @Transactional
+    public boolean deleteArtifact(long id){
+        if(!artifactRepository.existsById(id)){
+            return false;
+        }
+        Artifact artifact = artifactRepository.findById(id).get();
+        if(artifact.hasLoan()) {
+            loanRepository.deleteById(artifact.getLoan().getLoanId());
+        }
+        artifactRepository.deleteById(id);
+        return true;
     }
 
     /**
