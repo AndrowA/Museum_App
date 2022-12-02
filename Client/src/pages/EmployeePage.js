@@ -37,15 +37,14 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'id', label: 'id', alignRight: false },
   { id: 'email', label: 'email', alignRight: false },
   { id: 'hourly wage', label: 'hourly wage', alignRight: false },
-  { id: 'overtime hourly wage', label: 'overtime hourly wage', alignRight: false  },
-  { id:''}
+  { id: 'overtime hourly wage', label: 'overtime hourly wage', alignRight: false },
+  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -80,10 +79,9 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function EmployeePage() {
+  const { getEmployees, removeEmployee } = useApiClient();
 
-  const {getEmployees,removeEmployee} = useApiClient();
-
-  const userId = useSelector(state=>state.user?.uid);
+  const userId = useSelector((state) => state.user?.uid);
 
   const navigate = useNavigate();
 
@@ -106,16 +104,15 @@ export default function EmployeePage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const employeesList = await getEmployees(userId);
-    setEmployeeList(employeesList)
-    console.log(employeesList)
-    }) ()
-  }, [getEmployees, userId])
-
+    (async () => {
+      const employeesList = await getEmployees(userId);
+      setEmployeeList(employeesList);
+      console.log(employeesList);
+    })();
+  }, [getEmployees, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -187,7 +184,11 @@ export default function EmployeePage() {
           <Typography variant="h4" gutterBottom>
             Employees
           </Typography>
-          <Button onClick={()=>navigate("/dashboard/employeeForm")} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            onClick={() => navigate('/dashboard/employeeForm')}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New Employee
           </Button>
         </Stack>
@@ -209,7 +210,7 @@ export default function EmployeePage() {
                 />
                 <TableBody>
                   {employeesList?.map?.((row) => {
-                    console.log("This is a list of employees", employeesList)
+                    console.log('This is a list of employees', employeesList);
                     const { id, email, hourlyWage, overTimeHourlyWage } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
@@ -241,7 +242,14 @@ export default function EmployeePage() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setCurrentEmployee(id)}}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(e) => {
+                              handleOpenMenu(e);
+                              setCurrentEmployee(id);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -312,22 +320,27 @@ export default function EmployeePage() {
           },
         }}
       >
-        <MenuItem onClick={ () => {
-            navigate(`/dashboard/employeeSchedulePage/${currentEmployee}`)
-          }}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
+        <MenuItem
+          onClick={() => {
+            navigate(`/dashboard/employeeSchedulePage/${currentEmployee}`);
+          }}
+        >
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Schedule
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-           await removeEmployee(userId, currentEmployee)
-           const employeesList = await getEmployees(userId);
-          setEmployeeList(employeesList)
-        }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          onClick={async () => {
+            await removeEmployee(userId, currentEmployee);
+            const employeesList = await getEmployees(userId);
+            setEmployeeList(employeesList);
+          }}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Fire
         </MenuItem>
       </Popover>
     </>
   );
-      }
+}

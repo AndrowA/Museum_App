@@ -34,14 +34,13 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'day', label: 'day', alignRight: false },
-  { id: 'startTime', label: 'startTime', alignRight: false },
-  { id: 'endTime', label: 'endTime', alignRight: false },
+  { id: 'id', label: 'id', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'role', label: 'role', alignRight: false },
   { id: '' },
 ];
 
@@ -77,12 +76,11 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function VisitorPage() {
+  const { getVisitors, removeAccount } = useApiClient();
 
-  const {getVisitors, removeAccount} = useApiClient();
+  const userId = useSelector((state) => state.user?.uid);
 
-  const userId = useSelector(state=>state.user?.uid);
-
-  const {id:employeeId} = useParams();
+  const { id: employeeId } = useParams();
 
   const navigate = useNavigate();
 
@@ -105,16 +103,15 @@ export default function VisitorPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    (async()=>{
-    const tempVisitorList = await getVisitors(userId);
-    setVisitorList(tempVisitorList)
-    console.log(tempVisitorList)
-    }) ()
-  }, [getVisitors, userId])
-  
+    (async () => {
+      const tempVisitorList = await getVisitors(userId);
+      setVisitorList(tempVisitorList);
+      console.log(tempVisitorList);
+    })();
+  }, [getVisitors, userId]);
 
   const handleOpenMenu = (event) => {
-    console.log(event)
+    console.log(event);
     setOpen(event.currentTarget);
   };
 
@@ -130,7 +127,7 @@ export default function VisitorPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.day);
+      const newSelecteds = visitorList.map((n) => n.day);
       setSelected(newSelecteds);
       return;
     }
@@ -167,9 +164,9 @@ export default function VisitorPage() {
     setFilterday(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - visitorList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterday);
+  const filteredUsers = applySortFilter(visitorList, getComparator(order, orderBy), filterday);
 
   // const filteredWorkDays = applySortFilter(workDayList, getComparator(order, orderBy), filterday);
 
@@ -198,15 +195,15 @@ export default function VisitorPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={visitorList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {visitorList?.map?.((row) => {
-                    console.log("this is the workDay List", visitorList)
-                    const { id, email, accountType} = row;
+                    console.log('this is the workDay List', visitorList);
+                    const { id, email, accountType } = row;
                     const selectedUser = selected.indexOf(id) !== -1;
 
                     return (
@@ -235,7 +232,14 @@ export default function VisitorPage() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e)=>{handleOpenMenu(e); setcurrentId(id)}}>
+                          <IconButton
+                            size="large"
+                            color="inherit"
+                            onClick={(e) => {
+                              handleOpenMenu(e);
+                              setcurrentId(id);
+                            }}
+                          >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -279,7 +283,7 @@ export default function VisitorPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={visitorList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -306,13 +310,14 @@ export default function VisitorPage() {
           },
         }}
       >
-        <MenuItem sx={{ color: 'error.main' }} onClick={ async ()=>{
-
-           await removeAccount(userId, currentId)
-           const temp = await getVisitors(userId)
-           setVisitorList(temp)
-
-        }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          onClick={async () => {
+            await removeAccount(userId, currentId);
+            const temp = await getVisitors(userId);
+            setVisitorList(temp);
+          }}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Ban
         </MenuItem>

@@ -43,7 +43,7 @@ const LoanRequestForm = () => {
 
   const onClick = async () => {
     await requestLoan(userId, artifactId, startTime, endTime);
-    // navigate("/dashboard/");
+    navigate('/artifact');
   };
 
   return (
