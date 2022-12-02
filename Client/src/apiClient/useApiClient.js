@@ -22,7 +22,7 @@ export const useApiClient = () => {
         dispatch(setEmail(response.data?.email));
         dispatch(setName({ firstName: response.data?.firstName, lastName: response.data?.lastName }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const setAccountNames = useCallback(async (id, firstName, lastName) => {
@@ -37,7 +37,7 @@ export const useApiClient = () => {
         dispatch(setName({ firstName, lastName }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -56,7 +56,7 @@ export const useApiClient = () => {
         dispatch(logIn());
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -72,7 +72,7 @@ export const useApiClient = () => {
         dispatch(logIn());
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -82,7 +82,7 @@ export const useApiClient = () => {
       .then(() => {
         dispatch(sendMessage({ open: true, message: 'user successfully removed', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   // Employee endpoints
@@ -90,7 +90,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/artifact/get/${artifactID}`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -100,7 +100,7 @@ export const useApiClient = () => {
       .then((response) => {
         dispatch(setArtifactList(response.data));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const addArtifact = useCallback(async (requesterId, imageURL, name, description) => {
@@ -115,7 +115,7 @@ export const useApiClient = () => {
         output = response.data;
         dispatch(sendMessage({ open: true, message: `artifact ${name} successfully added`, severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -129,7 +129,7 @@ export const useApiClient = () => {
       .then(() => {
         dispatch(sendMessage({ open: true, message: `artifact ${name} successfully modified`, severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const assignArtifactRoom = useCallback(async (requesterId, artifactId, roomId) => {
@@ -140,14 +140,23 @@ export const useApiClient = () => {
           sendMessage({ open: true, message: `artifact successfully assigned to room ${roomId}`, severity: 'success' })
         );
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
+  }, []);
+
+  const removeArtifact = useCallback(async (requesterId, artifactId) => {
+    await axios
+      .post(`${url}/artifact/delete/${artifactId}?token=${requesterId}`)
+      .then(() => {
+        dispatch(sendMessage({ open: true, message: `Artifact removed`, severity: 'success' }));
+      })
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const getRoomInfo = useCallback(async (roomId) => {
     const output = await axios
       .get(`${url}/artifact/assign/room/info/${roomId}`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -166,7 +175,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `registered new employee`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
     return output;
   }, []);
@@ -178,7 +187,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `Employee successfully removed`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -193,7 +202,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `Employee salary updated`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -201,7 +210,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/employee/info/${requesterId}/${employeeId}`)
       .then((response) => response.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -209,7 +218,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/employee/getEmployees/${requesterId}`)
       .then((response) => response.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -217,7 +226,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/account/getVisitors/${requesterId}`)
       .then((response) => response.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -225,7 +234,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/employee/schedule/getSchedule/${requesterId}/${employeeId}`)
       .then((response) => response.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -233,7 +242,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/employee/schedule/getWorkDayByDateAndId/${requesterId}/${employeeId}`)
       .then((response) => response.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -248,7 +257,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `Workday added to employee schedule`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -263,7 +272,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `Workday modified in employee schedule`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -274,7 +283,7 @@ export const useApiClient = () => {
         dispatch(sendMessage({ open: true, message: `Workday removed from employee schedule`, severity: 'success' }));
       })
       .catch((err) => {
-        dispatch(sendMessage({ open: true, message: err.message, severity: 'error' }));
+        dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' }));
       });
   }, []);
 
@@ -284,7 +293,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/loan/getLoans`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -292,7 +301,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/loan/getLoaneeLoans/${userId}`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -300,7 +309,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/loan/get/${loanId}`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -310,7 +319,7 @@ export const useApiClient = () => {
       .then(() => {
         dispatch(sendMessage({ open: true, message: 'Loan successfully requested', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const approveLoan = useCallback(async (loanId, requesterId) => {
@@ -319,7 +328,7 @@ export const useApiClient = () => {
       .then((res) => {
         dispatch(sendMessage({ open: true, message: 'Successfully approved loan', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const returnLoan = useCallback(async (loanId) => {
@@ -328,7 +337,10 @@ export const useApiClient = () => {
       .then((res) => {
         dispatch(sendMessage({ open: true, message: 'Loan has been returned successfully', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => {
+        dispatch(sendMessage({ open: true, message: err.response.data, severity: 'error' }));
+        console.log(err);
+      });
   }, []);
 
   const rejectLoan = useCallback(async (loanId, requesterId) => {
@@ -337,7 +349,7 @@ export const useApiClient = () => {
       .then((res) => {
         dispatch(sendMessage({ open: true, message: 'Loan rejected', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   // pass endpoints
@@ -349,22 +361,22 @@ export const useApiClient = () => {
       .then((res) => {
         dispatch(sendMessage({ open: true, message: 'Successfully bought a pass', severity: 'success' }));
       })
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
   }, []);
 
   const getPass = useCallback(async (visitorId, passDate) => {
     const output = await axios
       .get(`${url}/museumPass/${visitorId}/info`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
   const getAllMuseumPasses = useCallback(async (userId) => {
     const output = await axios
-      .get(`${url}/museumPass/getAllPasses?id=${userId}`)
+      .get(`${url}/museumPass/${userId}/getAllPasses`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -372,7 +384,7 @@ export const useApiClient = () => {
     const output = await axios
       .get(`${url}/museumPass/${userId}/getVisitorPasses`)
       .then((res) => res.data)
-      .catch((err) => dispatch(sendMessage({ open: true, message: err.message, severity: 'error' })));
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
     return output;
   }, []);
 
@@ -387,6 +399,7 @@ export const useApiClient = () => {
     addArtifact,
     modifyArtifact,
     assignArtifactRoom,
+    removeArtifact,
     getRoomInfo,
     registerEmployeeWithEmailAndPassword,
     removeEmployee,

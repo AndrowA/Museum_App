@@ -20,6 +20,11 @@ const visitorConfig = (vId) => [
     path: '/dashboard/loans',
     icon: icon('ic_loan'),
   },
+  {
+    title: 'Donate',
+    path: '/dashboard/AddArtifactForm',
+    icon: icon('ic_artifact'),
+  },
 ];
 
 export default visitorConfig;

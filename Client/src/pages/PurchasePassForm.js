@@ -11,12 +11,15 @@ const PurchasePassForm = () => {
   const userId = useSelector((state) => state?.user?.uid);
   const navigate = useNavigate();
 
-  const onChange = (value) => {
+  const onChangeDate = (value) => {
+    console.log('executing');
+    console.log(value);
     const date = new Date(value.$d);
     setDate(date);
   };
 
   const onClick = async () => {
+    console.log(date);
     await buyPass(userId, date);
     navigate('/dashboard/');
   };
@@ -24,7 +27,7 @@ const PurchasePassForm = () => {
   return (
     <Form
       fields={[]}
-      datePickers={[{ title: 'Pass Date', onChange, dateOnly: true }]}
+      datePickers={[{ title: 'Pass Date', onChange: onChangeDate, dateOnly: true }]}
       buttons={[{ title: 'Buy Pass', onClick }]}
     />
   );

@@ -69,6 +69,7 @@ const Form = (props) => {
                     value={value}
                     onChange={(newValue) => {
                       setValue(newValue);
+                      datePicker?.onChange?.(newValue);
                     }}
                   />
                 ) : (
