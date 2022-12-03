@@ -3,7 +3,7 @@
 
 ### Group Introduction 
 
-Here you will find a brief description of the project, overview table with names, team roles, and individual efforts along with a project report.
+Here you will find a brief description of the project, overview table with names, team roles, and individual efforts along with a project report. For more detailed information refer to our [wiki](../../wiki).
 
 ## Project description and scope
 
