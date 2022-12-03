@@ -29,3 +29,13 @@ This iteration of the project focused on the implementation and testing of backe
 | Daniel Makhlin      | 25 hours   | controller development, Tests, documentation | 
 | Yassine Meliani     | 25 hours   | controller development, Tests, documentation | 
 | Radu Petrescu       | 25 hours   | controller development, Tests, documentation | 
+
+# Time Table Deliverable 3
+| Name                | Time spent | Tasks done |
+|---------------------|------------|------------|
+| Hadi Ghaddar        | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
+| Androw Abd El Malak | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
+| Shady Guindi        | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
+| Daniel Makhlin      | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
+| Yassine Meliani     | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
+| Radu Petrescu       | 30 hours   | FrontEnd implementation of backend methods, documentation, presentation | 
