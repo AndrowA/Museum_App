@@ -20,6 +20,17 @@ This iteration of the project focused on the implementation and testing of backe
 | Daniel Makhlin      | DanielMakhlin   | Developer       | 
 | Yassine Meliani     | yassinemeliani  | Developer | 
 | Radu Petrescu       | PetrescuRad     | Developer       |
+
+
+# Time Table Deliverable 1
+Name	Time spent	Tasks done
+Hadi Ghaddar	10 hours	UML, Tests, documentation
+Androw Abd El Malak	10 hours	UML, Tests, documentation
+Shady Guindi	10 hours	UML, Tests, documentation
+Daniel Makhlin	10 hours	UML, Tests, documentation, database setup
+Yassine Meliani	10 hours	UML, Tests, documentation, database setup, JPA annotation
+Radu Petrescu	10 hours	UML, Tests, documentation, database setup
+
 # Time Table Deliverable 2
 | Name                | Time spent | Tasks done |
 |---------------------|------------|------------|
