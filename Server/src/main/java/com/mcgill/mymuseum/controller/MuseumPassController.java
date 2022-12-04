@@ -42,7 +42,7 @@ public class MuseumPassController {
             MuseumPass pass = mapper.readValue(passDate, MuseumPass.class); //map date to pass
             int visitorID = Integer.parseInt(id);
             if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){ //make sure only visitor can buy
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(("User not allowed to buy a Museum Pass"), HttpStatus.FORBIDDEN);
             }
             MuseumPass museumPassObject = museumPassService.createPass(pass, visitorID);
             MuseumPassDTO museumPassDTO = new MuseumPassDTO(museumPassObject.getPassId(), 10, museumPassObject.getPassDate(), museumPassObject.getOwner().getEmail(), museumPassObject.getMyMuseum());
@@ -50,7 +50,7 @@ public class MuseumPassController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(("User not found"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -72,7 +72,7 @@ public class MuseumPassController {
                return new ResponseEntity<>(museumPassDTO, HttpStatus.OK); //return retrieved pass
            }
         } catch (NoSuchElementException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(("Museum Pass not found"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -93,7 +93,7 @@ public class MuseumPassController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(("Museum Passes not found"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Transactional
@@ -114,7 +114,7 @@ public class MuseumPassController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(("Museum Passes not found"),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
