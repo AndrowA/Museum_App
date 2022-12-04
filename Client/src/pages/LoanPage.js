@@ -16,6 +16,7 @@ import {
   Popover,
   Checkbox,
   TableRow,
+  TableHead,
   MenuItem,
   TableBody,
   TableCell,
@@ -192,31 +193,28 @@ export default function LoanPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <TableHead>
+                <TableRow>
+                  <TableCell>Loan Id</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Start Date</TableCell>
+                  <TableCell>End Date</TableCell>
+                  <TableCell>Loan Status</TableCell>
+                  <TableCell>Artifact Name</TableCell>
+                  <TableCell> </TableCell>
+                </TableRow>
+              </TableHead>
                 <TableBody>
                   {loanList?.map?.((row) => {
                     console.log('this is the workDay List', loanList);
                     const { loanId, aLoaneeName, aStartDate, aEndDate, aLoanStatus, aArtifactName } = row;
-                    const selectedUser = selected.indexOf(loanId) !== -1;
 
                     return (
-                      <TableRow hover key={loanId} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, loanId)} />
-                        </TableCell>
+                      <TableRow hover key={loanId} tabIndex={-1}>
 
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>

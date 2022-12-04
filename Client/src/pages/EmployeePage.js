@@ -20,6 +20,7 @@ import {
   MenuItem,
   TableBody,
   TableCell,
+  TableHead,
   Container,
   Typography,
   IconButton,
@@ -194,20 +195,19 @@ export default function EmployeePage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <TableHead>
+                <TableRow>
+                  <TableCell>Employee Id</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Hourly Wage</TableCell>
+                  <TableCell>Overtime Hourly Wage</TableCell>
+                  <TableCell> </TableCell>
+                </TableRow>
+              </TableHead>
                 <TableBody>
                   {employeesList?.map?.((row) => {
                     console.log('This is a list of employees', employeesList);
@@ -216,10 +216,7 @@ export default function EmployeePage() {
 
                     return (
                       <TableRow hover key={email} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
-                        </TableCell>
-
+                       
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={day} src={avatarUrl} />
