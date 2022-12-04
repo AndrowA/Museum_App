@@ -9,6 +9,7 @@ public class ArtifactDTO {
     public final String url;
     public final Long loanId;
     public final Long roomId;
+    public final String roomName;
 
     /**
      * constructor for artifact
@@ -26,8 +27,10 @@ public class ArtifactDTO {
         }
         if (artifact.getRoom() == null){
             this.roomId = null;
+            this.roomName = null;
         } else {
             this.roomId = artifact.getRoom().getRoomId();
+            this.roomName = artifact.getRoom().getName();
         }
     }
 }
