@@ -45,6 +45,12 @@ public class LoanService {
         }
     }
 
+    /**
+     * Method to retrieve loans bya visitors id
+     * @param id of visitor
+     * @return list of loans
+     * @throws MuseumException
+     */
     @Transactional
     public Iterable<Loan> retrieveLoanByVisitorId(long id) throws MuseumException {
         Iterable<Loan> loans = loanRepository.findByLoaneeAccountId(id);

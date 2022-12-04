@@ -28,6 +28,11 @@ public class LoanController {
     @Autowired
     ArtifactService artifactService;
 
+    /**
+     * Get for all loans
+     * @return dtos of loans
+     * @throws MuseumException
+     */
     @Transactional
     @GetMapping("/getLoans")
     public ResponseEntity getLoans() throws MuseumException {
@@ -63,6 +68,12 @@ public class LoanController {
         return new ResponseEntity<>("Could not get loan.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Get for all loans for a loanee
+     * @param id of loanee
+     * @return dto of loans
+     * @throws MuseumException
+     */
     @Transactional
     @GetMapping("/getLoaneeLoans/{id}")
     public ResponseEntity getLoaneeLoans(@PathVariable long id) throws MuseumException {
