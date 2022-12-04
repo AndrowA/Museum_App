@@ -19,6 +19,7 @@ import {
   MenuItem,
   TableBody,
   TableCell,
+  TableHead,
   Container,
   Typography,
   IconButton,
@@ -186,20 +187,18 @@ export default function VisitorPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={visitorList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <TableHead>
+                <TableRow>
+                  <TableCell>Visitor Id</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Role</TableCell>
+                  <TableCell> </TableCell>
+                </TableRow>
+              </TableHead>
                 <TableBody>
                   {visitorList?.map?.((row) => {
                     console.log('this is the workDay List', visitorList);
@@ -208,10 +207,6 @@ export default function VisitorPage() {
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, id)} />
-                        </TableCell>
-
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={day} src={avatarUrl} />

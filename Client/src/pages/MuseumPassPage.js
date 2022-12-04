@@ -14,6 +14,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  TableHead,
   Container,
   Typography,
   IconButton,
@@ -188,21 +189,17 @@ export default function MuseumPassPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
-
+      
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  noCheckBox
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <TableHead>
+                <TableRow>
+                  <TableCell>Pass Id</TableCell>
+                  <TableCell>Pass Date</TableCell>
+                  <TableCell>Email</TableCell>
+                </TableRow>
+              </TableHead>
                 <TableBody>
                   {listOfMuseumPasses?.map?.((row) => {
                     console.log('this is the workDay List', listOfMuseumPasses);
@@ -219,7 +216,6 @@ export default function MuseumPassPage() {
                             </Typography>
                           </Stack>
                         </TableCell> */}
-                        <TableCell padding="checkbox" />
 
                         <TableCell align="left">{passId}</TableCell>
 
@@ -230,6 +226,7 @@ export default function MuseumPassPage() {
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
+
                       </TableRow>
                     );
                   })}

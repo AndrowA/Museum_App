@@ -22,6 +22,7 @@ import MuseumPassPage from './pages/MuseumPassPage';
 import PurchasePassForm from './pages/PurchasePassForm';
 
 import VisitorPage from './pages/VisitorPage';
+import ModifyEmployeeForm from './pages/ModifyEmployeeForm';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,10 @@ export default function Router() {
             accountType === 'PRESIDENT' && {
               path: 'dashboard/ModifyArtifactForm/:id',
               element: <ModifyArtifactForm />,
+            },
+            accountType === 'PRESIDENT' && {
+              path: 'dashboard/ModifyEmployeeForm/:id',
+              element: <ModifyEmployeeForm />,
             },
             accountType === 'PRESIDENT' && {
               path: 'dashboard/employeeScheduleForm/:id',

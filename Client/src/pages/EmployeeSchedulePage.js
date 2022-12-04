@@ -16,6 +16,7 @@ import {
   Popover,
   Checkbox,
   TableRow,
+  TableHead,
   MenuItem,
   TableBody,
   TableCell,
@@ -201,20 +202,18 @@ export default function UserPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterday={filterday} onFilterday={handleFilterByday} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+              <TableHead>
+                <TableRow>
+                  <TableCell>Day</TableCell>
+                  <TableCell>Start Time</TableCell>
+                  <TableCell>End Time</TableCell>
+                  <TableCell> </TableCell>
+                </TableRow>
+              </TableHead>
                 <TableBody>
                   {workDayList?.map?.((row) => {
                     console.log('this is the workDay List', workDayList);
@@ -223,9 +222,6 @@ export default function UserPage() {
 
                     return (
                       <TableRow hover key={day} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, day)} />
-                        </TableCell>
 
                         {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
