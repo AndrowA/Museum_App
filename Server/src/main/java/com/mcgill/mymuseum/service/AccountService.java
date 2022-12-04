@@ -98,6 +98,7 @@ public class AccountService {
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)) ||
                 (type.equals(TargetType.WORKDAY) && workDayRepository.findById(targetId).get().getEmployee().getAccountId()==accountId && action.equals(Action.INFO))) ||
+                (type.equals(TargetType.VISITOR) && (action.equals(Action.REMOVE))) ||
                 (targetId==accountId && !action.equals(Action.REMOVE));
 
         // list of permissions that visitor has
@@ -122,7 +123,7 @@ public class AccountService {
 
     @Transactional
     public boolean authenticate(long accountId, TargetType type, Action action){
-        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)))||
+        boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE) || action.equals(Action.INFO)))||
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
                 (type.equals(TargetType.ARTIFACT) && (action.equals(Action.INFO)||action.equals(Action.MODIFY)||action.equals(Action.ASSIGN)));
 
