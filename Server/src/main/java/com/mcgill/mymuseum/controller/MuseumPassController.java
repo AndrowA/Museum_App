@@ -42,7 +42,7 @@ public class MuseumPassController {
             MuseumPass pass = mapper.readValue(passDate, MuseumPass.class); //map date to pass
             int visitorID = Integer.parseInt(id);
             if(!accountService.authenticate(Long.parseLong(id), AccountService.TargetType.MUSEUMPASS, AccountService.Action.BUY)){ //make sure only visitor can buy
-                return new ResponseEntity<>(("User not allowed to buy a Museum Pass"), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("User not allowed to buy a Museum Pass", HttpStatus.FORBIDDEN);
             }
             MuseumPass museumPassObject = museumPassService.createPass(pass, visitorID);
             MuseumPassDTO museumPassDTO = new MuseumPassDTO(museumPassObject.getPassId(), 10, museumPassObject.getPassDate(), museumPassObject.getOwner().getEmail(), museumPassObject.getMyMuseum());
