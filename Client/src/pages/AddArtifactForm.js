@@ -25,13 +25,14 @@ const AddArtifactForm = () => {
   const onChangeArtifactDescription = (e) => {
     setArtifactDescription(e?.target?.value);
   };
-  const onChangeArtifactRoom = (e)=>{
-    setArtifactRoom(e?.target?.value)
-  }
+  const onChangeArtifactRoom = (e) => {
+    setArtifactRoom(e?.target?.value);
+  };
 
   const onButtonClick = async () => {
     const { artifactId } = await addArtifact(userId, artifactURL, artifactTitle, artifactDescription);
-    await assignArtifactRoom(userId, artifactId, artifactRoom).then(() => navigate('/artifacts'));
+    // await assignArtifactRoom(userId, artifactId, artifactRoom).then(() => navigate('/artifacts'));
+    navigate('/artifacts');
   };
 
   return (
@@ -39,7 +40,7 @@ const AddArtifactForm = () => {
       fields={[
         { title: 'Artifact Title', onChange: onChangeTitle },
         { title: 'Artifact URL', onChange: onChangeArtifactURL },
-        { title: 'Artifact room', onChange: onChangeArtifactRoom }, 
+        { title: 'Artifact room', onChange: onChangeArtifactRoom },
         { title: 'Artifact Description', desc: true, onChange: onChangeArtifactDescription },
       ]}
       buttons={[{ title: 'Add Artifact', onClick: onButtonClick }]}

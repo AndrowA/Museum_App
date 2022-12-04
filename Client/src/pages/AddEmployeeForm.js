@@ -42,7 +42,7 @@ const AddEmployeeForm = () => {
 
   const onButtonClick = async () => {
     const id = await registerEmployeeWithEmailAndPassword(email, password);
-    await setAccountNames(firstName, lastName);
+    await setAccountNames(id, firstName, lastName);
     await setEmployeeSalary(userId, id, baseSalary, overTimeSalary);
     navigate('/dashboard/employees');
   };

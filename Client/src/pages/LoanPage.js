@@ -322,7 +322,7 @@ export default function LoanPage() {
           },
         }}
       >
-        {!accountType === 'VISITOR' && (
+        {accountType !== 'VISITOR' && (
           <MenuItem
             sx={{ color: 'success.main' }}
             onClick={async () => {
@@ -339,7 +339,7 @@ export default function LoanPage() {
         <MenuItem
           onClick={async () => {
             await returnLoan(currentId);
-            const temp = await getAllLoans();
+            const temp = accountType === 'VISITOR' ? await getVisitorLoans(userId) : await getAllLoans();
             setLoanList(temp);
           }}
         >
@@ -351,7 +351,7 @@ export default function LoanPage() {
           sx={{ color: 'error.main' }}
           onClick={async () => {
             await rejectLoan(currentId, userId);
-            const temp = await getAllLoans();
+            const temp = accountType === 'VISITOR' ? await getVisitorLoans(userId) : await getAllLoans();
             setLoanList(temp);
           }}
         >

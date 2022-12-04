@@ -5,14 +5,14 @@ import { useApiClient } from 'apiClient/useApiClient';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const ModifyArtifactForm = () => { 
+const ModifyArtifactForm = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user?.uid);
   const [artifactTitle, setArtifactTitle] = useState();
   const [artifactURL, setArtifactURL] = useState();
   const [artifactDescription, setArtifactDescription] = useState();
   const [artifactRoom, setArtifactRoom] = useState();
-  const { getArtifact, modifyArtifact , assignArtifactRoom} = useApiClient();
+  const { getArtifact, modifyArtifact, assignArtifactRoom, removeArtifact } = useApiClient();
   const { id: artifactId } = useParams();
 
   useEffect(() => {
@@ -34,25 +34,39 @@ const ModifyArtifactForm = () => {
     setArtifactDescription(e?.target?.value);
   };
 
-  const onChangeArtifactRoom = (e)=>{
-    setArtifactRoom(e?.target?.value)
-  }
+  const onChangeArtifactRoom = (e) => {
+    setArtifactRoom(e?.target?.value);
+  };
 
   const onEditClick = async () => {
     await modifyArtifact(userId, artifactId, artifactURL, artifactTitle, artifactDescription);
-    await assignArtifactRoom(userId, artifactId, artifactRoom).then(()=>navigate('/artifacts'));
+    // await assignArtifactRoom(userId, artifactId, artifactRoom || 0).then(() => navigate('/artifacts'));
+    navigate('/artifact');
   };
 
+  const onDeleteClick = async () => {
+    await removeArtifact(userId, artifactId);
+    navigate('/artifact');
+    // L
+  };
 
   return (
     <Form
       fields={[
-        { title: 'Artifact Title', onChange: onChangeTitle, value: artifactTitle},
+        { title: 'Artifact Title', onChange: onChangeTitle, value: artifactTitle },
         { title: 'Artifact URL', onChange: onChangeArtifactURL, value: artifactURL },
-        { title: 'Artifact room', onChange: onChangeArtifactRoom , value: artifactRoom},
-        { title: 'Artifact Description', desc: true, onChange: onChangeArtifactDescription, value: artifactDescription},
+        { title: 'Artifact room', onChange: onChangeArtifactRoom, value: artifactRoom },
+        {
+          title: 'Artifact Description',
+          desc: true,
+          onChange: onChangeArtifactDescription,
+          value: artifactDescription,
+        },
       ]}
-      buttons={[{ title: 'Save', onClick: onEditClick }]}
+      buttons={[
+        { title: 'Save', onClick: onEditClick },
+        { title: 'delete', onClick: onDeleteClick },
+      ]}
     />
   );
 };

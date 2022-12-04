@@ -23,7 +23,6 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     if (password1 === password2) {
-      console.log('pass 1');
       registerWithEmailAndPassword(firstName, lastName, email, password1);
     } else {
       dispatch(sendMessage({ open: true, message: 'Passwords do not match', severity: 'error' }));
