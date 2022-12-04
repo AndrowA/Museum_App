@@ -65,7 +65,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -86,7 +86,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
             }
         }else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -106,7 +106,7 @@ public class EmployeeController {
             dto.overTimeHourlyWage = employee.getOverTimeHourlyWage();
             return new ResponseEntity<>(dto,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -138,7 +138,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -174,7 +174,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -204,7 +204,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -218,7 +218,7 @@ public class EmployeeController {
      */
     @RequestMapping(method = RequestMethod.POST, path = "/schedule/{rid}/{employeeId}/addWorkDay")
     public ResponseEntity addWorkDay(@PathVariable long employeeId, @PathVariable(name = "rid") Long requesterId, @RequestBody String body) throws Exception {
-        if (accountService.authenticate(requesterId, employeeId, AccountService.Action.ASSIGN)) {
+        if (accountService.authenticate(requesterId, AccountService.TargetType.EMPLOYEE, AccountService.Action.ASSIGN)) {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 WorkDay newWorkDay = mapper.readValue(body, WorkDay.class);
@@ -238,7 +238,7 @@ public class EmployeeController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
 
     }
@@ -272,10 +272,10 @@ public class EmployeeController {
                 return new ResponseEntity<>(workDayDTO, HttpStatus.OK);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
 
     }
@@ -306,15 +306,15 @@ public class EmployeeController {
                     return new ResponseEntity<>(HttpStatus.OK);
                 } else {
                     System.out.println("option 2");
-                    return new ResponseEntity<>("not found 1",HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>("could not find workDay",HttpStatus.NOT_FOUND);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("option 3");
-                return new ResponseEntity<>("not found 1",HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("could not find employee",HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you do not have access",HttpStatus.FORBIDDEN);
         }
     }
 }

@@ -461,7 +461,7 @@ public class EmployeeControllerTest {
         String body = "{\"day\": \"2013-09-04\"}";
         try {
             ResponseEntity response = employeeController.addWorkDay(123L, president.getAccountId(), body);
-            assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+            assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
         }
     }
