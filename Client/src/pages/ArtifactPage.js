@@ -2,15 +2,20 @@
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import * as React from 'react';
 // @mui
 import { Container, Stack, Typography, Button } from '@mui/material';
 import { useApiClient } from 'apiClient/useApiClient';
 import { useNavigate, useParams } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 import Iconify from '../components/iconify';
+
 // components
 import { ArtifactList } from '../sections/@dashboard/Aartifacts';
 // mock
 import PRODUCTS from '../_mock/products';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +27,16 @@ export default function ProductsPage() {
   const accountType = useSelector((state) => state.user?.type);
 
   const [openFilter, setOpenFilter] = useState(false);
+  
+  const handleChange = (event, value) => {
+    try {
+      (async () => {
+        await fillArtifactList(50, value);
+      })();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -66,6 +81,7 @@ export default function ProductsPage() {
             </Button>
           )}
         </Stack>
+        
 
         {/* <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
@@ -77,8 +93,12 @@ export default function ProductsPage() {
             <ProductSort />
           </Stack>
         </Stack> */}
-        <ArtifactList products={artifactList} />
+        <ArtifactList products={artifactList}/>
         {/* <ProductCartWidget /> */}
+
+        <Stack spacing={2} sx={{paddingTop:"30px", display:"block", marginLeft:"auto", marginRight: "auto", width: "40%"}}>
+          <Pagination count={10} onChange={handleChange} />
+        </Stack>
       </Container>
     </>
   );
