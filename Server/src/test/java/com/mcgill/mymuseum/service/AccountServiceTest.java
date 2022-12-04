@@ -177,6 +177,25 @@ public class AccountServiceTest {
     }
 
     @Test
+    public void testFindAccountIDByEmailAndPassword(){
+        String email = "test@example.com";
+        String password = "password";
+        Employee employee = new Employee();
+        employee.setAccountId(1l);
+        employee.setEmail(email);
+        employee.setPassword(password);
+
+        List<Account> accountList = new ArrayList<Account>();
+        accountList.add(employee);
+
+        Mockito.when(accountRepository.findAll()).thenReturn(accountList);
+
+        Long id = accountService.findAccountIDByEmailAndPassword(email, password);
+
+        assertEquals(id, 1l);
+    }
+
+    @Test
     public void testCreateAccount(){
 
         String email = "test@example.com";
@@ -212,5 +231,39 @@ public class AccountServiceTest {
         Mockito.when(accountRepository.findAll()).thenReturn(List.of(employeeList));
         assertEquals(accountService.loginAccount(email,password),id);
 
+    }
+
+    @Test
+    public void testSetAccountName(){
+        Long employeeId = 1l;
+        String firstName = "first";
+        String lastName = "Last";
+        String email = "test@example.com";
+        String password = "password";
+        Employee employee = new Employee();
+        employee.setAccountId(employeeId);
+        employee.setEmail(email);
+        employee.setPassword(password);
+
+        Mockito.when(accountRepository.save(Mockito.any(Employee.class))).thenReturn(employee);
+        Mockito.when(accountRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        accountService.setAccountName(employeeId, firstName,lastName);
+        assertEquals(firstName, accountService.findAccountByID(employeeId).getFirstName());
+        assertEquals(lastName, accountService.findAccountByID(employeeId).getLastName());
+    }
+
+    @Test
+    public void testRemoveAccount(){
+        Long employeeId = 1l;
+        String email = "test@example.com";
+        String password = "password";
+        Employee employee = new Employee();
+        employee.setAccountId(employeeId);
+        employee.setEmail(email);
+        employee.setPassword(password);
+        accountRepository.save(employee);
+        accountService.removeAccount(employeeId);
+        assertNull(accountService.findAccountByID(employeeId));
     }
 }

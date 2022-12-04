@@ -53,7 +53,7 @@ public class AccountController {
         if (accountService.setAccountName(account.getId(),account.getFirstName(),account.getLastName())){
             return new ResponseEntity<>("Name successfully updated",HttpStatus.OK);
         }else {
-            return new ResponseEntity<>("Colud not set names", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Could not set names", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -68,7 +68,7 @@ public class AccountController {
             Long out = accountService.loginAccount(account.getEmail(), account.getPassword());
             return new ResponseEntity<>(out,HttpStatus.OK);
         } catch (Error err) {
-            return new ResponseEntity<>(err.getMessage() ,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found" ,HttpStatus.NOT_FOUND);
         }
 
     }
@@ -86,10 +86,10 @@ public class AccountController {
                 boolean out = accountService.removeAccount(id);
                 return new ResponseEntity<>(out, HttpStatus.OK);
             } catch (Error err) {
-                return new ResponseEntity<>(err.getMessage(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
             }
         }else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid Permissions",HttpStatus.FORBIDDEN);
         }
 
     }
@@ -115,7 +115,7 @@ public class AccountController {
             }
             return new ResponseEntity<>(dto,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid Permissions",HttpStatus.FORBIDDEN);
         }
 
     }
@@ -147,10 +147,10 @@ public class AccountController {
                 }
                 return new ResponseEntity<>(visitorsDTO, HttpStatus.OK);
             } catch(Exception e) {
-                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("No visitors found", HttpStatus.NOT_FOUND);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid Permissions",HttpStatus.FORBIDDEN);
         }
     }
 

@@ -92,7 +92,9 @@ public class AccountService {
     @Transactional
     public boolean authenticate(long accountId,long targetId, Action action){
         TargetType type = findTargetType(targetId);
-
+        if (type==null){
+            return false;
+        }
         // list of permissions that employee has
         boolean employeePermissions = (type.equals(TargetType.LOAN) && (action.equals(Action.APPROVE)||action.equals(Action.INFO)||action.equals((Action.REMOVE))))||
                 (type.equals(TargetType.MUSEUMPASS) && action.equals(Action.INFO)) ||
@@ -229,8 +231,29 @@ public class AccountService {
 
     @Transactional
     public boolean removeAccount(long id){
-
-        if (findAccountByID(id) != null){
+        Account account = findAccountByID(id);
+        if (account != null){
+            // delete all employee references
+            if (account instanceof Employee){
+                if (((Employee) account).hasSchedule()){
+                    for (WorkDay workDay: ((Employee) account).getSchedule()){
+                        workDayRepository.deleteById(workDay.getId());
+                    }
+                }
+            }
+            // delete all visitor references
+            if (account instanceof Visitor){
+                if (((Visitor) account).hasPasses()){
+                    for (MuseumPass pass : ((Visitor) account).getPasses()){
+                        museumPassRepository.deleteById(pass.getPassId());
+                    }
+                }
+                if (((Visitor) account).hasLoans()){
+                    for (Loan loan: ((Visitor) account).getLoans()){
+                        loanRepository.deleteById(loan.getLoanId());
+                    }
+                }
+            }
             accountRepository.delete(findAccountByID(id));
             return true;
         }else {
