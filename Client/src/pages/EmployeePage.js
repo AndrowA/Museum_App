@@ -317,6 +317,16 @@ export default function EmployeePage() {
           },
         }}
       >
+
+        <MenuItem
+          onClick={() => {
+            navigate(`/dashboard/ModifyEmployeeForm/${currentEmployee}`);
+          }}
+        >
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Modify
+        </MenuItem>
+
         <MenuItem
           onClick={() => {
             navigate(`/dashboard/employeeSchedulePage/${currentEmployee}`);
