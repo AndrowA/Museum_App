@@ -152,7 +152,7 @@ public class AccountControllerTest {
         ResponseEntity out2  = accountController.loginUser(accountDTO);
 
         assertNotEquals(out1, out2);
-        assertEquals(out2.getBody(), "Incorrect Email or Password");
+        assertEquals(out2.getBody(), "Invalid Email or Password");
     }
 
     @Test

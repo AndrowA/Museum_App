@@ -68,7 +68,7 @@ public class AccountController {
             Long out = accountService.loginAccount(account.getEmail(), account.getPassword());
             return new ResponseEntity<>(out,HttpStatus.OK);
         } catch (Error err) {
-            return new ResponseEntity<>("User not found" ,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Invalid Email or Password" ,HttpStatus.NOT_FOUND);
         }
 
     }
