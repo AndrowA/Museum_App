@@ -31,6 +31,8 @@ public class AccountService {
     WorkDayRepository workDayRepository;
 
 
+
+
     public enum AccountType {
         VISITOR,
         EMPLOYEE,
@@ -81,6 +83,18 @@ public class AccountService {
             return TargetType.WORKDAY;
         }
         return null;
+    }
+
+    @Transactional
+    public void createPresident() {
+        if (accountRepository.findAccountByEmail("president@mymuseum.com").isEmpty()){
+            President president = new President();
+            president.setEmail("president@mymuseum.com");
+            president.setPassword("password");
+            president.setFirstName("Mr.");
+            president.setLastName("President");
+            accountRepository.save(president);
+        }
     }
 
     /**

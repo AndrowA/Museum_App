@@ -1,19 +1,25 @@
 package com.mcgill.mymuseum.service;
 
 import com.mcgill.mymuseum.model.Artifact;
+import com.mcgill.mymuseum.model.DisplayRoom;
 import com.mcgill.mymuseum.model.Room;
+import com.mcgill.mymuseum.model.StorageRoom;
 import com.mcgill.mymuseum.repository.ArtifactRepository;
+import com.mcgill.mymuseum.repository.LoanRepository;
 import com.mcgill.mymuseum.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class RoomService {
     @Autowired
     RoomRepository roomRepository;
+    @Autowired
+    LoanRepository loanRepository;
     @Autowired
     ArtifactRepository artifactRepository;
 
@@ -25,6 +31,30 @@ public class RoomService {
         }else {
             return room.get();
         }
+    }
+
+    @Transactional
+    public Iterable<Room> setupRooms(){
+        ArrayList<Room> rooms = (ArrayList<Room>) roomRepository.findAll();
+        if (rooms.size() != 10) {
+            loanRepository.deleteAll();
+            artifactRepository.deleteAll();
+            roomRepository.deleteAll();
+            // create room
+            StorageRoom room = new StorageRoom();
+            room.setName("Room 1");
+            rooms.add(room);
+            for (int i = 2; i <= 9; i++) {
+                DisplayRoom room1 = new DisplayRoom();
+                room1.setName("Room " + i);
+                rooms.add(room1);
+            }
+            StorageRoom room2 = new StorageRoom();
+            room2.setName("Room 10");
+            rooms.add(room2);
+            roomRepository.saveAll(rooms);
+        }
+        return rooms;
     }
 
     @Transactional
