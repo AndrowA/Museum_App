@@ -284,7 +284,7 @@ public class EmployeeController {
      * Delete an employee's workday
      * @param employeeId of the employee in question
      * @param requesterId of the person deleting the employee's workday
-     * @param body of the post request
+     * @param date date of the specified workday
      * @return ResponseEntity of HTTP status
      * @throws Exception
      */
