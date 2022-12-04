@@ -55,7 +55,7 @@ public class LoanController {
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
         try {
             Loan loan = loanService.retrieveLoanById(id);
-            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
