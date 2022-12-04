@@ -28,6 +28,11 @@ public class LoanController {
     @Autowired
     ArtifactService artifactService;
 
+    /**
+     * Get for all loans
+     * @return dtos of loans
+     * @throws MuseumException
+     */
     @Transactional
     @GetMapping("/getLoans")
     public ResponseEntity getLoans() throws MuseumException {
@@ -41,7 +46,7 @@ public class LoanController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loans.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -55,14 +60,20 @@ public class LoanController {
     public ResponseEntity getLoan(@PathVariable long id) throws MuseumException {
         try {
             Loan loan = loanService.retrieveLoanById(id);
-            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),loan.getMyMuseum().getAddress());
+            LoanDTO loanDTO = new LoanDTO(loan.getLoanId(), loan.getStartDate(),loan.getEndDate(),loan.getLoanStatus(),loan.getLoanee().getEmail(),loan.getArtifact().getName(),loan.getArtifact().getArtifactId(),null);
             return new ResponseEntity<>(loanDTO, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loan.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Get for all loans for a loanee
+     * @param id of loanee
+     * @return dto of loans
+     * @throws MuseumException
+     */
     @Transactional
     @GetMapping("/getLoaneeLoans/{id}")
     public ResponseEntity getLoaneeLoans(@PathVariable long id) throws MuseumException {
@@ -76,7 +87,7 @@ public class LoanController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loanee's loans.",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
