@@ -50,7 +50,7 @@ public class MuseumPassController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
-            return new ResponseEntity(("User not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("User not found", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -72,7 +72,7 @@ public class MuseumPassController {
                return new ResponseEntity<>(museumPassDTO, HttpStatus.OK); //return retrieved pass
            }
         } catch (NoSuchElementException e) {
-            return new ResponseEntity(("Museum Pass not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Museum Pass not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -93,7 +93,7 @@ public class MuseumPassController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(("Museum Passes not found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Museum Passes not found", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Transactional
@@ -114,7 +114,7 @@ public class MuseumPassController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(("Museum Passes not found"),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Museum Passes not found",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
