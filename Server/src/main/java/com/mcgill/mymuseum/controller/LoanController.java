@@ -41,7 +41,7 @@ public class LoanController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loans.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -60,7 +60,7 @@ public class LoanController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loan.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class LoanController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Could not get loanee's loans.",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
