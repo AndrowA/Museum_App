@@ -14,12 +14,12 @@ This iteration of the project focused on the implementation and testing of backe
 # Team members
 | Name                | GitHub username | Team Role      |
 |---------------------|-----------------|----------------|
-| Hadi Ghaddar        | hadi-ghaddar    | Developer       | 
-| Androw Abd El Malak | AndrowAM        | Tester         | 
-| Shady Guindi        | Shadysjn        | Scrum Master   | 
-| Daniel Makhlin      | DanielMakhlin   | Developer       | 
-| Yassine Meliani     | yassinemeliani  | Developer | 
-| Radu Petrescu       | PetrescuRad     | Developer       |
+| Hadi Ghaddar        | hadi-ghaddar    | Backend Developer       | 
+| Androw Abd El Malak | AndrowAM        | Fullstack Developer       | 
+| Shady Guindi        | Shadysjn        | Lead Frontend Engineer  | 
+| Daniel Makhlin      | DanielMakhlin   | Fullstack Developer       | 
+| Yassine Meliani     | yassinemeliani  | Lead Backend Engineer |
+| Radu Petrescu       | PetrescuRad     | Frontend Developer       |
 
 
 # Time Table Deliverable 1
