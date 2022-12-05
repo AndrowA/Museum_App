@@ -43,6 +43,7 @@ public class ArtifactController {
             e.printStackTrace();
             return new ResponseEntity<>("Artifact id does not exist", HttpStatus.NOT_FOUND);
         }
+
     }
 
     /**
@@ -78,7 +79,7 @@ public class ArtifactController {
         try {
             Artifact newArtifact = mapper.readValue(body, Artifact.class);
             if(!accountService.authenticate(rid, AccountService.TargetType.ARTIFACT, AccountService.Action.MODIFY)){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("Invalid Permissions!",HttpStatus.FORBIDDEN);
             }
             Artifact savedArtifact = artifactService.saveArtifact(newArtifact);
             return new ResponseEntity<>(savedArtifact, HttpStatus.CREATED); // all good
@@ -165,6 +166,23 @@ public class ArtifactController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Controller method to get room for an artifact
+     * @param name of artifact
+     * @return ResponseEntity of DTO if successful or HTTP status
+     */
+    @GetMapping("/room/info/byname/{name}")
+    public ResponseEntity getRoomByName (@PathVariable(name="name") String name){
+        try{
+            Room room = roomService.retrieveRoomByName(name);
+            RoomDTO dto = new RoomDTO(room);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     @PostMapping("/delete/{id}")
     public ResponseEntity deleteArtifact(@RequestParam("token") long rid, @PathVariable(name="id") long id){
         try {
@@ -182,6 +200,8 @@ public class ArtifactController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
 
 }

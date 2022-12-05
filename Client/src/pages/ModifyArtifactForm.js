@@ -12,7 +12,7 @@ const ModifyArtifactForm = () => {
   const [artifactURL, setArtifactURL] = useState();
   const [artifactDescription, setArtifactDescription] = useState();
   const [artifactRoom, setArtifactRoom] = useState();
-  const { getArtifact, modifyArtifact, assignArtifactRoom, removeArtifact } = useApiClient();
+  const { getArtifact, modifyArtifact, assignArtifactRoom, removeArtifact, getRoomByName, getRoomInfo} = useApiClient();
   const { id: artifactId } = useParams();
 
   useEffect(() => {
@@ -21,6 +21,7 @@ const ModifyArtifactForm = () => {
       setArtifactTitle(artifact?.name);
       setArtifactDescription(artifact?.description);
       setArtifactURL(artifact?.url);
+      setArtifactRoom(artifact?.roomName)
     })();
   }, [artifactId, getArtifact]);
   const onChangeTitle = (e) => {
@@ -40,7 +41,8 @@ const ModifyArtifactForm = () => {
 
   const onEditClick = async () => {
     await modifyArtifact(userId, artifactId, artifactURL, artifactTitle, artifactDescription);
-    // await assignArtifactRoom(userId, artifactId, artifactRoom || 0).then(() => navigate('/artifacts'));
+    const {id} = await getRoomByName(artifactRoom);
+    await assignArtifactRoom(userId, artifactId, id || 0).then(() => navigate('/artifacts'));
     navigate('/artifact');
   };
 

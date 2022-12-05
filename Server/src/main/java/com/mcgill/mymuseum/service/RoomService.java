@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
@@ -24,17 +25,31 @@ public class RoomService {
     ArtifactRepository artifactRepository;
 
     @Transactional
-    public Room retrieveRoom(long id) throws Exception{
+    public Room retrieveRoom(long id) throws Exception {
         Optional<Room> room = roomRepository.findById(id);
-        if(room.isEmpty()){
+        if (room.isEmpty()) {
             throw new Exception();
-        }else {
+        } else {
             return room.get();
         }
     }
 
     @Transactional
-    public Iterable<Room> setupRooms(){
+    public Room retrieveRoomByName(String name) throws Exception {
+        Iterable<Room> rooms = roomRepository.findAll();
+
+        for (Room room : rooms) {
+
+            if (room.getName().equals(name)){
+             return room;
+            }
+        }
+
+        throw new Exception("Room not found!");
+    }
+
+    @Transactional
+    public Iterable<Room> setupRooms() {
         ArrayList<Room> rooms = (ArrayList<Room>) roomRepository.findAll();
         if (rooms.size() != 10) {
             loanRepository.deleteAll();
@@ -58,18 +73,18 @@ public class RoomService {
     }
 
     @Transactional
-    public Room retrieveRoomByArtifactId(long artifactId) throws Exception{
+    public Room retrieveRoomByArtifactId(long artifactId) throws Exception {
         Optional<Artifact> artifact = artifactRepository.findById(artifactId);
 
-        if(artifact.isEmpty()){
+        if (artifact.isEmpty()) {
             throw new Exception();
-        }else {
+        } else {
             return artifact.get().getRoom();
         }
     }
 
     @Transactional
-    public Room saveRoom(Room room){
+    public Room saveRoom(Room room) {
         return roomRepository.save(room);
     }
 }
