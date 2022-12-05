@@ -66,8 +66,10 @@ export default function Router() {
               element: <EmployeeSchedulePage />,
             },
             accountType === 'PRESIDENT' && { path: '/dashboard/employeeForm', element: <AddEmployeeForm /> },
-            accountType === 'PRESIDENT' ||
-              (accountType === 'VISITOR' && { path: '/dashboard/AddArtifactForm', element: <AddArtifactForm /> }),
+            (accountType === 'PRESIDENT' || accountType === 'VISITOR') && {
+              path: '/dashboard/AddArtifactForm',
+              element: <AddArtifactForm />,
+            },
             (accountType === 'PRESIDENT' || accountType === 'EMPLOYEE') && {
               path: '/dashboard/VisitorPage',
               element: <VisitorPage />,
