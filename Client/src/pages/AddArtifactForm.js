@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddArtifactForm = () => {
   
-  const { addArtifact, assignArtifactRoom } = useApiClient();
+  const { addArtifact, assignArtifactRoom, getRoomByName } = useApiClient();
 
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user?.uid);
@@ -32,7 +32,9 @@ const AddArtifactForm = () => {
 
   const onButtonClick = async () => {
     const { artifactId } = await addArtifact(userId, artifactURL, artifactTitle, artifactDescription);
-    // await assignArtifactRoom(userId, artifactId, artifactRoom).then(() => navigate('/artifacts'));
+    const {id} = await getRoomByName(artifactRoom);
+    await assignArtifactRoom(userId, artifactId, id).then(() => navigate('/artifacts'));
+    console.log("hello")
     navigate('/artifacts');
   };
 

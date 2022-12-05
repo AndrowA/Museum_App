@@ -28,7 +28,7 @@ AritfactCard.propTypes = {
 export default function AritfactCard({ product }) {
   const navigate = useNavigate();
   const accountType = useSelector((state)=> state?.user?.type)
-  const { id, name, url, roomId } = product;
+  const { id, name, url, roomName } = product;
 
   return (
     <Card
@@ -81,7 +81,7 @@ export default function AritfactCard({ product }) {
             </Typography>
             {/* &nbsp;
             {fCurrency(roomId)} */}
-            {roomId}
+            {roomName}
           </Typography>
         </Stack>
       </Stack>

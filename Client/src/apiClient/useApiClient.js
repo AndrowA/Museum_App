@@ -160,6 +160,14 @@ export const useApiClient = () => {
     return output;
   }, []);
 
+  const getRoomByName = useCallback(async (roomName) => {
+    const output = await axios
+      .get(`${url}/artifact/room/info/byname/${roomName}`)
+      .then((res) => res.data)
+      .catch((err) => dispatch(sendMessage({ open: true, message: err?.response?.data, severity: 'error' })));
+    return output;
+  }, []);
+
   // Employee endpoint
   const registerEmployeeWithEmailAndPassword = useCallback(async (email, password) => {
     let output;
@@ -398,6 +406,7 @@ export const useApiClient = () => {
     fillArtifactList,
     addArtifact,
     modifyArtifact,
+    getRoomByName,
     assignArtifactRoom,
     removeArtifact,
     getRoomInfo,
